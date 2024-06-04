@@ -1,0 +1,70 @@
+{
+  "events": [
+    {
+      "name": "Event 1",
+      "location": "Location 1",
+      "date": "2024-06-01",
+      "time": "10:00",
+      "fees": 10,
+      "category": "Category 1",
+      "totalTickets": 100,
+      "ticketsRemaining": 50,
+      "likes": 20,
+      "dislikes": 5,
+      "comments": ["Great event!", "Looking forward to it."],
+      "keywords": ["keyword1", "keyword2"],
+      "club": "60a123456789012345678901",
+      "images": ["image1.jpg", "image2.jpg"],
+      "rating": 4.5
+    },
+    {
+      "name": "Event 2",
+      "location": "Location 2",
+      "date": "2024-06-02",
+      "time": "12:00",
+      "fees": 20,
+      "category": "Category 2",
+      "totalTickets": 200,
+      "ticketsRemaining": 100,
+      "likes": 15,
+      "dislikes": 2,
+      "comments": ["Interesting event!", "Can't wait."],
+      "keywords": ["keyword3", "keyword4"],
+      "club": "60a123456789012345678902",
+      "images": ["image3.jpg", "image4.jpg"],
+      "rating": 3.8
+    }
+  ],
+  "clubs": [
+    {
+      "name": "Club 1",
+      "pastEvents": ["60a123456789012345678901"],
+      "currentEvents": ["60a123456789012345678902"],
+      "followers": ["", ""],
+      "dp": "club_dp.jpg"
+    },
+    {
+      "name": "Club 2",
+      "pastEvents": ["60a123456789012345678902"],
+      "currentEvents": ["60a123456789012345678901"],
+      "followers": ["", ""],
+      "dp": "club_dp.jpg"
+    }
+  ],
+  "users": [
+    {
+      "name": "User 1",
+      "pastEvents": ["60a123456789012345678902"],
+      "currentEvents": ["60a123456789012345678901"],
+      "keywords": ["keyword1", "keyword2"],
+      "dp": "club_dp.jpg"
+    },
+    {
+      "name": "User 2",
+      "pastEvents": ["60a123456789012345678902"],
+      "currentEvents": ["60a123456789012345678901"],
+      "keywords": ["keyword3", "keyword4"],
+      "dp": "club_dp.jpg"
+    }
+  ]
+}
