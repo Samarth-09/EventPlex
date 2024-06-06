@@ -14,9 +14,15 @@ class ClubDetailsCubit extends Cubit<ClubDetailsState> {
         name
         pastEvents{
             name
+            category
+            rating
+            _id
         }
         currentEvents{
             name
+            category
+            rating
+            _id
         }
         followers{
             name

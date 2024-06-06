@@ -5,6 +5,7 @@ import 'package:eventplex_frontend/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 // ignore: must_be_immutable
 class EventDetails extends StatefulWidget {
@@ -218,7 +219,14 @@ class _EventDetailsState extends State<EventDetails> {
                     ]));
               } else {
                 context.read<EventDetailsCubit>().loadEventDetails(eventId);
-                return Container();
+                return Center(
+                      child: Container(
+                        width: w,
+                        height: h,
+                        child: LoadingAnimationWidget.fourRotatingDots(
+                            color: Themes.red, size: w / 100 * 20),
+                      ),
+                    );
               }
             }),
           ),

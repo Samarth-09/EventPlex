@@ -1,9 +1,13 @@
 import 'package:eventplex_frontend/Cubits/ClubDetails/ClubDetailsCubit.dart';
 import 'package:eventplex_frontend/Cubits/ClubDetails/ClubDetailsState.dart';
+import 'package:eventplex_frontend/screens/EventDetails.dart';
 import 'package:eventplex_frontend/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
+import '../Model/Event.dart';
 
 // ignore: must_be_immutable
 class ClubDetails extends StatefulWidget {
@@ -56,20 +60,183 @@ class _ClubDetailsState extends State<ClubDetails> {
                               boxFit: BoxFit.fill,
                               borderRadius: BorderRadius.circular(w / 100 * 5)),
                           Container(
-                            width: w*0.95,
+                            width: w * 0.95,
                             alignment: Alignment.center,
                             margin: EdgeInsets.only(top: h / 100 * 2),
-                            child: Text(state.club.name,
-                                style: Themes.textStyle(
-                                    fontsize: w / 100 * 6,
-                                    fontColor: Themes.black,
-                                    fw: FontWeight.bold)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(state.club.name,
+                                    style: Themes.textStyle(
+                                        fontsize: w / 100 * 6,
+                                        fontColor: Themes.black,
+                                        fw: FontWeight.bold)),
+                                InkWell(
+                                  onTap: () {
+                                    //add the the logged in user to the following list of this club if not there else remove theme
+                                  },
+                                  child: Text("Follow",
+                                      style: Themes.textStyle(
+                                        fontsize: w / 100 * 4,
+                                        fontColor: Themes.red,
+                                        // fw: FontWeight.bold
+                                      )),
+                                ),
+                              ],
+                            ),
                           ),
+                          (state.club.currentEvents.isEmpty)
+                              ? Container(
+                                  width: w * 0.95,
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.only(
+                                      top: h / 100 * 2, bottom: h / 100 * 2),
+                                  child: Text("Club has no Events hosted",
+                                      style: Themes.textStyle(
+                                          fontsize: w / 100 * 3,
+                                          fontColor: Themes.black)))
+                              : Container(
+                                  width: w * 0.95,
+                                  // alignment: Alignment.,
+                                  margin: EdgeInsets.only(top: h / 100 * 3),
+                                  child: Text("Current Events(Ongoing)",
+                                      style: Themes.textStyle(
+                                          fontsize: w / 100 * 4,
+                                          fontColor: Themes.black,
+                                          fw: FontWeight.bold)),
+                                ),
+                          (state.club.currentEvents.isEmpty)
+                              ? Container()
+                              : Container(
+                                  width: w * 0.95,
+                                  height: h * 0.45,
+                                  margin: EdgeInsets.only(top: h / 100 * 2),
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 5,
+                                    //  state.club.currentEvents.length,
+                                    itemBuilder: (context, index) {
+                                      return event(
+                                          w, h, state.club.currentEvents[0]);
+                                    },
+                                  ),
+                                ),
+                          (state.club.pastEvents.isEmpty)
+                              ? Container(
+                                  width: w * 0.95,
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.only(
+                                      top: h / 100 * 2, bottom: h / 100 * 2),
+                                  child: Text("Club has no past Events hosted",
+                                      style: Themes.textStyle(
+                                          fontsize: w / 100 * 3,
+                                          fontColor: Themes.black)))
+                              : Container(
+                                  width: w * 0.95,
+                                  // alignment: Alignment.,
+                                  margin: EdgeInsets.only(top: h / 100 * 3),
+                                  child: Text("Past Events(Conducted)",
+                                      style: Themes.textStyle(
+                                          fontsize: w / 100 * 4,
+                                          fontColor: Themes.black,
+                                          fw: FontWeight.bold)),
+                                ),
+                          (state.club.pastEvents.isEmpty)
+                              ? Container()
+                              : Container(
+                                  width: w * 0.95,
+                                  height: h * 0.45,
+                                  margin: EdgeInsets.only(top: h / 100 * 2),
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: state.club.pastEvents.length,
+                                    itemBuilder: (context, index) {
+                                      return event(
+                                          w, h, state.club.pastEvents[index]);
+                                    },
+                                  ),
+                                )
                         ]));
                   } else {
                     context.read<ClubDetailsCubit>().loadClubDetails(id);
-                    return Container();
+                    return Center(
+                      child: Container(
+                        width: w,
+                        height: h,
+                        child: LoadingAnimationWidget.fourRotatingDots(
+                            color: Themes.red, size: w / 100 * 20),
+                      ),
+                    );
                   }
                 }))));
+  }
+
+  Widget event(double w, double h, Event e) {
+    return InkWell(
+      hoverColor: Themes.transparent,
+      focusColor: Themes.transparent,
+      onTap: () async {
+        await Navigator.push(context,
+            MaterialPageRoute(builder: (context) => EventDetails(id: e.id)));
+      },
+      child: Container(
+          width: w * 0.9,
+          height: h * 0.42,
+          margin: EdgeInsets.only(bottom: h/100*3),
+          decoration: BoxDecoration(
+              border:
+                  Border(right: BorderSide(color: Themes.lightred, width: 1.5)),
+              color: Themes.grey,
+              borderRadius: BorderRadius.circular(w / 100 * 6)),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    width: w * 0.8,
+                    margin: EdgeInsets.only(top: h / 100 * 2),
+                    child: Text(e.name,
+                        style: Themes.textStyle(
+                            fontsize: w / 100 * 4,
+                            fontColor: Themes.black,
+                            fw: FontWeight.bold))),
+                Container(
+                    // width: w * 0.8,
+                    margin: EdgeInsets.only(top: h / 100 * 1),
+                    child: GFImageOverlay(
+                        image: const AssetImage("assets/images/e2.jpg"),
+                        width: w * 0.8,
+                        height: h * 0.3,
+                        borderRadius: BorderRadius.circular(w / 100) * 6)),
+                Container(
+                    width: w * 0.8,
+                    margin:
+                        EdgeInsets.only(top: h / 100 * 1, bottom: h / 100 * 1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(e.category,
+                            style: Themes.textStyle(
+                                fontsize: w / 100 * 4,
+                                fontColor: Themes.black)),
+                        Container(
+                          width: w / 100 * 20,
+                          height: h / 100 * 4,
+                          // alignment: Alignment.center,
+                          // padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                              color: Themes.red,
+                              borderRadius: BorderRadius.circular(w / 100 * 5)),
+                          child: Text(e.rating,
+                              textAlign: TextAlign.center,
+                              style: Themes.textStyle(
+                                  fontsize: w / 100 * 5,
+                                  fontColor: Themes.white,
+                                  fw: FontWeight.w700)),
+                        )
+                      ],
+                    )),
+              ])),
+    );
   }
 }

@@ -4,9 +4,9 @@ import 'package:eventplex_frontend/Model/Event.dart';
 import 'package:eventplex_frontend/screens/EventDetails.dart';
 import 'package:eventplex_frontend/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class EventFeed extends StatefulWidget {
   const EventFeed({super.key});
@@ -44,7 +44,42 @@ class _EventFeedState extends State<EventFeed>
     double h = MediaQuery.of(context).size.height;
     ScrollController scrollController = ScrollController();
     return Scaffold(
-        drawer: Drawer(),
+        drawer: Drawer(
+          backgroundColor: Themes.white,
+          surfaceTintColor: Themes.white,
+          child: Column(
+            children: [
+              Container(
+                  margin: EdgeInsets.only(top: h / 100 * 3),
+                  child: GFImageOverlay(
+                    image: AssetImage("assets/images/e2.jpg"),
+                    width: w * 0.3,
+                    height: h * 0.2,
+                    shape: BoxShape.circle,
+                    boxFit: BoxFit.fill,
+                  )),
+              Container(
+                  margin: EdgeInsets.only(top: h / 100 * 1),
+                  child: Text(
+                    "Samarth Parekh",
+                    style: Themes.textStyle(
+                        fontsize: w / 100 * 6,
+                        fontColor: Themes.black,
+                        fw: FontWeight.bold),
+                  )),
+              Container(
+                  margin: EdgeInsets.only(top: h / 100 * 3),
+                  child: Divider(
+                    color: Themes.red,
+                    thickness: 1,
+                    indent: w / 100 * 2,
+                    endIndent: w / 100 * 2,
+                  )),
+              appbarContentCard(w, h, "EventFeed"),
+              appbarContentCard(w, h, "Dashboard")
+            ],
+          ),
+        ),
         body: CustomScrollView(
           controller: scrollController,
           slivers: [
@@ -255,15 +290,22 @@ class _EventFeedState extends State<EventFeed>
                           ...eventFeed(w, h, state.filteredEventList)
                         ]);
                       } else {
-                        return Container();
+                        return Center(
+                          child: Container(
+                            width: w,
+                            height: h,
+                            child: LoadingAnimationWidget.fourRotatingDots(
+                                color: Themes.red, size: w / 100 * 20),
+                          ),
+                        );
                       }
                     },
                   )),
               // hackathon, workshop, seminar, dj night, webinar, cultural,sports, charity, wellness, food & drink
-              Container(
-                width: w,
-                height: h * 1.1,
-              )
+              // Container(
+              //   width: w,
+              //   height: h * 1.1,
+              // )
             ]))
           ],
         ));
@@ -505,9 +547,8 @@ class _EventFeedState extends State<EventFeed>
                         flightDirection, fromHeroContext, toHeroContext) {
                       Widget hero = fromHeroContext.widget;
                       return ScaleTransition(
-                          scale: animation.drive(
-                              Tween<double>(begin: 2, end: 1)
-                                  .chain(CurveTween(curve: Curves.bounceOut))),
+                          scale: animation.drive(Tween<double>(begin: 2, end: 1)
+                              .chain(CurveTween(curve: Curves.bounceOut))),
                           child: hero);
                     },
                     tag: id,
@@ -566,5 +607,24 @@ class _EventFeedState extends State<EventFeed>
             ]),
       ),
     );
+  }
+
+  Widget appbarContentCard(double w, double h, String s) {
+    return Container(
+        margin: EdgeInsets.only(top: h / 100 * 3),
+        padding: EdgeInsets.symmetric(
+            horizontal: w / 100 * 20, vertical: h / 100 * 1.5),
+        decoration: BoxDecoration(
+            color: Themes.grey,
+            border:
+                Border(bottom: BorderSide(color: Themes.lightred, width: 1.5)),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(w / 100 * 2),
+                bottomRight: Radius.circular(w / 100 * 2))),
+        child: Text(s,
+            style: Themes.textStyle(
+              fontsize: w / 100 * 4,
+              fontColor: Themes.black,
+            )));
   }
 }
