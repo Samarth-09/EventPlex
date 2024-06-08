@@ -1,6 +1,7 @@
 import 'package:eventplex_frontend/Cubits/EventFeed/EventFeedCubit.dart';
 import 'package:eventplex_frontend/Cubits/EventFeed/EventFeedState.dart';
 import 'package:eventplex_frontend/Model/Event.dart';
+import 'package:eventplex_frontend/Routes.dart';
 import 'package:eventplex_frontend/screens/EventDetails.dart';
 import 'package:eventplex_frontend/themes.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +77,11 @@ class _EventFeedState extends State<EventFeed>
                     endIndent: w / 100 * 2,
                   )),
               appbarContentCard(w, h, "EventFeed"),
-              appbarContentCard(w, h, "Dashboard")
+              InkWell(
+                  onTap: () async {
+                    await Navigator.pushNamed(context, Routes.userProfile);
+                  },
+                  child: appbarContentCard(w, h, "Dashboard"))
             ],
           ),
         ),

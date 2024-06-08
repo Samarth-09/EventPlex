@@ -11,7 +11,7 @@ eventRounter.post("/saveEvent", (req, res) => {
 
 eventRounter.get("/byid", async (req, res) => {
   var id = req.query.id;
-  console.log(id);
+  // console.log(id);
   const result = await findEventById(id);
   if (result == 0) {
     res.json({ msg: "Not Found" });

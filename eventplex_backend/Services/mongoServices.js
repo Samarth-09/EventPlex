@@ -125,7 +125,31 @@ const findEventById = async (id) => {
   return r;
 }
 
+const findUserByEmail = async (email) => {
+  let result = [];
+  try {
+    // console.log(1);
+    result = await UserModel.find({ email: email });
+    // console.log(result[0].email);
+  } catch (error) {
+    console.log("Error " + error);
+  }
+  return result[0];
+}
+const findUserById = async(id) => {
+  let result=0;
+  try {
+    // console.log(1);
+    result = await UserModel.findById(id);
+    // console.log(result);
+  } catch (error) {
+    console.log("Error " + error);
+  }
+  return result;
+}
 export {
+  findUserById,
+  findUserByEmail,
   findEventById,
   findEventsByKeywords,
   findEventsByCategory,

@@ -1,7 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   name: String,
+  email: String,
   pastEvents: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "events",
@@ -13,11 +14,11 @@ const userSchema = new mongoose.Schema({
   keywords: [String],
   dp: String,
   following: {
-    type:[mongoose.Schema.Types.ObjectId],
-    ref:'clubs'
-  }
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "clubs",
+  },
 });
 
-const UserModel = mongoose.model('users', userSchema);
+const UserModel = mongoose.model("users", userSchema);
 
 export default UserModel;

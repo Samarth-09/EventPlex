@@ -1,7 +1,9 @@
 import 'package:eventplex_frontend/Routes.dart';
 import 'package:eventplex_frontend/screens/ClubDetails.dart';
+import 'package:eventplex_frontend/screens/EditUserProfile.dart';
 import 'package:eventplex_frontend/screens/EventDetails.dart';
 import 'package:eventplex_frontend/screens/EventFeed.dart';
+import 'package:eventplex_frontend/screens/UserProfile.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,7 +22,9 @@ class MyApp extends StatelessWidget {
       routes: {
         Routes.eventFeed: (context) => const EventFeed(),
         Routes.eventDetailFeed: (context) => EventDetails(id: ""),
-        Routes.clubDetailFeed: (context) => ClubDetails(id: "")
+        Routes.clubDetailFeed: (context) => ClubDetails(id: ""),
+        Routes.userProfile: (context) => const UserProfile(),
+        Routes.editUserProfile:(context) => EditUserProfile(id: "")
       },
     );
   }

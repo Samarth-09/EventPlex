@@ -1,4 +1,5 @@
 import {
+  findUserById,
   findClubsById,
   findClubById,
   findEventsById,
@@ -8,6 +9,7 @@ import {
   getAllUsers,
   findEventsByCategory,
   findEventsByKeywords,
+  findUserByEmail,
 } from "./mongoServices.js";
 const typeDefs = `#graphql
 type club {
@@ -26,6 +28,7 @@ type user {
     keywords: [String]
     following: [club]
     dp: String
+    email:  String
 }
 type event {
   _id:ID
@@ -52,6 +55,8 @@ type Query{
     allEventsAccToCategory(category: [String]): [event]
     allEventsAccToKeywords(keywords: [String]): [event]
     clubInfo(id: String): club
+    userInfo(email: String): user
+    getUser(id: String): user
 }
 
 `;
@@ -59,7 +64,7 @@ const resolvers = {
   Query: {
     allEvents: async () => {
       let l = await getAllEvents();
-      console.log(l);
+      // console.log(l);
       return l;
     },
     allClubs: async () => {
@@ -74,9 +79,16 @@ const resolvers = {
     allEventsAccToKeywords: async (_, args) => {
       return await findEventsByKeywords(args.keywords);
     },
-    clubInfo: async(_, args) => {
+    clubInfo: async (_, args) => {
       return await findClubById(args.id);
-    }
+    },
+    userInfo: async (_, args) => {
+      // console.log(args.email);
+      return await findUserByEmail(args.email);
+    },
+    getUser: async (_, args) => {
+      return await findUserById(args.id);
+    },
   },
   event: {
     Club: async (parent) => {
