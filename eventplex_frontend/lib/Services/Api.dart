@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:eventplex_frontend/Model/User.dart';
 
 class Api {
-  String baseUrl = "http://localhost:3001";
+  String baseUrl = "https://eventplex.onrender.com";
   // String baseUrl = "http:// 192.168.0.108:3001/event";
   Future<Event> getEventById(String id) async {
     // print(id);
