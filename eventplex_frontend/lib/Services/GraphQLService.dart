@@ -4,7 +4,9 @@ class GraphQLService {
   late GraphQLClient client;
 
   GraphQLService() {
-    HttpLink link = HttpLink('http://localhost:3001/graphql',
+    HttpLink link = HttpLink(
+      // 'https://eventplex.onrender.com/graphql',
+      'http://localhost:3001/graphql',
         defaultHeaders: {'Content-Type': 'application/json'});
 
     client = GraphQLClient(link: link, cache: GraphQLCache());

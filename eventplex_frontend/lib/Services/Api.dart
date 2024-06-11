@@ -3,8 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:eventplex_frontend/Model/User.dart';
 
 class Api {
-  String baseUrl = "https://eventplex.onrender.com";
-  // String baseUrl = "http:// 192.168.0.108:3001/event";
+  // String baseUrl = "https://eventplex.onrender.com";
+  String baseUrl = "http://localhost:3001";
   Future<Event> getEventById(String id) async {
     // print(id);
     var responce = await Dio().get('$baseUrl/event/byid', queryParameters: {"id": id});

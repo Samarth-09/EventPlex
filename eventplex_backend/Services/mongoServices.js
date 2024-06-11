@@ -86,7 +86,7 @@ const findClubsById = async (ids) => {
 const findEventsByCategory = async (categorys) => {
   let result = [];
   try {
-    result = await EventModel.find({ category: { $in:  categorys} });
+    result = await EventModel.find({ category: { $in: categorys } });
   } catch (error) {
     console.log("Error " + error);
   }
@@ -97,33 +97,33 @@ const findEventsByKeywords = async (keywords) => {
   let result = [];
   try {
     // console.log(1);
-    result = await EventModel.find({ keywords: { $in:  keywords} });
+    result = await EventModel.find({ keywords: { $in: keywords } });
     // console.log(1);
   } catch (error) {
     console.log("Error " + error);
   }
   return result;
-}
+};
 
 const findEventById = async (id) => {
   var result;
   try {
     // console.log(id);
     result = await EventModel.findById(id);
-    var x = await findClubById(result['club'].toString());
+    var x = await findClubById(result["club"].toString());
     // result['club'] = {'club': x['name']}; the value of the result was not changint=g, so ahve to create new object only
     var r = {
       ...result,
-      'Club': {
-        'name': x['name']
-      }
-    }
+      Club: {
+        name: x["name"],
+      },
+    };
     // console.log(r['Club']);
   } catch (error) {
-    console.log("Error:- "+error);
+    console.log("Error:- " + error);
   }
   return r;
-}
+};
 
 const findUserByEmail = async (email) => {
   let result = [];
@@ -135,9 +135,9 @@ const findUserByEmail = async (email) => {
     console.log("Error " + error);
   }
   return result[0];
-}
-const findUserById = async(id) => {
-  let result=0;
+};
+const findUserById = async (id) => {
+  let result = 0;
   try {
     // console.log(1);
     result = await UserModel.findById(id);
@@ -146,8 +146,51 @@ const findUserById = async(id) => {
     console.log("Error " + error);
   }
   return result;
+};
+
+const saveUser = async (data) => {
+  try {
+    const user = new UserModel(data);
+    await user.save();
+    return user;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};
+
+const editUser = async (data) => {
+  try {
+    let result = await findUserById(data._id);
+    result.dp = (data.dp == null)? result.dp: data.dp;
+    result.name = (data.name == null)? result.name: data.name;
+    result.email = (data.email == null)? result.email: data.email;
+    result.keywords = (data.keywords == null)? result.keywords: data.keywords;
+    await result.save();
+    return result;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};
+
+const followClub = async (data) => {
+  try {
+    let user = await findUserById(data.uid);
+  let club = await findClubById(data.cid);
+  user.following.add(club._id);
+  club.followers.add(user._id);
+  return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+  
 }
 export {
+  followClub,
+  editUser,
+  saveUser,
   findUserById,
   findUserByEmail,
   findEventById,

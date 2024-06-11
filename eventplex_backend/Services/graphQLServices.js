@@ -10,6 +10,8 @@ import {
   findEventsByCategory,
   findEventsByKeywords,
   findUserByEmail,
+  editUser,
+  followClub,
 } from "./mongoServices.js";
 const typeDefs = `#graphql
 type club {
@@ -49,16 +51,33 @@ type event {
   Club: club
 }
 type Query{
-    allEvents: [event]
-    allClubs: [club]
-    allUsers: [user]
-    allEventsAccToCategory(category: [String]): [event]
-    allEventsAccToKeywords(keywords: [String]): [event]
-    clubInfo(id: String): club
-    userInfo(email: String): user
-    getUser(id: String): user
+  allEvents: [event]
+  allClubs: [club]
+  allUsers: [user]
+  allEventsAccToCategory(category: [String]): [event]
+  allEventsAccToKeywords(keywords: [String]): [event]
+  clubInfo(id: String): club
+  userInfo(email: String): user
+  getUser(id: String): user
 }
 
+type Mutation{
+  editUser(data: profileInput): user
+  followClub(data: followInput): Boolean
+}
+
+input profileInput{
+  _id: ID,
+  name: String, 
+  email: String,
+  dp: String,
+  keywords: [String]
+}
+
+input followInput{
+  uid: ID,
+  cid: ID
+}
 `;
 const resolvers = {
   Query: {
@@ -116,6 +135,14 @@ const resolvers = {
     following: async (parent) => {
       return await findClubsById(parent.following);
     },
+  },
+  Mutation: {
+    editUser: async (_, args) => {
+      return await editUser(args.data);
+    },
+    followClub: async (_, args) => {
+      return await followClub(args.data);
+    }
   },
 };
 export { typeDefs, resolvers };

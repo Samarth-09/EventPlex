@@ -201,7 +201,7 @@ class _UserProfileState extends State<UserProfile> {
                             ? Container()
                             : Container(
                                 width: w * 0.95,
-                                height: h * 0.45,
+                                height: h * 0.42+h/100*3.5,
                                 margin: EdgeInsets.only(top: h / 100 * 2),
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -238,7 +238,7 @@ class _UserProfileState extends State<UserProfile> {
                             ? Container()
                             : Container(
                                 width: w * 0.95,
-                                height: h * 0.45,
+                                height: h * 0.42+h/100*3.5,
                                 margin: EdgeInsets.only(top: h / 100 * 2),
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -326,7 +326,7 @@ class _UserProfileState extends State<UserProfile> {
             MaterialPageRoute(builder: (context) => EventDetails(id: e.id)));
       },
       child: Container(
-          width: w * 0.9,
+          width: w * 0.95,
           height: h * 0.42,
           margin: EdgeInsets.only(bottom: h / 100 * 3),
           decoration: BoxDecoration(
