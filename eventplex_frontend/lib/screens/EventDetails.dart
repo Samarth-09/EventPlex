@@ -1,5 +1,8 @@
 import 'package:eventplex_frontend/Cubits/EventDetails/EventDetailsCubit.dart';
 import 'package:eventplex_frontend/Cubits/EventDetails/EventDetailsState.dart';
+import 'package:eventplex_frontend/Cubits/EventDetails/EventLikeDislikeCubit.dart';
+import 'package:eventplex_frontend/Cubits/EventDetails/EventLikeDislikeState.dart';
+import 'package:eventplex_frontend/Model/Event.dart';
 import 'package:eventplex_frontend/screens/ClubDetails.dart';
 import 'package:eventplex_frontend/themes.dart';
 import 'package:flutter/material.dart';
@@ -42,36 +45,41 @@ class _EventDetailsState extends State<EventDetails> {
             create: (context) => EventDetailsCubit(),
             child: BlocBuilder<EventDetailsCubit, EventDetailsState>(
                 builder: (context, state) {
+              // bool b = false;
+              // if(context.read<EventDetailsCubit>().findEvent(eventId)){
+              //   b= true;
+              // }
               if (state is EventDetailsStateLoaded) {
                 return SingleChildScrollView(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                       Hero(
-                        tag: state.event.id,
-                        child: ImageSlideshow(
-                        width: w * 0.95,
-                        height: h * 0.3,
-                        initialPage: 0,
-                        indicatorColor: Themes.lightred,
-                        indicatorBackgroundColor: Themes.red,
-                        onPageChanged: (value) {
-                          // print('Page changed: $value');
-                          // idx = value;
-                        },
-                        autoPlayInterval: 5000,
-                        isLoop: true,
-                        children: [
-                          ...List.generate(
-                            state.event.images.length,
-                            (index) => GFImageOverlay(
-                                image: AssetImage(state.event.images[index]),
-                                width: w * 0.95,
-                                height: h * 0.3,
-                                borderRadius:
-                                    BorderRadius.circular(w / 100) * 6),
-                          )
-                        ])),
+                          tag: state.event.id,
+                          child: ImageSlideshow(
+                              width: w * 0.95,
+                              height: h * 0.3,
+                              initialPage: 0,
+                              indicatorColor: Themes.lightred,
+                              indicatorBackgroundColor: Themes.red,
+                              onPageChanged: (value) {
+                                // print('Page changed: $value');
+                                // idx = value;
+                              },
+                              autoPlayInterval: 5000,
+                              isLoop: true,
+                              children: [
+                                ...List.generate(
+                                  state.event.images.length,
+                                  (index) => GFImageOverlay(
+                                      image:
+                                          AssetImage(state.event.images[index]),
+                                      width: w * 0.95,
+                                      height: h * 0.3,
+                                      borderRadius:
+                                          BorderRadius.circular(w / 100) * 6),
+                                )
+                              ])),
                       Container(
                         margin: EdgeInsets.only(top: h / 100 * 2),
                         child: Text(state.event.name,
@@ -99,31 +107,44 @@ class _EventDetailsState extends State<EventDetails> {
                       Container(
                           margin: EdgeInsets.only(top: h / 100 * 2),
                           width: w * 0.95,
-                          child: Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.star_outlined,
-                                    color: Themes.red, size: w / 100 * 8),
-                                Container(
-                                    margin: EdgeInsets.only(left: w / 100 * 2),
-                                    child: Text(state.event.rating.toString(),
-                                        style: Themes.textStyle(
-                                            fontsize: w / 100 * 4,
-                                            fontColor: Themes.black))),
-                                Container(
-                                    margin: EdgeInsets.only(left: w / 100 * 6),
-                                    child: Text("Likes:- ${state.event.likes}",
-                                        style: Themes.textStyle(
-                                            fontsize: w / 100 * 4,
-                                            fontColor: Themes.black))),
-                                Container(
-                                    margin: EdgeInsets.only(left: w / 100 * 6),
-                                    child: Text(
-                                        "DisLikes:- ${state.event.dislikes}",
-                                        style: Themes.textStyle(
-                                            fontsize: w / 100 * 4,
-                                            fontColor: Themes.black)))
-                              ])),
+                          child: BlocProvider(
+                            create: (context) => EventLikeDislikeCubit(),
+                            child: BlocBuilder<EventLikeDislikeCubit,
+                                    EventLikeDislikeState>(
+                                builder: (context, state1) {
+                              if (state1 is EventLikedState) {
+                                return like_Dislike_Rating_Widget(
+                                    w,
+                                    h,
+                                    state.event,
+                                    Themes.red,
+                                    Themes.lightred,
+                                    context);
+                              } else if (state1 is EventDislikedState) {
+                                return like_Dislike_Rating_Widget(
+                                    w,
+                                    h,
+                                    state.event,
+                                    Themes.lightred,
+                                    Themes.red,
+                                    context);
+                              } else {
+                                // context
+                                //     .read<EventLikeDislikeCubit>()
+                                //     .findEventForLike(eventId);
+                                // context
+                                //     .read<EventLikeDislikeCubit>()
+                                //     .findEventForDisLike(eventId);
+                                return like_Dislike_Rating_Widget(
+                                    w,
+                                    h,
+                                    state.event,
+                                    Themes.lightred,
+                                    Themes.lightred,
+                                    context);
+                              }
+                            }),
+                          )),
                       Container(
                         margin: EdgeInsets.only(top: h / 100 * 3),
                         child: Text(
@@ -232,16 +253,62 @@ class _EventDetailsState extends State<EventDetails> {
               } else {
                 context.read<EventDetailsCubit>().loadEventDetails(eventId);
                 return Center(
-                      child: Container(
-                        width: w,
-                        height: h,
-                        child: LoadingAnimationWidget.fourRotatingDots(
-                            color: Themes.red, size: w / 100 * 20),
-                      ),
-                    );
+                  child: Container(
+                    width: w,
+                    height: h,
+                    child: LoadingAnimationWidget.fourRotatingDots(
+                        color: Themes.red, size: w / 100 * 20),
+                  ),
+                );
               }
             }),
           ),
         ));
+  }
+
+  Widget like_Dislike_Rating_Widget(double w, double h, Event event,
+      Color likeColor, Color dislikeColor, BuildContext context) {
+    return Row(
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(Icons.star_outlined, color: Themes.red, size: w / 100 * 8),
+          Container(
+              margin: EdgeInsets.only(left: w / 100 * 2),
+              child: Text(event.rating.toString(),
+                  style: Themes.textStyle(
+                      fontsize: w / 100 * 4, fontColor: Themes.black))),
+          Container(
+              margin: EdgeInsets.only(left: w / 100 * 6),
+              child: InkWell(
+                onTap: () {
+                  context
+                      .read<EventLikeDislikeCubit>()
+                      .loadEventsLiked("665a2845e75985c1d041aae6");
+                },
+                child: Icon(Icons.thumb_up_alt,
+                    color: likeColor, size: w / 100 * 6),
+              )),
+          Container(
+              margin: EdgeInsets.only(left: w / 100 * 1),
+              child: Text("Likes: ${event.likes}",
+                  style: Themes.textStyle(
+                      fontsize: w / 100 * 4, fontColor: Themes.black))),
+          Container(
+              margin: EdgeInsets.only(left: w / 100 * 6),
+              child: InkWell(
+                onTap: () {
+                  context
+                      .read<EventLikeDislikeCubit>()
+                      .loadEventsDisliked("665a2845e75985c1d041aae6");
+                },
+                child: Icon(Icons.thumb_down_alt,
+                    color: dislikeColor, size: w / 100 * 6),
+              )),
+          Container(
+              margin: EdgeInsets.only(left: w / 100 * 1),
+              child: Text("DisLikes: ${event.dislikes}",
+                  style: Themes.textStyle(
+                      fontsize: w / 100 * 4, fontColor: Themes.black)))
+        ]);
   }
 }

@@ -4,7 +4,7 @@ import 'package:eventplex_frontend/Services/Api.dart';
 import 'package:eventplex_frontend/Services/GraphQLService.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class EditUserProfileCubit extends Cubit<EditUserProfileState>{
+class EditUserProfileCubit extends Cubit<EditUserProfileState> {
   EditUserProfileCubit() : super(EditUserProfileState());
   GraphQLService gqs = GraphQLService();
   Api api = Api();

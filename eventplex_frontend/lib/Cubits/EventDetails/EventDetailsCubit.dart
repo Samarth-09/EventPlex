@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EventDetailsCubit extends Cubit<EventDetailsState> {
   GraphQLService gqs = GraphQLService();
   Api api = Api();
-  EventDetailsCubit():super(EventDetailsState()){
+  EventDetailsCubit() : super(EventDetailsState()) {
     // loadEventDetails(id);
   }
   void loadEventDetails(id) async {
