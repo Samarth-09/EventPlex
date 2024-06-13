@@ -7,6 +7,7 @@ import 'package:eventplex_frontend/screens/EventDetails.dart';
 import 'package:eventplex_frontend/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -201,7 +202,7 @@ class _UserProfileState extends State<UserProfile> {
                             ? Container()
                             : Container(
                                 width: w * 0.95,
-                                height: h * 0.42+h/100*3.5,
+                                height: h * 0.42 + h / 100 * 3.5,
                                 margin: EdgeInsets.only(top: h / 100 * 2),
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -238,7 +239,7 @@ class _UserProfileState extends State<UserProfile> {
                             ? Container()
                             : Container(
                                 width: w * 0.95,
-                                height: h * 0.42+h/100*3.5,
+                                height: h * 0.42 + h / 100 * 3.5,
                                 margin: EdgeInsets.only(top: h / 100 * 2),
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -349,11 +350,29 @@ class _UserProfileState extends State<UserProfile> {
                 Container(
                     // width: w * 0.8,
                     margin: EdgeInsets.only(top: h / 100 * 1),
-                    child: GFImageOverlay(
-                        image: const AssetImage("assets/images/e2.jpg"),
+                    child: ImageSlideshow(
                         width: w * 0.8,
                         height: h * 0.3,
-                        borderRadius: BorderRadius.circular(w / 100) * 6)),
+                        initialPage: 0,
+                        indicatorColor: Themes.lightred,
+                        indicatorBackgroundColor: Themes.red,
+                        onPageChanged: (value) {
+                          // print('Page changed: $value');
+                          // idx = value;
+                        },
+                        autoPlayInterval: 5000,
+                        isLoop: true,
+                        children: [
+                          ...List.generate(
+                            e.images.length,
+                            (index) => GFImageOverlay(
+                                image: AssetImage(e.images[index]),
+                                width: w * 0.8,
+                                height: h * 0.3,
+                                borderRadius:
+                                    BorderRadius.circular(w / 100) * 6),
+                          )
+                        ])),
                 Container(
                     width: w * 0.8,
                     margin:

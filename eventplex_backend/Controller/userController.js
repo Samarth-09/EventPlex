@@ -14,7 +14,7 @@ userRouter.get("/byid", async (req, res) => {
 userRouter.post("/new", async (req, res) => {
   const result = await saveUser(req.body);
   if (result == 0) {
-    res.json({ msg: error });
+    res.json({ msg: "Error in saving" });
   } else {
     // console.log(result);
     res.json(result);

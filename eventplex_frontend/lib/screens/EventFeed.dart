@@ -6,6 +6,7 @@ import 'package:eventplex_frontend/screens/EventDetails.dart';
 import 'package:eventplex_frontend/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -263,7 +264,7 @@ class _EventFeedState extends State<EventFeed>
                         child: EventCard(
                             w,
                             h,
-                            state.featuredEvent.images[0],
+                            state.featuredEvent.images,
                             state.featuredEvent.name,
                             state.featuredEvent.club,
                             state.featuredEvent.category,
@@ -418,7 +419,7 @@ class _EventFeedState extends State<EventFeed>
               w,
               h,
               // state.eventList[index].images[0]??
-              "assets/images/e1.jpg",
+              ["assets/images/e1.jpg", "assets/images/e1.jpg"],
               eventList[index].name,
               eventList[index].club,
               eventList[index].category,
@@ -525,8 +526,9 @@ class _EventFeedState extends State<EventFeed>
     ];
   }
 
-  Widget EventCard(double w, double h, String image, String eventName,
+  Widget EventCard(double w, double h, List<String> images, String eventName,
       String clubName, String category, String rating, String id) {
+    // int idx = 0;
     return InkWell(
       // focusColor: Themes.transparent,
       hoverColor: Themes.transparent,
@@ -546,8 +548,8 @@ class _EventFeedState extends State<EventFeed>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                  margin: EdgeInsets.only(top: h / 100 * 2),
-                  child: Hero(
+                margin: EdgeInsets.only(top: h / 100 * 2),
+                child: Hero(
                     flightShuttleBuilder: (flightContext, animation,
                         flightDirection, fromHeroContext, toHeroContext) {
                       Widget hero = fromHeroContext.widget;
@@ -557,12 +559,36 @@ class _EventFeedState extends State<EventFeed>
                           child: hero);
                     },
                     tag: id,
-                    child: GFImageOverlay(
-                        image: AssetImage(image),
+                    child: ImageSlideshow(
                         width: w * 0.8,
                         height: h * 0.2,
-                        borderRadius: BorderRadius.circular(w / 100) * 6),
-                  )),
+                        initialPage: 0,
+                        indicatorColor: Themes.lightred,
+                        indicatorBackgroundColor: Themes.red,
+                        onPageChanged: (value) {
+                          // print('Page changed: $value');
+                          // idx = value;
+                        },
+                        autoPlayInterval: 5000,
+                        isLoop: true,
+                        children: [
+                          ...List.generate(
+                            images.length,
+                            (index) => GFImageOverlay(
+                                image: AssetImage(images[index]),
+                                width: w * 0.8,
+                                height: h * 0.2,
+                                borderRadius:
+                                    BorderRadius.circular(w / 100) * 6),
+                          )
+                        ])),
+              )
+              // GFImageOverlay(
+              //     image: AssetImage(image),
+              //     width: w * 0.8,
+              //     height: h * 0.2,
+              //     borderRadius: BorderRadius.circular(w / 100) * 6),
+              ,
               Container(
                   width: w * 0.8,
                   margin: EdgeInsets.only(bottom: h / 100 * 2),
@@ -633,3 +659,18 @@ class _EventFeedState extends State<EventFeed>
             )));
   }
 }
+
+// ImageSlideshow(
+//                     width: double.infinity,
+//                     height: h * 0.7,
+//                     initialPage: 0,
+//                     indicatorColor: globals.brownish,
+//                     indicatorBackgroundColor: globals.greyish,
+//                     onPageChanged: (value) {
+//                       // print('Page changed: $value');
+//                       idx = value;
+//                     },
+//                     autoPlayInterval: 5000,
+//                     isLoop: true,
+//                     children: imageWidgets,
+//                   )

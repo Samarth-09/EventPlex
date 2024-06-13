@@ -12,6 +12,9 @@ import {
   findUserByEmail,
   editUser,
   followClub,
+  unFollowClub,
+  increaseLike,
+  decreaseLike
 } from "./mongoServices.js";
 const typeDefs = `#graphql
 type club {
@@ -63,7 +66,10 @@ type Query{
 
 type Mutation{
   editUser(data: profileInput): user
-  followClub(data: followInput): Boolean
+  followClub(data: followInput): user
+  unFollowClub(data: followInput): user
+  incLike(data: likeDislikeInput): club
+  decLike(data: likeDislikeInput): club
 }
 
 input profileInput{
@@ -77,6 +83,10 @@ input profileInput{
 input followInput{
   uid: ID,
   cid: ID
+}
+
+input likeDislikeInput{
+  eid: ID
 }
 `;
 const resolvers = {
@@ -141,7 +151,17 @@ const resolvers = {
       return await editUser(args.data);
     },
     followClub: async (_, args) => {
+      // console.log(args);
       return await followClub(args.data);
+    },
+    unFollowClub: async (_, args) => {
+      return await unFollowClub(args.data);
+    },
+    incLike: async (_, args) => {
+      return await increaseLike(args.data);
+    },
+    decLike: async (_, args) => {
+      return await decreaseLike(args.data);
     }
   },
 };

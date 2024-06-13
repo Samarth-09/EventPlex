@@ -3,10 +3,16 @@ import { saveEvent, findEventById } from "../Services/mongoServices.js";
 
 const eventRounter = e.Router();
 
-eventRounter.post("/saveEvent", (req, res) => {
+eventRounter.post("/new", async (req, res) => {
     // console.log(req.body.images);
-  const result = saveEvent(req.body);
-  res.json({ msg: result });
+  const result = await saveEvent(req.body);
+  // console.log(result);
+  if(result == 0){
+    res.json({msg: "Error in saving"});
+  }
+  else{
+    res.json(result);
+  }
 });
 
 eventRounter.get("/byid", async (req, res) => {

@@ -17,12 +17,14 @@ class ClubDetailsCubit extends Cubit<ClubDetailsState> {
             category
             rating
             _id
+            images
         }
         currentEvents{
             name
             category
             rating
             _id
+            images
         }
         followers{
             name

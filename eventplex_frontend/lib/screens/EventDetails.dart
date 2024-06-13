@@ -4,6 +4,7 @@ import 'package:eventplex_frontend/screens/ClubDetails.dart';
 import 'package:eventplex_frontend/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -48,18 +49,29 @@ class _EventDetailsState extends State<EventDetails> {
                         children: [
                       Hero(
                         tag: state.event.id,
-                        child: GFImageOverlay(
-                            image:
-                                //  AssetImage((state.event.images.isEmpty)
-                                // ?
-                                AssetImage("assets/images/e1.jpg"),
-                            // : state.event.images[0]),
-                            margin: EdgeInsets.only(top: h / 100 * 2),
-                            height: h * 0.3,
-                            width: w * 0.95,
-                            boxFit: BoxFit.fill,
-                            borderRadius: BorderRadius.circular(w / 100 * 5)),
-                      ),
+                        child: ImageSlideshow(
+                        width: w * 0.95,
+                        height: h * 0.3,
+                        initialPage: 0,
+                        indicatorColor: Themes.lightred,
+                        indicatorBackgroundColor: Themes.red,
+                        onPageChanged: (value) {
+                          // print('Page changed: $value');
+                          // idx = value;
+                        },
+                        autoPlayInterval: 5000,
+                        isLoop: true,
+                        children: [
+                          ...List.generate(
+                            state.event.images.length,
+                            (index) => GFImageOverlay(
+                                image: AssetImage(state.event.images[index]),
+                                width: w * 0.95,
+                                height: h * 0.3,
+                                borderRadius:
+                                    BorderRadius.circular(w / 100) * 6),
+                          )
+                        ])),
                       Container(
                         margin: EdgeInsets.only(top: h / 100 * 2),
                         child: Text(state.event.name,

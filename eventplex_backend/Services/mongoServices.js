@@ -34,7 +34,8 @@ const getAllUsers = async () => {
 const saveEvent = async (data) => {
   try {
     let d = new EventModel(data);
-    return d.save();
+    await d.save();
+    return d;
   } catch (error) {
     console.log(error);
   }
@@ -162,10 +163,10 @@ const saveUser = async (data) => {
 const editUser = async (data) => {
   try {
     let result = await findUserById(data._id);
-    result.dp = (data.dp == null)? result.dp: data.dp;
-    result.name = (data.name == null)? result.name: data.name;
-    result.email = (data.email == null)? result.email: data.email;
-    result.keywords = (data.keywords == null)? result.keywords: data.keywords;
+    result.dp = data.dp == null ? result.dp : data.dp;
+    result.name = data.name == null ? result.name : data.name;
+    result.email = data.email == null ? result.email : data.email;
+    result.keywords = data.keywords == null ? result.keywords : data.keywords;
     await result.save();
     return result;
   } catch (error) {
@@ -177,17 +178,68 @@ const editUser = async (data) => {
 const followClub = async (data) => {
   try {
     let user = await findUserById(data.uid);
-  let club = await findClubById(data.cid);
-  user.following.add(club._id);
-  club.followers.add(user._id);
-  return true;
+    let club = await findClubById(data.cid);
+    user.following.push(club._id);
+    club.followers.push(user._id);
+    await user.save();
+    await club.save();
+    return user;
   } catch (error) {
     console.log(error);
-    return false;
+    return 0;
   }
-  
-}
+};
+const unFollowClub = async (data) => {
+  try {
+    let user = await findUserById(data.uid);
+    let club = await findClubById(data.cid);
+    user.following.remove(club._id);
+    club.followers.remove(user._id);
+    await user.save();
+    await club.save();
+    return user;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};
+const increaseLike = async (data) => {
+  try {
+    let event = await EventModel.findById(data.eid);
+    event.likes += 1;
+    await event.save();
+    return event;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};
+const decreaseLike = async (data) => {
+  try {
+    let event = await EventModel.findById(data.eid);
+    event.dislikes -= 1;
+    await event.save();
+    return event;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};
+const saveClub = async (data) => {
+  try {
+    let club = new ClubModel(data);
+    await club.save();
+    return club;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};
 export {
+  saveClub,
+  decreaseLike,
+  increaseLike,
+  unFollowClub,
   followClub,
   editUser,
   saveUser,
