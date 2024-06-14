@@ -75,8 +75,13 @@ class _ClubDetailsState extends State<ClubDetails> {
                                 InkWell(
                                   onTap: () {
                                     //add the the logged in user to the following list of this club if not there else remove theme
+                                    context
+                                        .read<ClubDetailsCubit>()
+                                        .changeFollowing(
+                                            state.club, state.following);
                                   },
-                                  child: Text("Follow",
+                                  child: Text(
+                                      (state.following) ? "UnFollow" : "Follow",
                                       style: Themes.textStyle(
                                         fontsize: w / 100 * 4,
                                         fontColor: Themes.red,

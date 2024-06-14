@@ -108,7 +108,7 @@ class _EventDetailsState extends State<EventDetails> {
                           margin: EdgeInsets.only(top: h / 100 * 2),
                           width: w * 0.95,
                           child: BlocProvider(
-                            create: (context) => EventLikeDislikeCubit(),
+                            create: (context) => EventLikeDislikeCubit(eventId),
                             child: BlocBuilder<EventLikeDislikeCubit,
                                     EventLikeDislikeState>(
                                 builder: (context, state1) {
@@ -281,9 +281,15 @@ class _EventDetailsState extends State<EventDetails> {
               margin: EdgeInsets.only(left: w / 100 * 6),
               child: InkWell(
                 onTap: () {
-                  context
-                      .read<EventLikeDislikeCubit>()
-                      .loadEventsLiked("665a2845e75985c1d041aae6");
+                  //if already liked than cant like again
+                  if (likeColor == Themes.red) {
+                    //do nothing
+                  } else {
+                    context
+                        .read<EventLikeDislikeCubit>()
+                        .loadEventsLiked(eventId);
+                    context.read<EventDetailsCubit>().loadEventDetails(eventId);
+                  }
                 },
                 child: Icon(Icons.thumb_up_alt,
                     color: likeColor, size: w / 100 * 6),
@@ -297,9 +303,14 @@ class _EventDetailsState extends State<EventDetails> {
               margin: EdgeInsets.only(left: w / 100 * 6),
               child: InkWell(
                 onTap: () {
-                  context
-                      .read<EventLikeDislikeCubit>()
-                      .loadEventsDisliked("665a2845e75985c1d041aae6");
+                  if (dislikeColor == Themes.red) {
+                    //do nothing
+                  } else {
+                    context
+                        .read<EventLikeDislikeCubit>()
+                        .loadEventsDisliked(eventId);
+                    context.read<EventDetailsCubit>().loadEventDetails(eventId);
+                  }
                 },
                 child: Icon(Icons.thumb_down_alt,
                     color: dislikeColor, size: w / 100 * 6),

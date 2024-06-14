@@ -28,12 +28,52 @@ class ClubDetailsCubit extends Cubit<ClubDetailsState> {
         }
         followers{
             name
+            _id
         }
       }
     }''';
 
     QueryResult result = await gqs.performQuery(query, {"id": id});
     Club c = Club.fromJson(result.data!['clubInfo']);
-    emit(ClubDetailsStateLoaded(c));
+    bool b = false;
+    for (var e in c.followers) {
+      // print(e.id);
+      if (e.id == "665a2845e75985c1d041aae6") {
+        b = true;
+        break;
+      }
+    }
+    if (b) {
+      emit(ClubDetailsStateLoaded(c, true));
+    } else {
+      emit(ClubDetailsStateLoaded(c, false));
+    }
+  }
+
+  void changeFollowing(Club c, bool p) {
+    if (p == true) {
+      String query = '''mutation(\$data: followInput){
+    unFollowClub(data: \$data){
+    name
+    }
+    }
+''';
+      gqs.performMutation(query, {
+        "data": {"uid": "665a2845e75985c1d041aae6", "cid": c.id}
+      });
+      emit(ClubDetailsStateLoaded(c, false));
+    } else {
+      String query = '''mutation(\$data: followInput){
+    followClub(data: \$data){
+    name
+    }
+    }
+''';
+      gqs.performMutation(query, {
+        "data": {"uid": "665a2845e75985c1d041aae6", "cid": c.id}
+      });
+
+      emit(ClubDetailsStateLoaded(c, true));
+    }
   }
 }

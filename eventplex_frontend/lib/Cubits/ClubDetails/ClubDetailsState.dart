@@ -4,5 +4,6 @@ class ClubDetailsState {}
 
 class ClubDetailsStateLoaded extends ClubDetailsState {
   Club club;
-  ClubDetailsStateLoaded(this.club);
+  bool following;
+  ClubDetailsStateLoaded(this.club, this.following);
 }

@@ -181,6 +181,7 @@ const followClub = async (data) => {
     let club = await findClubById(data.cid);
     user.following.push(club._id);
     club.followers.push(user._id);
+    // console.log(user.followers);
     await user.save();
     await club.save();
     return user;
@@ -203,10 +204,11 @@ const unFollowClub = async (data) => {
     return 0;
   }
 };
-const increaseLike = async (data) => {
+const changeLike = async (data) => {
   try {
     let event = await EventModel.findById(data.eid);
-    event.likes += 1;
+    console.log(event);
+    event.likes += ((data.type == "+")? 1: -1);
     await event.save();
     return event;
   } catch (error) {
@@ -214,10 +216,10 @@ const increaseLike = async (data) => {
     return 0;
   }
 };
-const decreaseLike = async (data) => {
+const changeDisLike = async (data) => {
   try {
     let event = await EventModel.findById(data.eid);
-    event.dislikes -= 1;
+    event.dislikes += ((data.type == "+")? 1: -1);
     await event.save();
     return event;
   } catch (error) {
@@ -237,8 +239,8 @@ const saveClub = async (data) => {
 };
 export {
   saveClub,
-  decreaseLike,
-  increaseLike,
+  changeDisLike,
+  changeLike,
   unFollowClub,
   followClub,
   editUser,

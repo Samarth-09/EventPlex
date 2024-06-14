@@ -13,8 +13,8 @@ import {
   editUser,
   followClub,
   unFollowClub,
-  increaseLike,
-  decreaseLike
+  changeLike,
+  changeDisLike,
 } from "./mongoServices.js";
 const typeDefs = `#graphql
 type club {
@@ -68,25 +68,26 @@ type Mutation{
   editUser(data: profileInput): user
   followClub(data: followInput): user
   unFollowClub(data: followInput): user
-  incLike(data: likeDislikeInput): club
-  decLike(data: likeDislikeInput): club
+  changeLike(data: likeDislikeInput): club
+  changeDisLike(data: likeDislikeInput): club
 }
 
 input profileInput{
-  _id: ID,
-  name: String, 
-  email: String,
-  dp: String,
+  _id: ID
+  name: String 
+  email: String
+  dp: String
   keywords: [String]
 }
 
 input followInput{
-  uid: ID,
+  uid: ID
   cid: ID
 }
 
 input likeDislikeInput{
   eid: ID
+  type: String
 }
 `;
 const resolvers = {
@@ -155,14 +156,15 @@ const resolvers = {
       return await followClub(args.data);
     },
     unFollowClub: async (_, args) => {
+      // console.log(args);
       return await unFollowClub(args.data);
     },
-    incLike: async (_, args) => {
-      return await increaseLike(args.data);
+    changeLike: async (_, args) => {
+      return await changeLike(args.data);
     },
-    decLike: async (_, args) => {
-      return await decreaseLike(args.data);
-    }
+    changeDisLike: async (_, args) => {
+      return await changeDisLike(args.data);
+    },
   },
 };
 export { typeDefs, resolvers };
