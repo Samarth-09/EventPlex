@@ -76,7 +76,6 @@ input profileInput{
   _id: ID
   name: String 
   email: String
-  dp: String
   keywords: [String]
 }
 

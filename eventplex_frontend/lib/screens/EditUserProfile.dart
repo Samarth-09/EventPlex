@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:eventplex_frontend/Cubits/EditUserProfile/EditUserProfileState.dart';
 import 'package:eventplex_frontend/themes.dart';
@@ -8,6 +10,7 @@ import 'package:eventplex_frontend/Cubits/EditUserProfile/EditUserProfileCubit.d
 import 'package:getwidget/components/image/gf_image_overlay.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+// import 'package:path_provider/path_provider.dart';
 
 // ignore: must_be_immutable
 class EditUserProfile extends StatefulWidget {
@@ -27,14 +30,24 @@ class _EditUserProfileState extends State<EditUserProfile> {
   String s = "";
   File? img;
   Future<String> takephoto() async {
+    
     final ImagePicker picker = ImagePicker();
 // Pick an image.
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     img = File(image!.path);
     var x = await image.readAsBytes();
-    String s = String.fromCharCodes(x);
-    return s;
+    // Base64Encoder b = base64Encode(bytes)
+    String base64 = base64Encode(x);
+    // String s = String.fromCharCodes(x);
+    // print(s);
+    // await toImage(s);
+    setState(() {
+      // print(base64);
+    });
+    return base64;
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +72,10 @@ class _EditUserProfileState extends State<EditUserProfile> {
             child: BlocBuilder<EditUserProfileCubit, EditUserProfileState>(
                 builder: (context, state) {
               if (state is EditUserProfileLoadedState) {
-                String s = "";
-                state.user.keywords.forEach((e) => s += ("$e,"));
+                // print(1);
+                // print(img==null);
+                String keywordsLabel = "";
+                state.user.keywords.forEach((e) => keywordsLabel += ("$e,"));
                 return Column(children: [
                   // Container(
                   //     width: w * 0.95,
@@ -75,9 +90,11 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       margin: EdgeInsets.only(top: h / 100 * 2),
                       child: Stack(children: [
                         GFImageOverlay(
-                            image: (img == null)
-                                ? AssetImage("assets/images/e1.jpg")
-                                : FileImage(img!) as ImageProvider,
+                            image:
+                                (img == null)
+                                ?FileImage(state.img) as ImageProvider
+                                // FileImage(img!) as ImageProvider,
+                            : FileImage(img!) as ImageProvider,
                             width: w * 0.4,
                             height: h * 0.2,
                             boxFit: BoxFit.fill,
@@ -94,6 +111,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                               child: InkWell(
                                 onTap: () async {
                                   s = await takephoto();
+                                  
                                 },
                                 child: Icon(Icons.upload_rounded,
                                     size: w / 100 * 8, color: Themes.white),
@@ -102,7 +120,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       ])),
                   textFeild(w, h, state.user.name, name),
                   textFeild(w, h, state.user.email, email),
-                  textFeild(w, h, s, keywords),
+                  textFeild(w, h, keywordsLabel, keywords),
                   Container(
                       margin: EdgeInsets.only(top: h / 100 * 2),
                       child: Text(
@@ -112,8 +130,14 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       )),
                   InkWell(
                     onTap: () {
+                      // s="hello";
+                      // print(s);
                       context.read<EditUserProfileCubit>().updateData(
-                          id, (s == "")? null:s, (name.text == "")? null: name.text, (email.text == "")? null: email.text, (keywords.text == "")? null: keywords.text);
+                          id,
+                          img,
+                          (name.text == "") ? null : name.text,
+                          (email.text == "") ? null : email.text,
+                          (keywords.text == "") ? null : keywords.text);
                     },
                     child: Container(
                         margin: EdgeInsets.only(top: h / 100 * 3),

@@ -383,7 +383,7 @@ class _EventFeedState extends State<EventFeed>
                     return Text(
                       s,
                       style: Themes.textStyle(
-                          fontsize: (w / 100) * 4,
+                          fontsize: (w / 100) * 3.5,
                           fontColor: Themes.red,
                           fw: FontWeight.bold),
                     );

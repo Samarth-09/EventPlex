@@ -3,6 +3,7 @@ import 'package:eventplex_frontend/screens/ClubDetails.dart';
 import 'package:eventplex_frontend/screens/EditUserProfile.dart';
 import 'package:eventplex_frontend/screens/EventDetails.dart';
 import 'package:eventplex_frontend/screens/EventFeed.dart';
+import 'package:eventplex_frontend/screens/Image.dart';
 import 'package:eventplex_frontend/screens/UserProfile.dart';
 import 'package:flutter/material.dart';
 

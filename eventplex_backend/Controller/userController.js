@@ -1,7 +1,18 @@
 import e from "express";
+import multer from "multer";
 import { findUserById, saveUser } from "../Services/mongoServices.js";
-const userRouter = e.Router();
 
+const userRouter = e.Router();
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb){
+      cb(null, 'uploads');
+    },
+    filename:function(req, file, cb){
+      cb(null, file.filename+"-"+Date.now()+".jpg");
+    }
+  })
+}).single('userFile');
 userRouter.get("/byid", async (req, res) => {
   const result = await findUserById(req.query.id);
   if (result == 0) {
@@ -21,4 +32,7 @@ userRouter.post("/new", async (req, res) => {
   }
 });
 
+userRouter.post("/imageUpload",upload,async (req, res) => {
+  res.json({msg:"done"});
+});
 export default userRouter;

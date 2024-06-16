@@ -1,3 +1,4 @@
+
 import 'package:graphql/client.dart';
 
 class GraphQLService {
@@ -5,8 +6,8 @@ class GraphQLService {
 
   GraphQLService() {
     HttpLink link = HttpLink(
-      // 'https://eventplex.onrender.com/graphql',
-      'http://localhost:3001/graphql',
+      'https://eventplex.onrender.com/graphql',
+      // 'http://localhost:3001/graphql',
         defaultHeaders: {'Content-Type': 'application/json'});
 
     client = GraphQLClient(link: link, cache: GraphQLCache());
