@@ -287,12 +287,12 @@ class _EventDetailsState extends State<EventDetails> {
           Container(
               margin: EdgeInsets.only(left: w / 100 * 6),
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   //if already liked than cant like again
                   if (likeColor == Themes.red) {
                     //do nothing
                   } else {
-                    context
+                    await context
                         .read<EventLikeDislikeCubit>()
                         .loadEventsLiked(eventId);
                     context.read<EventDetailsCubit>().loadEventDetails(eventId);
@@ -309,11 +309,11 @@ class _EventDetailsState extends State<EventDetails> {
           Container(
               margin: EdgeInsets.only(left: w / 100 * 6),
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   if (dislikeColor == Themes.red) {
                     //do nothing
                   } else {
-                    context
+                    await context
                         .read<EventLikeDislikeCubit>()
                         .loadEventsDisliked(eventId);
                      context.read<EventDetailsCubit>().loadEventDetails(eventId);

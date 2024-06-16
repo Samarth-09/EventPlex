@@ -3,6 +3,7 @@ import 'package:eventplex_frontend/Model/User.dart';
 import 'package:eventplex_frontend/Services/GraphQLService.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql/client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProfileCubit extends Cubit<UserProfileState> {
   GraphQLService gqs = GraphQLService();
@@ -37,8 +38,9 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     
     }
     }''';
+    SharedPreferences sf = await SharedPreferences.getInstance();
     QueryResult result =
-        await gqs.performQuery(query, {"email": "sam@gmail.com"});
+        await gqs.performQuery(query, {"email": sf.getString("email")});
     // print(result.data);
     User u = await User.fromJson(result.data!['userInfo']);
     emit(UserProfileLoadedState(u));

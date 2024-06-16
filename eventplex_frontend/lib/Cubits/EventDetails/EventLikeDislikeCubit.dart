@@ -45,7 +45,7 @@ class EventLikeDislikeCubit extends Cubit<EventLikeDislikeState> {
   }
 
   //add event to the local storage , increase the like, if it was in dislike decrease its count and remove from the dislike list
-  void loadEventsLiked(String id) async {
+  Future<void> loadEventsLiked(String id) async {
     SharedPreferences sf = await SharedPreferences.getInstance();
     // if(eventsLiked)
     eventsLiked.add(id);
@@ -82,7 +82,7 @@ class EventLikeDislikeCubit extends Cubit<EventLikeDislikeState> {
   }
 
   //add event to the dislike list, increase the dislike count , if it is present it like then decrease its count and remove it from the like list
-  void loadEventsDisliked(String id) async {
+  Future<void> loadEventsDisliked(String id) async {
     SharedPreferences sf = await SharedPreferences.getInstance();
     eventsDisLiked.add(id);
     sf.setStringList("eventsdisliked", eventsDisLiked);

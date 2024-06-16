@@ -77,12 +77,21 @@ class _EventFeedState extends State<EventFeed>
                     indent: w / 100 * 2,
                     endIndent: w / 100 * 2,
                   )),
-              appbarContentCard(w, h, "EventFeed"),
+              InkWell(
+                  onTap: () async {
+                    await Navigator.pushNamed(context, Routes.eventFeed);
+                  },
+                  child: drawerCard(w, h, "EventFeed")),
               InkWell(
                   onTap: () async {
                     await Navigator.pushNamed(context, Routes.userProfile);
                   },
-                  child: appbarContentCard(w, h, "Dashboard"))
+                  child: drawerCard(w, h, "Dashboard")),
+              InkWell(
+                  onTap: () async {
+                    await Navigator.pushNamed(context, Routes.Login);
+                  },
+                  child: drawerCard(w, h, "Login"))
             ],
           ),
         ),
@@ -640,11 +649,12 @@ class _EventFeedState extends State<EventFeed>
     );
   }
 
-  Widget appbarContentCard(double w, double h, String s) {
+  Widget drawerCard(double w, double h, String s) {
     return Container(
         margin: EdgeInsets.only(top: h / 100 * 3),
-        padding: EdgeInsets.symmetric(
-            horizontal: w / 100 * 20, vertical: h / 100 * 1.5),
+        width: w * 0.6,
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(vertical: h / 100 * 1.5),
         decoration: BoxDecoration(
             color: Themes.grey,
             border:

@@ -69,10 +69,13 @@ class _UserProfileState extends State<UserProfile> {
                                           fw: FontWeight.bold),
                                     ),
                                     Container(
+                                      width: w*0.45,
                                         margin:
                                             EdgeInsets.only(top: h / 100 * 1),
                                         child: Text(
                                           state.user.email,
+                                          // softWrap: true,
+                                          overflow: TextOverflow.fade,
                                           style: Themes.textStyle(
                                               fontsize: w / 100 * 4,
                                               fontColor: Themes.red,
