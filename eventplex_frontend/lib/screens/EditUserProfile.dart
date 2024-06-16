@@ -24,6 +24,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController keywords = TextEditingController();
+  String s = "";
   File? img;
   Future<String> takephoto() async {
     final ImagePicker picker = ImagePicker();
@@ -92,10 +93,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                                   color: Themes.red, shape: BoxShape.circle),
                               child: InkWell(
                                 onTap: () async {
-                                  String s = await takephoto();
-                                  context
-                                      .read<EditUserProfileCubit>()
-                                      .loadUserDetails(id);
+                                  s = await takephoto();
                                 },
                                 child: Icon(Icons.upload_rounded,
                                     size: w / 100 * 8, color: Themes.white),
@@ -112,28 +110,34 @@ class _EditUserProfileState extends State<EditUserProfile> {
                         style: Themes.textStyle(
                             fontsize: w / 100 * 3, fontColor: Themes.black),
                       )),
-                  Container(
-                      margin: EdgeInsets.only(top: h / 100 * 3),
-                      width: w * 0.9,
-                      height: h * 0.06,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Themes.red,
-                          borderRadius: BorderRadius.circular(w / 100 * 10)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.edit,
-                              size: w / 100 * 6, color: Themes.white),
-                          Text(
-                            "Edit",
-                            style: Themes.textStyle(
-                                fontsize: w / 100 * 5,
-                                fontColor: Themes.white,
-                                fw: FontWeight.bold),
-                          )
-                        ],
-                      )),
+                  InkWell(
+                    onTap: () {
+                      context.read<EditUserProfileCubit>().updateData(
+                          id, (s == "")? null:s, (name.text == "")? null: name.text, (email.text == "")? null: email.text, (keywords.text == "")? null: keywords.text);
+                    },
+                    child: Container(
+                        margin: EdgeInsets.only(top: h / 100 * 3),
+                        width: w * 0.9,
+                        height: h * 0.06,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Themes.red,
+                            borderRadius: BorderRadius.circular(w / 100 * 10)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.edit,
+                                size: w / 100 * 6, color: Themes.white),
+                            Text(
+                              "Edit",
+                              style: Themes.textStyle(
+                                  fontsize: w / 100 * 5,
+                                  fontColor: Themes.white,
+                                  fw: FontWeight.bold),
+                            )
+                          ],
+                        )),
+                  ),
                 ]);
               } else {
                 context.read<EditUserProfileCubit>().loadUserDetails(id);

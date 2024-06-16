@@ -209,8 +209,9 @@ class _UserProfileState extends State<UserProfile> {
                                   itemCount: state.user.currentEvents.length,
                                   //  state.club.currentEvents.length,
                                   itemBuilder: (context, index) {
+                                    print(index);
                                     return event(
-                                        w, h, state.user.currentEvents[0]);
+                                        w, h, state.user.currentEvents[index]);
                                   },
                                 ),
                               ),
@@ -319,6 +320,7 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Widget event(double w, double h, Event e) {
+    print(e.images);
     return InkWell(
       hoverColor: Themes.transparent,
       focusColor: Themes.transparent,

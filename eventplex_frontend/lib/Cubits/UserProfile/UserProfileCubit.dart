@@ -18,12 +18,14 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       name
       category
       rating
+      images
     }
     pastEvents{
       _id
       name
       category
       rating
+      images
     }
     following{
       _id
@@ -36,7 +38,7 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     }
     }''';
     QueryResult result =
-        await gqs.performQuery(query, {"email": "user1@gmail.com"});
+        await gqs.performQuery(query, {"email": "sam@gmail.com"});
     // print(result.data);
     User u = await User.fromJson(result.data!['userInfo']);
     emit(UserProfileLoadedState(u));
