@@ -34,8 +34,8 @@ class _EditUserProfileState extends State<EditUserProfile> {
     final ImagePicker picker = ImagePicker();
 // Pick an image.
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    img = File(image!.path);
-    var x = await image.readAsBytes();
+    img = File("assets/images/");
+    var x = await image!.readAsBytes();
     // Base64Encoder b = base64Encode(bytes)
     String base64 = base64Encode(x);
     // String s = String.fromCharCodes(x);
@@ -91,8 +91,9 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       child: Stack(children: [
                         GFImageOverlay(
                             image:
-                                (img == null)
-                                ?FileImage(state.img) as ImageProvider
+                                (img == null)?
+                                // AssetImage("assets/images/e1.jpg")
+                                FileImage(state.img) as ImageProvider
                                 // FileImage(img!) as ImageProvider,
                             : FileImage(img!) as ImageProvider,
                             width: w * 0.4,

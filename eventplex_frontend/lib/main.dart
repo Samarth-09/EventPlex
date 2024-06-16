@@ -6,8 +6,14 @@ import 'package:eventplex_frontend/screens/EventFeed.dart';
 import 'package:eventplex_frontend/screens/Image.dart';
 import 'package:eventplex_frontend/screens/UserProfile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() {
+   WidgetsFlutterBinding.ensureInitialized();
+
+  Stripe.publishableKey =
+  "pk_test_51PRwQIRr4jj2botnGBzoTaeaUYoYTOGv5lzI4HxxPNK2XYBxqa56qFFBtNf0fmWQM8tvgPxOXiQhMeY607RV5tXS00XVhRWn4k";
+
   runApp(const MyApp());
 }
 

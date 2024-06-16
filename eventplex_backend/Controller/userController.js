@@ -33,6 +33,7 @@ userRouter.post("/new", async (req, res) => {
 });
 
 userRouter.post("/imageUpload",upload,async (req, res) => {
+  console.log(1);
   res.json({msg:"done"});
 });
 export default userRouter;

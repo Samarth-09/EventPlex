@@ -58,7 +58,7 @@ class EventLikeDislikeCubit extends Cubit<EventLikeDislikeState> {
      }
  }''';
 
-    gqs.performMutation(query, {
+    await gqs.performMutation(query, {
       "data": {"eid": id, "type": "+"}
     });
     List<String> l = sf.getStringList("eventsdisliked") ?? [];
@@ -71,7 +71,7 @@ class EventLikeDislikeCubit extends Cubit<EventLikeDislikeState> {
      }
  }''';
 
-      gqs.performMutation(query, {
+      await gqs.performMutation(query, {
         "data": {"eid": id, "type": "-"}
       });
       eventsDisLiked = l;
@@ -93,7 +93,7 @@ class EventLikeDislikeCubit extends Cubit<EventLikeDislikeState> {
      }
  }''';
 
-    gqs.performMutation(query, {
+    await gqs.performMutation(query, {
       "data": {"eid": id, "type": "+"}
     });
     List<String> l = sf.getStringList("eventsliked") ?? [];
@@ -106,7 +106,7 @@ class EventLikeDislikeCubit extends Cubit<EventLikeDislikeState> {
      }
  }''';
 
-      gqs.performMutation(query, {
+      await gqs.performMutation(query, {
         "data": {"eid": id, "type": "-"}
       });
       eventsLiked = l;

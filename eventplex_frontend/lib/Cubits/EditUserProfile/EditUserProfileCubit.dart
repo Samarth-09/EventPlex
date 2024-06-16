@@ -17,8 +17,8 @@ class EditUserProfileCubit extends Cubit<EditUserProfileState> {
   void loadUserDetails(String id) async {
     User u = await api.getUserById(id);
     // print(u.name);
-    File f = await toImage(u.dp);
-    emit(EditUserProfileLoadedState(u, f));
+    // File f = await toImage(u.dp);
+    emit(EditUserProfileLoadedState(u, File("assets/images/e1.jpg")));
   }
 
   void updateData(String id, File? dp, String? name, String? email,
@@ -41,10 +41,10 @@ class EditUserProfileCubit extends Cubit<EditUserProfileState> {
     //  dp!.replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '');
     // print(dp);
     api.uploadImage(dp!);
-    QueryResult result = await gqs.performMutation(query, {
-      "data": {"_id": id, "name": name, "email": email, "keywords": l}
-    });
-    print(1);
+    // QueryResult result = await gqs.performMutation(query, {
+    //   "data": {"_id": id, "name": name, "email": email, "keywords": l}
+    // });
+    // print(1);
     // print(result.data!['editUser']);
     // User u = User.fromJson(result.data!["editUser"]);
     // emit(EditUserProfileLoadedState(u));

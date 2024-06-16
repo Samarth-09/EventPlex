@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:eventplex_frontend/Model/Event.dart';
@@ -10,7 +9,8 @@ class Api {
   // String baseUrl = "http://localhost:3001";
   Future<Event> getEventById(String id) async {
     // print(id);
-    var responce = await Dio().get('$baseUrl/event/byid', queryParameters: {"id": id});
+    var responce =
+        await Dio().get('$baseUrl/event/byid', queryParameters: {"id": id});
     var result = responce.data;
     try {
       // print(result);
@@ -23,7 +23,8 @@ class Api {
   }
 
   Future<User> getUserById(String id) async {
-    var responce = await Dio().get('$baseUrl/user/byid', queryParameters: {"id": id});
+    var responce =
+        await Dio().get('$baseUrl/user/byid', queryParameters: {"id": id});
     var result = responce.data;
     try {
       // print(result);
@@ -36,14 +37,19 @@ class Api {
       });
       return u;
     } catch (e) {
-      print("1"+e.toString());
+      print("1" + e.toString());
     }
     return User();
   }
-  void uploadImage(File f)async{
+
+  void uploadImage(File f) async {
+    print(f.path);
+    var m = await MultipartFile.fromFile(f.path, filename: 'e1.jpg');
+    
     FormData fd = FormData.fromMap({
-      'userFile': await MultipartFile.fromFile(f.path, filename: 'image.jpg')
+      'userFile': m
     });
+    print(fd);
     var responce = await Dio().post('$baseUrl/user/imageUpload', data: fd);
     print(responce);
   }

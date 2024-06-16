@@ -228,25 +228,32 @@ class _EventDetailsState extends State<EventDetails> {
                                   ),
                                 );
                               }),
-                              Container(
-                                  margin: EdgeInsets.only(
-                                      top: h / 100 * 2, bottom: h / 100 * 2),
-                                  width: w * 0.9,
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                      width: w * 0.7,
-                                      height: h * 0.05,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                              w / 100 * 10),
-                                          color: Themes.red),
-                                      child: Text("Participate",
-                                          textAlign: TextAlign.center,
-                                          style: Themes.textStyle(
-                                              fontsize: w / 100 * 6,
-                                              fontColor: Themes.white,
-                                              fw: FontWeight.bold))))
+                              InkWell(
+                                onTap: () async{
+                                  // print(state.event.fees.runtimeType);
+                                  // final int i = state.event.fees.toInt();
+                                  await context.read<EventDetailsCubit>().makePayment(100);
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.only(
+                                        top: h / 100 * 2, bottom: h / 100 * 2),
+                                    width: w * 0.9,
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                        width: w * 0.7,
+                                        height: h * 0.05,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                                w / 100 * 10),
+                                            color: Themes.red),
+                                        child: Text("Participate",
+                                            textAlign: TextAlign.center,
+                                            style: Themes.textStyle(
+                                                fontsize: w / 100 * 6,
+                                                fontColor: Themes.white,
+                                                fw: FontWeight.bold)))),
+                              )
                             ]),
                       )
                     ]));
@@ -309,7 +316,7 @@ class _EventDetailsState extends State<EventDetails> {
                     context
                         .read<EventLikeDislikeCubit>()
                         .loadEventsDisliked(eventId);
-                    context.read<EventDetailsCubit>().loadEventDetails(eventId);
+                     context.read<EventDetailsCubit>().loadEventDetails(eventId);
                   }
                 },
                 child: Icon(Icons.thumb_down_alt,

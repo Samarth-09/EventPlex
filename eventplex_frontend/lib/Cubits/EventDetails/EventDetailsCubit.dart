@@ -1,8 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:eventplex_frontend/Cubits/EventDetails/EventDetailsState.dart';
 import 'package:eventplex_frontend/Model/Event.dart';
 import 'package:eventplex_frontend/Services/Api.dart';
 import 'package:eventplex_frontend/Services/GraphQLService.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 class EventDetailsCubit extends Cubit<EventDetailsState> {
   GraphQLService gqs = GraphQLService();
@@ -14,60 +17,72 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
     Event e = await api.getEventById(id);
     emit(EventDetailsStateLoaded(e));
   }
-  // Future<void> makePayment() async {
-  //   try {
-  //     paymentIntent = await createPaymentIntent('10000', 'GBP');
 
-  //     var gpay = PaymentSheetGooglePay(merchantCountryCode: "GB",
-  //         currencyCode: "GBP",
-  //         testEnv: true);
+  void callLoadEventDetailsFunction(id) {
+    emit(EventDetailsState());
+    loadEventDetails(id);
+  }
 
-  //     //STEP 2: Initialize Payment Sheet
-  //     await Stripe.instance
-  //         .initPaymentSheet(
-  //         paymentSheetParameters: SetupPaymentSheetParameters(
-  //             paymentIntentClientSecret: paymentIntent![
-  //             'client_secret'], //Gotten from payment intent
-  //             style: ThemeMode.light,
-  //             merchantDisplayName: 'Abhi',
-  //             googlePay: gpay))
-  //         .then((value) {});
+  Future<void> makePayment(int amount) async {
+    try {
+      // print(amount);
+      String amt = "${(amount * 100).toInt()}";
+      //  int amountInPaise = (double.parse(amount.toString()) * 100).toInt();
+      // print(amt);
+      Map<String, dynamic> paymentIntent =
+          await createPaymentIntent(amt, 'INR');
+      // print(2);
+      var gpay = const PaymentSheetGooglePay(
+          merchantCountryCode: "IN", currencyCode: "INR", testEnv: true);
+      // print(gpay);
+      //STEP 2: Initialize Payment Sheet
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: paymentIntent[
+                      'client_secret'], //Gotten from payment intent
+                  style: ThemeMode.light,
+                  merchantDisplayName: 'Samarth',
+                  googlePay: gpay))
+          .then((value) {});
+      // print(4);
+      //STEP 3: Display Payment sheet
+      displayPaymentSheet();
+    } catch (err) {
+      print(err);
+    }
+  }
 
-  //     //STEP 3: Display Payment sheet
-  //     displayPaymentSheet();
-  //   } catch (err) {
-  //     print(err);
-  //   }
-  // }
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) {
+        print("Payment Successfully");
+      });
+    } catch (e) {
+      print('$e');
+    }
+  }
 
-  // displayPaymentSheet() async {
-  //   try {
-  //     await Stripe.instance.presentPaymentSheet().then((value) {
-  //       print("Payment Successfully");
-  //     });
-  //   } catch (e) {
-  //     print('$e');
-  //   }
-  // }
-
-  // createPaymentIntent(String amount, String currency) async {
-  //   try {
-  //     Map<String, dynamic> body = {
-  //       'amount': amount, 
-  //       'currency': currency,
-  //     };
-
-  //     var response = await http.post(
-  //       Uri.parse('https://api.stripe.com/v1/payment_intents'),
-  //       headers: {
-  //         'Authorization': 'Bearer sk_test_51MWx8OAVMyklfe3C3gP4wKOhTsRdF6r1PYhhg1PqupXDITMrV3asj5Mmf0G5F9moPL6zNfG3juK8KHgV9XNzFPlq00wmjWwZYA',
-  //         'Content-Type': 'application/x-www-form-urlencoded'
-  //       },
-  //       body: body,
-  //     );
-  //     return json.decode(response.body);
-  //   } catch (err) {
-  //     throw Exception(err.toString());
-  //   }
-  // }
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      Map<String, dynamic> body = {
+        'amount': amount,
+        'currency': currency,
+      };
+      print(6);
+      var response = await Dio().post(
+        'https://api.stripe.com/v1/payment_intents',
+        options: Options(headers: {
+          'Authorization':
+              'Bearer sk_test_51PRwQIRr4jj2botnFOKBYuYtvVPwuNnuaklTB6Yo6sXZEEPsNptAtqxSdw2UI75isExWtvwBp6k1daJfPeO3h6BA001I1SeogL',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }),
+        data: body,
+      );
+      print(7);
+      return response.data;
+    } catch (err) {
+      print(err);
+    }
+  }
 }
