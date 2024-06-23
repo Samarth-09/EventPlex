@@ -46,3 +46,5 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     emit(UserProfileLoadedState(u));
   }
 }
+
+// add email feild in club. clicking on dashboard will search email both in user and club and will show screen acc. same sceeen for club dashboard as of club detail with one extra button for creating new event. sign in for both user and club, if the email is new create new user/club and give the screen acc for creation of the user/club

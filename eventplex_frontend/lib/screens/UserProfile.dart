@@ -2,6 +2,7 @@ import 'package:eventplex_frontend/Cubits/UserProfile/UserProfileCubit.dart';
 import 'package:eventplex_frontend/Cubits/UserProfile/UserProfileState.dart';
 import 'package:eventplex_frontend/Model/Club.dart';
 import 'package:eventplex_frontend/Model/Event.dart';
+import 'package:eventplex_frontend/Widgets/Drawer.dart';
 import 'package:eventplex_frontend/screens/EditUserProfile.dart';
 import 'package:eventplex_frontend/screens/EventDetails.dart';
 import 'package:eventplex_frontend/themes.dart';
@@ -24,7 +25,7 @@ class _UserProfileState extends State<UserProfile> {
     double w = MediaQuery.of(context).size.width,
         h = MediaQuery.of(context).size.height;
     return Scaffold(
-        drawer: Drawer(),
+        drawer: Widgets().AppDrawer(w, h, context),
         appBar: AppBar(
           title: Image.asset("assets/images/eventplex_logo.png",
               width: w * 0.3, height: h * 0.05, fit: BoxFit.fill),

@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:eventplex_frontend/Cubits/EditUserProfile/EditUserProfileState.dart';
+import 'package:eventplex_frontend/Widgets/Drawer.dart';
 import 'package:eventplex_frontend/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,7 +53,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
     double w = MediaQuery.of(context).size.width,
         h = MediaQuery.of(context).size.height;
     return Scaffold(
-      drawer: const Drawer(),
+      drawer: Widgets().AppDrawer(w, h, context),
       appBar: AppBar(
         title: Image.asset("assets/images/eventplex_logo.png",
             width: w * 0.3, height: h * 0.05, fit: BoxFit.fill),

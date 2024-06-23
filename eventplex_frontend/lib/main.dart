@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         Routes.clubDetailFeed: (context) => ClubDetails(id: ""),
         Routes.userProfile: (context) => const UserProfile(),
         Routes.editUserProfile: (context) => EditUserProfile(id: ""),
-        Routes.Login:(context) => const Login()
+        Routes.Login: (context) => const Login()
       },
     );
   }
