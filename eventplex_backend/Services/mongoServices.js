@@ -164,7 +164,7 @@ const editUser = async (data) => {
   try {
     // console.log(data);
     let result = await findUserById(data._id);
-    // result.dp = data.dp == null ? result.dp : data.dp;
+    result.dp = data.dp == null ? result.dp : data.dp;
     result.name = data.name == null ? result.name : data.name;
     result.email = data.email == null ? result.email : data.email;
     result.keywords = data.keywords == null ? result.keywords : data.keywords;

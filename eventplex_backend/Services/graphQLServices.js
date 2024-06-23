@@ -74,6 +74,7 @@ type Mutation{
 
 input profileInput{
   _id: ID
+  dp: String
   name: String 
   email: String
   keywords: [String]
