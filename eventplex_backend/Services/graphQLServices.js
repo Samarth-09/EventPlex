@@ -15,6 +15,7 @@ import {
   unFollowClub,
   changeLike,
   changeDisLike,
+  findClubByEmail,
 } from "./mongoServices.js";
 const typeDefs = `#graphql
 type club {
@@ -62,6 +63,7 @@ type Query{
   clubInfo(id: String): club
   userInfo(email: String): user
   getUser(id: String): user
+  clubProfile(email: String): club
 }
 
 type Mutation{
@@ -119,6 +121,9 @@ const resolvers = {
     getUser: async (_, args) => {
       return await findUserById(args.id);
     },
+    clubProfile: async (_, args) => {
+      return await findClubByEmail(args.email);
+    }
   },
   event: {
     Club: async (parent) => {

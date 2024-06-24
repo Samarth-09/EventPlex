@@ -209,7 +209,7 @@ const changeLike = async (data) => {
   try {
     let event = await EventModel.findById(data.eid);
     console.log(event);
-    event.likes += ((data.type == "+")? 1: -1);
+    event.likes += data.type == "+" ? 1 : -1;
     await event.save();
     return event;
   } catch (error) {
@@ -220,7 +220,7 @@ const changeLike = async (data) => {
 const changeDisLike = async (data) => {
   try {
     let event = await EventModel.findById(data.eid);
-    event.dislikes += ((data.type == "+")? 1: -1);
+    event.dislikes += data.type == "+" ? 1 : -1;
     await event.save();
     return event;
   } catch (error) {
@@ -238,7 +238,19 @@ const saveClub = async (data) => {
     return 0;
   }
 };
+const findClubByEmail = async (email) => {
+  let result = [];
+  try {
+    // console.log(1);
+    result = await ClubModel.find({ email: email });
+    // console.log(result[0].email);
+  } catch (error) {
+    console.log("Error " + error);
+  }
+  return result[0];
+};
 export {
+  findClubByEmail,
   saveClub,
   changeDisLike,
   changeLike,

@@ -1,11 +1,11 @@
-import 'dart:io';
-
 import 'package:eventplex_frontend/Model/User.dart';
 
 class EditUserProfileState {}
 
 class EditUserProfileLoadedState extends EditUserProfileState {
-  File img;
+//   File img;
   User user;
-  EditUserProfileLoadedState(this.user, this.img);
+  EditUserProfileLoadedState(this.user 
+  // this.img
+  );
 }

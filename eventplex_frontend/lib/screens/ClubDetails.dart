@@ -54,7 +54,7 @@ class _ClubDetailsState extends State<ClubDetails> {
                               image:
                                   //  AssetImage((state.event.images.isEmpty)
                                   // ?
-                                  AssetImage("assets/images/e1.jpg"),
+                                  NetworkImage(state.club.dp),
                               // : state.event.images[0]),
                               margin: EdgeInsets.only(top: h / 100 * 2),
                               height: h * 0.3,
@@ -225,7 +225,7 @@ class _ClubDetailsState extends State<ClubDetails> {
                           ...List.generate(
                             e.images.length,
                             (index) => GFImageOverlay(
-                                image: AssetImage(e.images[index]),
+                                image: NetworkImage(e.images[index]),
                                 width: w * 0.8,
                                 height: h * 0.3,
                                 borderRadius:

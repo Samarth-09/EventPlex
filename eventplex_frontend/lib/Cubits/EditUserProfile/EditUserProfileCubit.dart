@@ -1,14 +1,12 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:eventplex_frontend/Cubits/EditUserProfile/EditUserProfileState.dart';
 import 'package:eventplex_frontend/Model/User.dart';
 import 'package:eventplex_frontend/Services/Api.dart';
 import 'package:eventplex_frontend/Services/GraphQLService.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql/client.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditUserProfileCubit extends Cubit<EditUserProfileState> {
   EditUserProfileCubit() : super(EditUserProfileState());
@@ -18,7 +16,7 @@ class EditUserProfileCubit extends Cubit<EditUserProfileState> {
     User u = await api.getUserById(id);
     // print(u.name);
     // File f = await toImage(u.dp);
-    emit(EditUserProfileLoadedState(u, File("assets/images/e1.jpg")));
+    emit(EditUserProfileLoadedState(u));
   }
 
   void updateData(String id, File? dp, String? name, String? email,
@@ -28,6 +26,7 @@ class EditUserProfileCubit extends Cubit<EditUserProfileState> {
     String query = '''mutation(\$data: profileInput){
     editUser(data: \$data){
     _id
+    dp
     name
     email
     keywords
@@ -40,28 +39,44 @@ class EditUserProfileCubit extends Cubit<EditUserProfileState> {
     // });
     //  dp!.replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '');
     // print(dp);
-    api.uploadImage(dp!);
-    // QueryResult result = await gqs.performMutation(query, {
-    //   "data": {"_id": id, "name": name, "email": email, "keywords": l}
-    // });
-    // print(1);
-    // print(result.data!['editUser']);
-    // User u = User.fromJson(result.data!["editUser"]);
-    // emit(EditUserProfileLoadedState(u));
+    // api.uploadImage(dp!);
+    String? imgLink;
+    // print(email);
+    // print(dp);
+    if (dp != null) {
+      email ??= (await SharedPreferences.getInstance()).getString("email");
+      imgLink = await uploadImageAndGetUrl(email!, dp);
+      print(imgLink);
+    }
+    
+
+    QueryResult result = await gqs.performMutation(query, {
+      "data": {
+        "_id": id,
+        "dp": imgLink,
+        "name": name,
+        "email": email,        
+        "keywords": l
+      }
+    });
+    print(result);
+    User u = User.fromJson(result.data!["editUser"]);
+    emit(EditUserProfileLoadedState(u));
   }
 
-  Future<File> toImage(String s) async {
-    //  covert String(made from codes) to uint8
-    // Uint8List y = Uint8List.fromList(s.codeUnits);
-    Uint8List bytes = base64Decode(s);
-    // create a temporary file at a temporary directory and then write those image's byte to the file
-    var tempDir = await getTemporaryDirectory();
-    File f = await File('${tempDir.path}/image.png').create();
-    // print(img);
-    f.writeAsBytesSync(bytes);
-
-    // Uint8List bytes = base64Decode(s);
-    // File f = File.fromRawPath(bytes);
-    return f;
+  Future<String> uploadImageAndGetUrl(String email, File img) async {
+    try {
+      final storageRef = FirebaseStorage.instance.ref();
+      final imageref = storageRef.child(
+          "$email/images/dp.jpg");
+          // /${DateTime.now().microsecondsSinceEpoch}-${img.path.split("/").last}
+          // ");
+      await imageref.putFile(img);
+      print(2);
+      return await imageref.getDownloadURL();
+    } catch (e) {
+      print(e);
+      return "";
+    }
   }
 }

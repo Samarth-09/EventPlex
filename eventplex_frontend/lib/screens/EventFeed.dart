@@ -309,7 +309,7 @@ class _EventFeedState extends State<EventFeed>
               margin: EdgeInsets.only(left: (w / 100) * 5),
               child: const GFAvatar(
                 // foregroundColor: ,
-                backgroundImage: AssetImage("assets/images/photo.jpg"),
+                backgroundImage: NetworkImage("assets/images/photo.jpg"),
                 // size: GFSize.LARGE,
               ),
             )
@@ -335,12 +335,13 @@ class _EventFeedState extends State<EventFeed>
               // height: h * 0.2,
               fit: BoxFit.fill,
             ),
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AnimatedBuilder(
                   animation: typingAnimation,
-                  builder: (context, child) {
+                  builder: (context, child) { 
                     return Text(
                       s,
                       style: Themes.textStyle(
@@ -380,7 +381,7 @@ class _EventFeedState extends State<EventFeed>
               w,
               h,
               // state.eventList[index].images[0]??
-              ["assets/images/e1.jpg", "assets/images/e1.jpg"],
+              ["", ""],
               eventList[index].name,
               eventList[index].club,
               eventList[index].category,
@@ -536,7 +537,7 @@ class _EventFeedState extends State<EventFeed>
                           ...List.generate(
                             images.length,
                             (index) => GFImageOverlay(
-                                image: AssetImage(images[index]),
+                                image: NetworkImage(images[index]),
                                 width: w * 0.8,
                                 height: h * 0.2,
                                 borderRadius:

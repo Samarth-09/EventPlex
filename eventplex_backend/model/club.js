@@ -14,7 +14,8 @@ const clubSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: "users",
   },
-  dp: String
+  dp: String,
+  email: String
 });
 
 const ClubModel = mongoose.model("clubs", clubSchema);

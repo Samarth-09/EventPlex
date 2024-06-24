@@ -73,8 +73,8 @@ class _EventDetailsState extends State<EventDetails> {
                                 ...List.generate(
                                   state.event.images.length,
                                   (index) => GFImageOverlay(
-                                      image:
-                                          AssetImage(state.event.images[index]),
+                                      image: NetworkImage(
+                                          state.event.images[index]),
                                       width: w * 0.95,
                                       height: h * 0.3,
                                       borderRadius:
@@ -230,10 +230,12 @@ class _EventDetailsState extends State<EventDetails> {
                                 );
                               }),
                               InkWell(
-                                onTap: () async{
+                                onTap: () async {
                                   // print(state.event.fees.runtimeType);
                                   // final int i = state.event.fees.toInt();
-                                  await context.read<EventDetailsCubit>().makePayment(100);
+                                  await context
+                                      .read<EventDetailsCubit>()
+                                      .makePayment(100);
                                 },
                                 child: Container(
                                     margin: EdgeInsets.only(
@@ -317,7 +319,7 @@ class _EventDetailsState extends State<EventDetails> {
                     await context
                         .read<EventLikeDislikeCubit>()
                         .loadEventsDisliked(eventId);
-                     context.read<EventDetailsCubit>().loadEventDetails(eventId);
+                    context.read<EventDetailsCubit>().loadEventDetails(eventId);
                   }
                 },
                 child: Icon(Icons.thumb_down_alt,

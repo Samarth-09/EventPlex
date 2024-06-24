@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 class Themes {
   static Color red = const Color.fromARGB(255, 250, 37, 40);
   static Color grey = const Color.fromARGB(255, 240, 240, 240);

@@ -1,16 +1,16 @@
-import 'package:eventplex_frontend/Cubits/UserProfile/UserProfileState.dart';
-import 'package:eventplex_frontend/Model/User.dart';
+import 'package:eventplex_frontend/Cubits/ClubProfile/ClubProfileState.dart';
+import 'package:eventplex_frontend/Model/Club.dart';
 import 'package:eventplex_frontend/Services/GraphQLService.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql/client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserProfileCubit extends Cubit<UserProfileState> {
+class ClubProfileCubit extends Cubit<ClubProfileState> {
   GraphQLService gqs = GraphQLService();
-  UserProfileCubit() : super(UserProfileState());
-  void loadUserDetails() async {
-    String query = '''query user(\$email: String){
-    userInfo(email: \$email){
+  ClubProfileCubit() : super(ClubProfileState());
+  void loadClubDetails() async {
+    String query = '''query(\$email: String){
+    clubProfile(email: \$email){
     email
     _id
     name
@@ -28,12 +28,11 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       rating
       images
     }
-    following{
+    followers{
       _id
       name
       dp
     }
-    keywords
     dp
     
     }
@@ -42,8 +41,8 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     QueryResult result =
         await gqs.performQuery(query, {"email": sf.getString("email")});
     // print(sf.getString('role'));
-    User u = await User.fromJson(result.data!['userInfo']);
-    emit(UserProfileLoadedState(u));
+    Club c = Club.fromJson(result.data!['clubInfo']);
+    emit(ClubProfileStateLoadedState(c));
   }
 }
 

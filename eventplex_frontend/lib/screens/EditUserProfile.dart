@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:eventplex_frontend/Cubits/EditUserProfile/EditUserProfileState.dart';
 import 'package:eventplex_frontend/Widgets/Drawer.dart';
@@ -28,28 +27,22 @@ class _EditUserProfileState extends State<EditUserProfile> {
   TextEditingController keywords = TextEditingController();
   String s = "";
   File? img;
-  Future<String> takephoto() async {
+  void takephoto() async {
     
     final ImagePicker picker = ImagePicker();
 // Pick an image.
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    img = File("assets/images/");
-    var x = await image!.readAsBytes();
-    // Base64Encoder b = base64Encode(bytes)
-    String base64 = base64Encode(x);
-    // String s = String.fromCharCodes(x);
-    // print(s);
-    // await toImage(s);
+    img = File(image!.path);
     setState(() {
-      // print(base64);
+      print(img!.path);
     });
-    return base64;
   }
 
   
 
   @override
   Widget build(BuildContext context) {
+    // print(1);
     double w = MediaQuery.of(context).size.width,
         h = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -92,7 +85,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                             image:
                                 (img == null)?
                                 // AssetImage("assets/images/e1.jpg")
-                                FileImage(state.img) as ImageProvider
+                                NetworkImage(state.user.dp)
                                 // FileImage(img!) as ImageProvider,
                             : FileImage(img!) as ImageProvider,
                             width: w * 0.4,
@@ -110,8 +103,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                                   color: Themes.red, shape: BoxShape.circle),
                               child: InkWell(
                                 onTap: () async {
-                                  s = await takephoto();
-                                  
+                                  takephoto();
                                 },
                                 child: Icon(Icons.upload_rounded,
                                     size: w / 100 * 8, color: Themes.white),
@@ -125,13 +117,14 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       margin: EdgeInsets.only(top: h / 100 * 2),
                       child: Text(
                         "*Write interests with comma seperations",
+                        // img!.path,
                         style: Themes.textStyle(
                             fontsize: w / 100 * 3, fontColor: Themes.black),
                       )),
                   InkWell(
                     onTap: () {
                       // s="hello";
-                      // print(s);
+                      print(1);
                       context.read<EditUserProfileCubit>().updateData(
                           id,
                           img,
