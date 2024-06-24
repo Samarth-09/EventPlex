@@ -146,120 +146,107 @@ class _ClubProfileState extends State<ClubProfile> {
                                                   fontsize: w / 100 * 3,
                                                   fontColor: Themes.black)))
                                     ]),
-                                  ),
-                                  (state.club.currentEvents.isEmpty)
-                                      ? Container(
-                                          width: w * 0.95,
-                                          alignment: Alignment.center,
-                                          margin: EdgeInsets.only(
-                                              top: h / 100 * 2,
-                                              bottom: h / 100 * 2),
-                                          child: Text(
-                                              "You haven't participated in current events yet",
-                                              style: Themes.textStyle(
-                                                  fontsize: w / 100 * 3,
-                                                  fontColor: Themes.black)))
-                                      : Container(
-                                          width: w * 0.95,
-                                          // alignment: Alignment.,
-                                          margin:
-                                              EdgeInsets.only(top: h / 100 * 3),
-                                          child: Text("Current Events(Ongoing)",
-                                              style: Themes.textStyle(
-                                                  fontsize: w / 100 * 4,
-                                                  fontColor: Themes.black,
-                                                  fw: FontWeight.bold)),
-                                        ),
-                                  (state.club.currentEvents.isEmpty)
-                                      ? Container()
-                                      : Container(
-                                          width: w * 0.95,
-                                          height: h * 0.42 + h / 100 * 3.5,
-                                          margin:
-                                              EdgeInsets.only(top: h / 100 * 2),
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount:
-                                                state.club.currentEvents.length,
-                                            //  state.club.currentEvents.length,
-                                            itemBuilder: (context, index) {
-                                              print(index);
-                                              return event(
-                                                  w,
-                                                  h,
-                                                  state.club
-                                                      .currentEvents[index]);
-                                            },
-                                          ),
-                                        ),
-                                  (state.club.pastEvents.isEmpty)
-                                      ? Container(
-                                          width: w * 0.95,
-                                          alignment: Alignment.center,
-                                          margin: EdgeInsets.only(
-                                              top: h / 100 * 2,
-                                              bottom: h / 100 * 2),
-                                          child: Text(
-                                              "You haven't any past events participated in",
-                                              style: Themes.textStyle(
-                                                  fontsize: w / 100 * 3,
-                                                  fontColor: Themes.black)))
-                                      : Container(
-                                          width: w * 0.95,
-                                          // alignment: Alignment.,
-                                          margin:
-                                              EdgeInsets.only(top: h / 100 * 3),
-                                          child: Text("Past Events(Conducted)",
-                                              style: Themes.textStyle(
-                                                  fontsize: w / 100 * 4,
-                                                  fontColor: Themes.black,
-                                                  fw: FontWeight.bold)),
-                                        ),
-                                  (state.club.pastEvents.isEmpty)
-                                      ? Container()
-                                      : Container(
-                                          width: w * 0.95,
-                                          height: h * 0.42 + h / 100 * 3.5,
-                                          margin:
-                                              EdgeInsets.only(top: h / 100 * 2),
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount:
-                                                state.club.pastEvents.length,
-                                            itemBuilder: (context, index) {
-                                              return event(w, h,
-                                                  state.club.pastEvents[index]);
-                                            },
-                                          ),
-                                        ),
-                                  Container(
-                                    width: w * 0.95,
-                                    // alignment: Alignment.,
-                                    margin: EdgeInsets.only(top: h / 100 * 2),
-                                    child: Text("Club Followers:- ",
-                                        style: Themes.textStyle(
-                                            fontsize: w / 100 * 4,
-                                            fontColor: Themes.black,
-                                            fw: FontWeight.bold)),
-                                  ),
-                                  Container(
-                                      margin: EdgeInsets.only(
-                                          top: h / 100 * 2,
-                                          bottom: h / 100 * 2),
-                                      height: h * 0.08,
-                                      width: w * 0.95,
-                                      child: GridView.builder(
-                                        gridDelegate:
-                                            SliverGridDelegateWithMaxCrossAxisExtent(
-                                                maxCrossAxisExtent: w * 4),
-                                        // scrollDirection: Axis.horizontal,
-                                        itemCount: state.club.followers.length,
-                                        itemBuilder: (context, index) {
-                                          return club(w, h,
-                                              state.club.followers[index]);
-                                        },
-                                      ))
-                                ]))
+                                  )
+                                ])),
+                        (state.club.currentEvents.isEmpty)
+                            ? Container(
+                                width: w * 0.95,
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(
+                                    top: h / 100 * 2, bottom: h / 100 * 2),
+                                child: Text(
+                                    "You haven't participated in current events yet",
+                                    style: Themes.textStyle(
+                                        fontsize: w / 100 * 3,
+                                        fontColor: Themes.black)))
+                            : Container(
+                                width: w * 0.95,
+                                // alignment: Alignment.,
+                                margin: EdgeInsets.only(top: h / 100 * 3),
+                                child: Text("Current Events(Ongoing)",
+                                    style: Themes.textStyle(
+                                        fontsize: w / 100 * 4,
+                                        fontColor: Themes.black,
+                                        fw: FontWeight.bold)),
+                              ),
+                        (state.club.currentEvents.isEmpty)
+                            ? Container()
+                            : Container(
+                                width: w * 0.95,
+                                height: h * 0.42 + h / 100 * 3.5,
+                                margin: EdgeInsets.only(top: h / 100 * 2),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: state.club.currentEvents.length,
+                                  //  state.club.currentEvents.length,
+                                  itemBuilder: (context, index) {
+                                    print(index);
+                                    return event(
+                                        w, h, state.club.currentEvents[index]);
+                                  },
+                                ),
+                              ),
+                        (state.club.pastEvents.isEmpty)
+                            ? Container(
+                                width: w * 0.95,
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(
+                                    top: h / 100 * 2, bottom: h / 100 * 2),
+                                child: Text(
+                                    "You haven't any past events participated in",
+                                    style: Themes.textStyle(
+                                        fontsize: w / 100 * 3,
+                                        fontColor: Themes.black)))
+                            : Container(
+                                width: w * 0.95,
+                                // alignment: Alignment.,
+                                margin: EdgeInsets.only(top: h / 100 * 3),
+                                child: Text("Past Events(Conducted)",
+                                    style: Themes.textStyle(
+                                        fontsize: w / 100 * 4,
+                                        fontColor: Themes.black,
+                                        fw: FontWeight.bold)),
+                              ),
+                        (state.club.pastEvents.isEmpty)
+                            ? Container()
+                            : Container(
+                                width: w * 0.95,
+                                height: h * 0.42 + h / 100 * 3.5,
+                                margin: EdgeInsets.only(top: h / 100 * 2),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: state.club.pastEvents.length,
+                                  itemBuilder: (context, index) {
+                                    return event(
+                                        w, h, state.club.pastEvents[index]);
+                                  },
+                                ),
+                              ),
+                        Container(
+                          width: w * 0.95,
+                          // alignment: Alignment.,
+                          margin: EdgeInsets.only(top: h / 100 * 2),
+                          child: Text("Club Followers:- ",
+                              style: Themes.textStyle(
+                                  fontsize: w / 100 * 4,
+                                  fontColor: Themes.black,
+                                  fw: FontWeight.bold)),
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(
+                                top: h / 100 * 2, bottom: h / 100 * 2),
+                            height: h * 0.08,
+                            width: w * 0.95,
+                            child: GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: w * 4),
+                              // scrollDirection: Axis.horizontal,
+                              itemCount: state.club.followers.length,
+                              itemBuilder: (context, index) {
+                                return club(w, h, state.club.followers[index]);
+                              },
+                            ))
                       ]);
                 } else {
                   context.read<ClubProfileCubit>().loadClubDetails();

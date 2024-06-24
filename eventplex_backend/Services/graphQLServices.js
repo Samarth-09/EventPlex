@@ -25,6 +25,7 @@ type club {
     currentEvents: [event]
     followers: [user]
     dp: String
+    email: String
 }
 type user {
     _id:ID

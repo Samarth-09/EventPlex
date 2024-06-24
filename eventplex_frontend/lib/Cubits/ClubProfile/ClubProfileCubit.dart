@@ -40,8 +40,8 @@ class ClubProfileCubit extends Cubit<ClubProfileState> {
     SharedPreferences sf = await SharedPreferences.getInstance();
     QueryResult result =
         await gqs.performQuery(query, {"email": sf.getString("email")});
-    // print(sf.getString('role'));
-    Club c = Club.fromJson(result.data!['clubInfo']);
+    print(result);
+    Club c = Club.fromJson(result.data!['clubProfile']);
     emit(ClubProfileStateLoadedState(c));
   }
 }
