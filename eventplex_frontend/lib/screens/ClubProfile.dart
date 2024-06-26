@@ -1,6 +1,6 @@
 import 'package:eventplex_frontend/Cubits/ClubProfile/ClubProfileCubit.dart';
 import 'package:eventplex_frontend/Cubits/ClubProfile/ClubProfileState.dart';
-import 'package:eventplex_frontend/Cubits/UserProfile/UserProfileCubit.dart';
+import 'package:eventplex_frontend/Model/Club.dart';
 import 'package:eventplex_frontend/Model/Event.dart';
 import 'package:eventplex_frontend/Model/User.dart';
 import 'package:eventplex_frontend/Widgets/Drawer.dart';
@@ -226,27 +226,27 @@ class _ClubProfileState extends State<ClubProfile> {
                           width: w * 0.95,
                           // alignment: Alignment.,
                           margin: EdgeInsets.only(top: h / 100 * 2),
-                          child: Text("Club Followers:- ",
+                          child: Text("Club Followers(users):- ",
                               style: Themes.textStyle(
                                   fontsize: w / 100 * 4,
                                   fontColor: Themes.black,
                                   fw: FontWeight.bold)),
                         ),
                         Container(
-                            margin: EdgeInsets.only(
-                                top: h / 100 * 2, bottom: h / 100 * 2),
-                            height: h * 0.08,
-                            width: w * 0.95,
-                            child: GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithMaxCrossAxisExtent(
-                                      maxCrossAxisExtent: w * 4),
-                              // scrollDirection: Axis.horizontal,
-                              itemCount: state.club.followers.length,
-                              itemBuilder: (context, index) {
-                                return club(w, h, state.club.followers[index]);
-                              },
-                            ))
+                          width: w * 0.95,
+                          // alignment: Alignment.,
+                          margin: EdgeInsets.only(top: h / 100 * 2),
+                          child: Text(
+                              "*Shown the count of the participations by user for this club's events",
+                              style: Themes.textStyle(
+                                fontsize: w / 100 * 2,
+                                fontColor: Themes.black,
+                              )),
+                        ),
+                        ...List.generate(
+                            state.club.followers.length,
+                            ((index) => user(w, h, state.club.followers[index],
+                                state.club, context))),
                       ]);
                 } else {
                   context.read<ClubProfileCubit>().loadClubDetails();
@@ -263,33 +263,56 @@ class _ClubProfileState extends State<ClubProfile> {
             ))));
   }
 
-  Widget club(double w, double h, User user) {
+  Widget user(double w, double h, User user, Club c, BuildContext context) {
+    int countOfTogetherness = getCountOfTogetherness(c, user);
     return Container(
-      width: w * 0.45,
+      width: w * 0.9,
       height: h * 0.08,
-      margin: EdgeInsets.only(right: w / 100 * 8),
+      margin: EdgeInsets.only(top: h / 100 * 1.5),
       alignment: Alignment.center,
       decoration: BoxDecoration(
           border: Border(right: BorderSide(color: Themes.lightred, width: 3)),
           color: Themes.grey,
           borderRadius: BorderRadius.circular(w / 100 * 10)),
-      child: Row(children: [
-        Container(
-          margin: EdgeInsets.only(left: w / 100 * 5),
-          child: GFImageOverlay(
-              image: NetworkImage(user.dp),
-              width: w * 0.12,
-              height: h * 0.12,
-              boxFit: BoxFit.fill,
-              shape: BoxShape.circle),
-        ),
-        Container(
-          margin: EdgeInsets.only(left: w / 100 * 5),
-          child: Text(user.name,
-              style: Themes.textStyle(
-                  fontsize: w / 100 * 5, fontColor: Themes.black)),
-        )
-      ]),
+      child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: w / 100 * 5),
+                  child: GFImageOverlay(
+                      image: NetworkImage(user.dp),
+                      width: w * 0.12,
+                      height: h * 0.12,
+                      boxFit: BoxFit.fill,
+                      shape: BoxShape.circle),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: w / 100 * 5),
+                  child: Text(user.name,
+                      style: Themes.textStyle(
+                          fontsize: w / 100 * 4, fontColor: Themes.black)),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Container(
+                    // margin: EdgeInsets.only(left: w / 100 * 5),
+                    color: Themes.red,
+                    child: Icon(Icons.insert_chart_outlined_rounded,
+                        color: Themes.white, size: w / 100 * 6)),
+                Container(
+                    margin:
+                        EdgeInsets.only(right: w / 100 * 5, left: w / 100 * 2),
+                    child: Text(countOfTogetherness.toString(),
+                        style: Themes.textStyle(
+                            fontsize: w / 100 * 5, fontColor: Themes.red))),
+              ],
+            )
+          ]),
     );
   }
 
@@ -379,5 +402,27 @@ class _ClubProfileState extends State<ClubProfile> {
                     )),
               ])),
     );
+  }
+
+  int getCountOfTogetherness(Club c, User u) {
+    int countOfTogetherness = 0;
+
+    //finding user having same user-id as provided
+    // User u = c.followers.where((element) => element.id == uid).toList().first;
+
+    //club's pastevents-id should be equal to club's followers's pastevent-id
+    for (var e in c.pastEvents) {
+      //finding event-id from user's pastevents that equals the event-id in pastevents of the club
+      var l = u.pastEvents.where((element) => e.id == element.id);
+      countOfTogetherness += l.length;
+    }
+
+    //club's current-id should be equal to club's followers's current-id
+    for (var e in c.currentEvents) {
+      //finding event-id from user's pastevents that equals the event-id in pastevents of the club
+      var l = u.currentEvents.where((element) => e.id == element.id);
+      countOfTogetherness += l.length;
+    }
+    return countOfTogetherness;
   }
 }

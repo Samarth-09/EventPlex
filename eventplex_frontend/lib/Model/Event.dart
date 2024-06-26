@@ -83,7 +83,7 @@ class Event {
                 (json['keywords'] == null) ? 0 : json['keywords'].length,
                 (index) => json['keywords'][index]
                     .toString()), //List<String>.from(json['keywords']),
-        club: clubName ?? "",
+        club: clubName,
         clubId: json['club']??"",
         images:
             // json['images'],

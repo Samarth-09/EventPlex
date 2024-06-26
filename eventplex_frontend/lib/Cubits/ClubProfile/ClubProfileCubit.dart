@@ -32,6 +32,12 @@ class ClubProfileCubit extends Cubit<ClubProfileState> {
       _id
       name
       dp
+      pastEvents{
+      _id
+      }
+      currentEvents{
+      _id
+      }
     }
     dp
     
@@ -40,10 +46,11 @@ class ClubProfileCubit extends Cubit<ClubProfileState> {
     SharedPreferences sf = await SharedPreferences.getInstance();
     QueryResult result =
         await gqs.performQuery(query, {"email": sf.getString("email")});
-    print(result);
+    // print(result);
     Club c = Club.fromJson(result.data!['clubProfile']);
     emit(ClubProfileStateLoadedState(c));
   }
+
 }
 
 // add email feild in club. clicking on dashboard will search email both in user and club and will show screen acc. same sceeen for club dashboard as of club detail with one extra button for creating new event. sign in for both user and club, if the email is new create new user/club and give the screen acc for creation of the user/club
