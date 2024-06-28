@@ -68,14 +68,14 @@ type Query{
 }
 
 type Mutation{
-  editUser(data: profileInput): user
+  editUser(data: userProfileInput): user
   followClub(data: followInput): user
   unFollowClub(data: followInput): user
   changeLike(data: likeDislikeInput): club
   changeDisLike(data: likeDislikeInput): club
 }
 
-input profileInput{
+input userProfileInput{
   _id: ID
   dp: String
   name: String 

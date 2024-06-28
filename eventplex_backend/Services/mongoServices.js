@@ -238,6 +238,20 @@ const saveClub = async (data) => {
     return 0;
   }
 };
+
+const updateClub = async (club) => {
+  try {
+    var res = await ClubModel.updateOne(
+      { _id: club["_id"] },
+      club
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};
+
 const findClubByEmail = async (email) => {
   let result = [];
   try {
@@ -250,6 +264,7 @@ const findClubByEmail = async (email) => {
   return result[0];
 };
 export {
+  updateClub,
   findClubByEmail,
   saveClub,
   changeDisLike,

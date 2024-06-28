@@ -1,5 +1,9 @@
 import e from "express";
-import { findClubById, saveClub } from "../Services/mongoServices.js";
+import {
+  findClubById,
+  saveClub,
+  updateClub,
+} from "../Services/mongoServices.js";
 
 const clubRouter = e.Router();
 
@@ -18,6 +22,15 @@ clubRouter.post("/new", async (req, res) => {
   const result = await saveClub(req.body);
   if (result == 0) {
     res.json({ msg: "Error in saving" });
+  } else {
+    res.json(result);
+  }
+});
+
+clubRouter.post("/update", async (req, res) => {
+  const result = await updateClub(req.body);
+  if (result == 0) {
+    res.json({ msg: "Error in updating" });
   } else {
     res.json(result);
   }
