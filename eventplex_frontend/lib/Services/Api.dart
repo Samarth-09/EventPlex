@@ -55,16 +55,15 @@ class Api {
     try {
       print(result);
       Club c = Club.fromJson(
-      //   {
-      //   'name': result['name'],
-      //   '_id': result['_id'],
-      //   'currentEvents': result['currentEvents'] ,
-      //   'pastEvents': result['pastEvents'],
-      //   'dp': result['dp'],
-      //   'email': result['email'],
-      // }
-      result
-      );
+          //   {
+          //   'name': result['name'],
+          //   '_id': result['_id'],
+          //   'currentEvents': result['currentEvents'] ,
+          //   'pastEvents': result['pastEvents'],
+          //   'dp': result['dp'],
+          //   'email': result['email'],
+          // }
+          result);
       return c;
     } catch (e) {
       print("2" + e.toString());
@@ -75,6 +74,16 @@ class Api {
   Future<void> updateClub(Map<String, dynamic> mp) async {
     try {
       var responce = await Dio().post('$baseUrl/club/update', data: mp);
+      // return c;
+      print(responce);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> updateEvent(Map<String, dynamic> mp) async {
+    try {
+      var responce = await Dio().post('$baseUrl/event/update', data: mp);
       // return c;
       print(responce);
     } catch (e) {

@@ -1,31 +1,36 @@
 import 'dart:io';
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:eventplex_frontend/Cubits/EditClubProfile/EditClubProfileState.dart';
+import 'package:eventplex_frontend/Cubits/EditEventDetails.dart/EditEventDetailsCubit.dart';
+import 'package:eventplex_frontend/Cubits/EditEventDetails.dart/EditEventDetailsState.dart';
 import 'package:eventplex_frontend/Widgets/Drawer.dart';
-import 'package:eventplex_frontend/screens/EditEventDetails.dart';
 import 'package:eventplex_frontend/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eventplex_frontend/Cubits/EditClubProfile/EditClubProfileCubit.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 // import 'package:path_provider/path_provider.dart';
 
 // ignore: must_be_immutable
-class EditClubProfile extends StatefulWidget {
+class EditEventDetails extends StatefulWidget {
   String id;
-  EditClubProfile({super.key, required this.id});
+  EditEventDetails({super.key, required this.id});
 
   @override
-  State<EditClubProfile> createState() => _EditClubProfileState(id);
+  State<EditEventDetails> createState() => _EditEventDetailsState(id);
 }
 
-class _EditClubProfileState extends State<EditClubProfile> {
+class _EditEventDetailsState extends State<EditEventDetails> {
   String id;
-  _EditClubProfileState(this.id);
+  _EditEventDetailsState(this.id);
   TextEditingController name = TextEditingController();
-  TextEditingController email = TextEditingController();
+  TextEditingController location = TextEditingController();
+  TextEditingController date = TextEditingController();
+  TextEditingController time = TextEditingController();
+  TextEditingController fees = TextEditingController();
+  TextEditingController keywords = TextEditingController();
+  TextEditingController category = TextEditingController();
+  TextEditingController description = TextEditingController();
+
   // TextEditingController keywords = TextEditingController();
   String s = "";
   File? img;
@@ -59,14 +64,12 @@ class _EditClubProfileState extends State<EditClubProfile> {
           margin: EdgeInsets.only(left: w * 0.025),
           child: SingleChildScrollView(
               child: BlocProvider(
-            create: (context) => EditClubProfileCubit(),
-            child: BlocBuilder<EditClubProfileCubit, EditClubProfileState>(
+            create: (context) => EditEventDetailsCubit(),
+            child: BlocBuilder<EditEventDetailsCubit, EditEventDetailsState>(
                 builder: (context, state) {
-              if (state is EditClubProfileLoadedState) {
-                // print(1);
-                // print(img==null);
-                // String keywordsLabel = "";
-                // state.club.keywords.forEach((e) => keywordsLabel += ("$e,"));
+              if (state is EditEventDetailsLoadedState) {
+                String keywordsLabel = "";
+                state.event.keywords.forEach((e) => keywordsLabel += ("$e,"));
                 return Column(children: [
                   Container(
                       margin: EdgeInsets.only(top: h / 100 * 2),
@@ -75,7 +78,7 @@ class _EditClubProfileState extends State<EditClubProfile> {
                             image: (img == null)
                                 ?
                                 // AssetImage("assets/images/e1.jpg")
-                                NetworkImage(state.club.dp)
+                                NetworkImage(state.event.images[0])
                                 // FileImage(img!) as ImageProvider,
                                 : FileImage(img!) as ImageProvider,
                             width: w * 0.4,
@@ -100,48 +103,50 @@ class _EditClubProfileState extends State<EditClubProfile> {
                               ),
                             ))
                       ])),
-                  Container(
-                      margin: EdgeInsets.only(top: h / 100 * 6),
-                      child: CustomDropdown<String>.search(
-                          decoration: CustomDropdownDecoration(
-                              closedBorderRadius:
-                                  BorderRadius.circular(w / 100 * 10),
-                              expandedBorderRadius:
-                                  BorderRadius.circular(w / 100 * 5),
-                              expandedFillColor: Themes.lightred,
-                              closedFillColor: Themes.transparent),
-                          hintText: "Search Event To Update",
-                          items: List.generate(state.club.currentEvents.length,
-                              (index) => state.club.currentEvents[index].name),
-                          onChanged: (p0) {
-                            print(p0);
-                            String id = "";
-                            for (var x in state.club.currentEvents) {
-                              if (x.name == p0) {
-                                id = x.id;
-                                break;
-                              }
-                            }
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return EditEventDetails(id: id);
-                            }));
-                          })),
-                  textFeild(w, h, state.club.name, name),
-                  textFeild(w, h, state.club.email, email),
+                  // Container(
+                  //     margin: EdgeInsets.only(top: h / 100 * 6),
+                  //     child: CustomDropdown<String>.search(
+                  //         decoration: CustomDropdownDecoration(
+                  //             closedBorderRadius:
+                  //                 BorderRadius.circular(w / 100 * 10),
+                  //             expandedBorderRadius:
+                  //                 BorderRadius.circular(w / 100 * 5),
+                  //             expandedFillColor: Themes.lightred,
+                  //             closedFillColor: Themes.transparent),
+                  //         hintText: "Search Event To Update",
+                  //         items: List.generate(state.event.currentEvents.length,
+                  //             (index) => state.club.currentEvents[index].name),
+                  //         onChanged: (p0) {
+                  //           // print(p0);
+                  //         })),
+                  textFeild(w, h, state.event.name, name),
+                  textFeild(w, h, state.event.location, location),
+                  textFeild(w, h, state.event.date, date),
+                  textFeild(w, h, state.event.time, time),
+                  textFeild(w, h, state.event.fees.toString(), fees),
+                  textFeild(w, h, state.event.category, category),
+                  textFeild(w, h, keywordsLabel, keywords),
                   // textFeild(w, h, keywordsLabel, keywords),
 
                   InkWell(
+                    splashColor: null,
+                    hoverColor: null,
                     onTap: () {
+                      
                       // s="hello";
                       // print(1);
-                      context.read<EditClubProfileCubit>().updateData({
+                      context.read<EditEventDetailsCubit>().updateData({
                         '_id': id,
                         'dp': img,
                         'name': (name.text == "") ? null : name.text,
-                        'email': (email.text == "") ? null : email.text,
-                        // 'keywords': (keywords.text == "") ? null : keywords.text
-                      }, state.club);
+                        'location':
+                            (location.text == "") ? null : location.text,
+                        'date': (date.text == "") ? null : date.text,
+                        'time': (time.text == "") ? null : time.text,
+                        'fees': (fees.text == "") ? null : fees.text,
+                        'category': (category.text == "") ? null : category.text,
+                        'keywords': (keywords.text == "") ? null : keywords.text
+                      }, state.event);
                     },
                     child: Container(
                         margin: EdgeInsets.only(top: h / 100 * 3),
@@ -171,7 +176,7 @@ class _EditClubProfileState extends State<EditClubProfile> {
                           bottom: MediaQuery.of(context).viewInsets.bottom))
                 ]);
               } else {
-                context.read<EditClubProfileCubit>().loadUserDetails(id);
+                context.read<EditEventDetailsCubit>().loadDetails(id);
                 return Center(
                   child: Container(
                     width: w,
