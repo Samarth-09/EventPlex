@@ -4,7 +4,7 @@ import 'package:eventplex_frontend/Model/Club.dart';
 import 'package:eventplex_frontend/Model/Event.dart';
 import 'package:eventplex_frontend/Model/User.dart';
 import 'package:eventplex_frontend/Widgets/Drawer.dart';
-import 'package:eventplex_frontend/screens/EditUserProfile.dart';
+import 'package:eventplex_frontend/screens/EditClubProfile.dart';
 import 'package:eventplex_frontend/screens/EventDetails.dart';
 import 'package:eventplex_frontend/themes.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +98,7 @@ class _ClubProfileState extends State<ClubProfile> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        EditUserProfile(
+                                                        EditClubProfile(
                                                             id: state
                                                                 .club.id)));
                                           },

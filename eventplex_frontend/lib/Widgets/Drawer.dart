@@ -60,20 +60,20 @@ class Widgets {
                         await Navigator.pushNamed(context, Routes.userProfile);
                       }
                       else if(r=='club'){
-                        await Navigator.pushNamed(context, Routes.ClubProfile);
+                        await Navigator.pushNamed(context, Routes.clubProfile);
                       }
                       
                     },
                     child: drawerCard(w, h, "Dashboard")),
                 InkWell(
                     onTap: () async {
-                      await Navigator.pushNamed(context, Routes.Login);
+                      await Navigator.pushNamed(context, Routes.login);
                     },
                     child: drawerCard(w, h, "Login")),
                     InkWell(
                     onTap: () async {
                       await FirebaseAuth.instance.signOut();
-                      await Navigator.pushNamed(context, Routes.Login);
+                      await Navigator.pushNamed(context, Routes.login);
                     },
                     child: drawerCard(w, h, "LogOut"))
               ],

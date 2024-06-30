@@ -21,7 +21,7 @@ class Club {
 
   // Deserialize JSON to Club object
   factory Club.fromJson(Map<String, dynamic> json) {
-    // print(json);
+    // print(json['pastEvents'][0]);
     return Club(
         name: json['name'] ?? "",
         id: json['_id'] ?? "",

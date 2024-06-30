@@ -4,6 +4,7 @@ class Routes {
   static String clubDetailFeed = "/ClubDetails.dart";
   static String userProfile = "/UserProfile.dart";
   static String editUserProfile = "/EditUserProfile.dart";
-  static String Login = "/Login.dart";
-  static String ClubProfile = "/ClubProfile.dart";
+  static String login = "/Login.dart";
+  static String clubProfile = "/ClubProfile.dart";
+  static String editClubProfile = "/EditClubProfile.dart";
 }

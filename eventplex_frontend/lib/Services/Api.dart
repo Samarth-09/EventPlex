@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:eventplex_frontend/Model/Club.dart';
 import 'package:eventplex_frontend/Model/Event.dart';
 import 'package:dio/dio.dart';
 import 'package:eventplex_frontend/Model/User.dart';
@@ -42,17 +41,56 @@ class Api {
     return User();
   }
 
-  void uploadImage(File f) async {
-    print(f.path);
-    var m = await MultipartFile.fromFile(f.path, filename: 'e1.jpg');
-    
-    FormData fd = FormData.fromMap({
-      'userFile': m
-    });
-    print(fd);
-    var responce = await Dio().post('$baseUrl/user/imageUpload', data: fd);
-    print(responce);
+  Future<Club> getClubById(String id) async {
+    var responce =
+        await Dio().get('$baseUrl/club/byid', queryParameters: {"id": id});
+    Map<String, dynamic> result = responce.data;
+    // print({
+    //     'name': result['name'],
+    //     '_id': result['id'],
+    //     'currentEvents': result['currentEvents'] as List,
+    //     'dp': result['dp'],
+    //     'email': result['email'],
+    //   });
+    try {
+      print(result);
+      Club c = Club.fromJson(
+      //   {
+      //   'name': result['name'],
+      //   '_id': result['_id'],
+      //   'currentEvents': result['currentEvents'] ,
+      //   'pastEvents': result['pastEvents'],
+      //   'dp': result['dp'],
+      //   'email': result['email'],
+      // }
+      result
+      );
+      return c;
+    } catch (e) {
+      print("2" + e.toString());
+    }
+    return Club();
   }
+
+  Future<void> updateClub(Map<String, dynamic> mp) async {
+    try {
+      var responce = await Dio().post('$baseUrl/club/update', data: mp);
+      // return c;
+      print(responce);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  // void uploadImage(File f) async {
+  //   print(f.path);
+  //   var m = await MultipartFile.fromFile(f.path, filename: 'e1.jpg');
+
+  //   FormData fd = FormData.fromMap({'userFile': m});
+  //   print(fd);
+  //   var responce = await Dio().post('$baseUrl/user/imageUpload', data: fd);
+  //   print(responce);
+  // }
   // Future<Event> getClubById(String id) async {
   //   // print(id);
   //   var responce = await Dio().get('$baseUrl/club/byid', queryParameters: {"id": id});

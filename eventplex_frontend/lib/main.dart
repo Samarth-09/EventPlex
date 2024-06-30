@@ -2,6 +2,7 @@ import 'package:eventplex_frontend/Routes.dart';
 import 'package:eventplex_frontend/firebase_options.dart';
 import 'package:eventplex_frontend/screens/ClubDetails.dart';
 import 'package:eventplex_frontend/screens/ClubProfile.dart';
+import 'package:eventplex_frontend/screens/EditClubProfile.dart';
 import 'package:eventplex_frontend/screens/EditUserProfile.dart';
 import 'package:eventplex_frontend/screens/EventDetails.dart';
 import 'package:eventplex_frontend/screens/EventFeed.dart';
@@ -36,8 +37,9 @@ class MyApp extends StatelessWidget {
         Routes.clubDetailFeed: (context) => ClubDetails(id: ""),
         Routes.userProfile: (context) => const UserProfile(),
         Routes.editUserProfile: (context) => EditUserProfile(id: ""),
-        Routes.Login: (context) => const Login(),
-        Routes.ClubProfile: (context) => const ClubProfile()
+        Routes.login: (context) => const Login(),
+        Routes.clubProfile: (context) => const ClubProfile(),
+        Routes.editClubProfile: (context) => EditClubProfile(id: "")
       },
     );
   }
