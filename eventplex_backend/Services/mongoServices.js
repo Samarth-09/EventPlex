@@ -252,6 +252,19 @@ const updateClub = async (club) => {
   }
 };
 
+const updateEvent = async (event) => {
+  try {
+    var res = await EventModel.updateOne(
+      { _id: event["_id"] },
+      event
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};
+
 const findClubByEmail = async (email) => {
   let result = [];
   try {
@@ -264,6 +277,7 @@ const findClubByEmail = async (email) => {
   return result[0];
 };
 export {
+  updateEvent,
   updateClub,
   findClubByEmail,
   saveClub,

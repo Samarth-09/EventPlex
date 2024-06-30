@@ -1,5 +1,5 @@
 import e from "express";
-import { saveEvent, findEventById } from "../Services/mongoServices.js";
+import { saveEvent, findEventById, updateEvent } from "../Services/mongoServices.js";
 
 const eventRounter = e.Router();
 
@@ -23,6 +23,15 @@ eventRounter.get("/byid", async (req, res) => {
     res.json({ msg: "Not Found" });
   } else {
     // console.log(result);
+    res.json(result);
+  }
+});
+
+eventRounter.post("/update", async (req, res) => {
+  const result = await updateEvent(req.body);
+  if (result == 0) {
+    res.json({ msg: "Error in updating" });
+  } else {
     res.json(result);
   }
 });
