@@ -34,6 +34,9 @@ const getAllUsers = async () => {
 const saveEvent = async (data) => {
   try {
     let d = new EventModel(data);
+    let c = await findClubById(data.club);
+    c.currentEvents.push(d.id);
+    await updateClub(c);
     await d.save();
     return d;
   } catch (error) {
@@ -241,10 +244,7 @@ const saveClub = async (data) => {
 
 const updateClub = async (club) => {
   try {
-    var res = await ClubModel.updateOne(
-      { _id: club["_id"] },
-      club
-    );
+    var res = await ClubModel.updateOne({ _id: club["_id"] }, club);
     return res;
   } catch (error) {
     console.log(error);
@@ -254,10 +254,7 @@ const updateClub = async (club) => {
 
 const updateEvent = async (event) => {
   try {
-    var res = await EventModel.updateOne(
-      { _id: event["_id"] },
-      event
-    );
+    var res = await EventModel.updateOne({ _id: event["_id"] }, event);
     return res;
   } catch (error) {
     console.log(error);
