@@ -6,10 +6,11 @@ import 'package:eventplex_frontend/Model/User.dart';
 class Api {
   String baseUrl = "https://eventplex.onrender.com";
   // String baseUrl = "http://localhost:3001";
+  Dio dio = Dio();
   Future<Event> getEventById(String id) async {
     // print(id);
     var responce =
-        await Dio().get('$baseUrl/event/byid', queryParameters: {"id": id});
+        await dio.get('$baseUrl/event/byid', queryParameters: {"id": id});
     var result = responce.data;
     try {
       // print(result);
@@ -23,7 +24,7 @@ class Api {
 
   Future<User> getUserById(String id) async {
     var responce =
-        await Dio().get('$baseUrl/user/byid', queryParameters: {"id": id});
+        await dio.get('$baseUrl/user/byid', queryParameters: {"id": id});
     var result = responce.data;
     try {
       // print(result);
@@ -43,7 +44,7 @@ class Api {
 
   Future<Club> getClubById(String id) async {
     var responce =
-        await Dio().get('$baseUrl/club/byid', queryParameters: {"id": id});
+        await dio.get('$baseUrl/club/byid', queryParameters: {"id": id});
     Map<String, dynamic> result = responce.data;
     // print({
     //     'name': result['name'],
@@ -73,7 +74,7 @@ class Api {
 
   Future<void> updateClub(Map<String, dynamic> mp) async {
     try {
-      var responce = await Dio().post('$baseUrl/club/update', data: mp);
+      var responce = await dio.post('$baseUrl/club/update', data: mp);
       // return c;
       print(responce);
     } catch (e) {
@@ -83,12 +84,17 @@ class Api {
 
   Future<void> updateEvent(Map<String, dynamic> mp) async {
     try {
-      var responce = await Dio().post('$baseUrl/event/update', data: mp);
+      var responce = await dio.post('$baseUrl/event/update', data: mp);
       // return c;
       print(responce);
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<Event> createEvent(Map<String, dynamic> mp) async {
+    var res = await dio.post("$baseUrl/event/new", data: mp);
+    return Event.fromJson(res.data);
   }
 
   // void uploadImage(File f) async {
@@ -97,12 +103,12 @@ class Api {
 
   //   FormData fd = FormData.fromMap({'userFile': m});
   //   print(fd);
-  //   var responce = await Dio().post('$baseUrl/user/imageUpload', data: fd);
+  //   var responce = await dio.post('$baseUrl/user/imageUpload', data: fd);
   //   print(responce);
   // }
   // Future<Event> getClubById(String id) async {
   //   // print(id);
-  //   var responce = await Dio().get('$baseUrl/club/byid', queryParameters: {"id": id});
+  //   var responce = await dio.get('$baseUrl/club/byid', queryParameters: {"id": id});
   //   var result = responce.data;
   //   try {
   //     // print(result);

@@ -48,21 +48,22 @@ class Widgets {
             child: Column(
               children: [
                 InkWell(
+                    splashColor: Themes.white,
+                    hoverColor: Themes.white,
                     onTap: () async {
+                      await Future.delayed(Duration(milliseconds: 500));
                       await Navigator.pushNamed(context, Routes.eventFeed);
                     },
                     child: drawerCard(w, h, "EventFeed")),
                 InkWell(
                     onTap: () async {
-                      String r = (await SharedPreferences.getInstance()).getString("role")!;
-                      if(r=="user")
-                      {
+                      String r = (await SharedPreferences.getInstance())
+                          .getString("role")!;
+                      if (r == "user") {
                         await Navigator.pushNamed(context, Routes.userProfile);
-                      }
-                      else if(r=='club'){
+                      } else if (r == 'club') {
                         await Navigator.pushNamed(context, Routes.clubProfile);
                       }
-                      
                     },
                     child: drawerCard(w, h, "Dashboard")),
                 InkWell(
@@ -70,7 +71,7 @@ class Widgets {
                       await Navigator.pushNamed(context, Routes.login);
                     },
                     child: drawerCard(w, h, "Login")),
-                    InkWell(
+                InkWell(
                     onTap: () async {
                       await FirebaseAuth.instance.signOut();
                       await Navigator.pushNamed(context, Routes.login);

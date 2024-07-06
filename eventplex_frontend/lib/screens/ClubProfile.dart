@@ -4,6 +4,7 @@ import 'package:eventplex_frontend/Model/Club.dart';
 import 'package:eventplex_frontend/Model/Event.dart';
 import 'package:eventplex_frontend/Model/User.dart';
 import 'package:eventplex_frontend/Widgets/Drawer.dart';
+import 'package:eventplex_frontend/screens/CreateEvent.dart';
 import 'package:eventplex_frontend/screens/EditClubProfile.dart';
 import 'package:eventplex_frontend/screens/EventDetails.dart';
 import 'package:eventplex_frontend/themes.dart';
@@ -21,246 +22,264 @@ class ClubProfile extends StatefulWidget {
 }
 
 class _ClubProfileState extends State<ClubProfile> {
+  String id = "";
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width,
         h = MediaQuery.of(context).size.height;
     return Scaffold(
-        drawer: Widgets().AppDrawer(w, h, context),
-        appBar: AppBar(
-          title: Image.asset("assets/images/eventplex_logo.png",
-              width: w * 0.3, height: h * 0.05, fit: BoxFit.fill),
-          centerTitle: true,
-          backgroundColor: Themes.lightred,
-          surfaceTintColor: Themes.lightred,
-        ),
-        body: Container(
-            width: w * 0.95,
-            margin: EdgeInsets.only(left: w * 0.025),
-            alignment: Alignment.center,
-            child: SingleChildScrollView(
-                child: BlocProvider(
-              create: (context) => ClubProfileCubit(),
-              child: BlocBuilder<ClubProfileCubit, ClubProfileState>(
-                  builder: (context, state) {
-                if (state is ClubProfileStateLoadedState) {
-                  return Column(
-                      // mainAxisAlignment: MainAxisAlignment.start,
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: h / 100 * 2),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              GFImageOverlay(
-                                  image: NetworkImage(state.club.dp),
-                                  width: w * 0.45,
-                                  height: h * 0.2,
-                                  borderRadius:
-                                      BorderRadius.circular(w / 100 * 3)),
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      state.club.name,
-                                      style: Themes.textStyle(
-                                          fontsize: w / 100 * 6,
-                                          fontColor: Themes.black,
-                                          fw: FontWeight.bold),
-                                    ),
-                                    Container(
-                                        width: w * 0.45,
-                                        margin:
-                                            EdgeInsets.only(top: h / 100 * 1),
-                                        child: Text(
-                                          state.club.email,
-                                          // softWrap: true,
-                                          overflow: TextOverflow.fade,
-                                          style: Themes.textStyle(
-                                              fontsize: w / 100 * 4,
-                                              fontColor: Themes.red,
-                                              fw: FontWeight.bold),
-                                        )),
-                                    Container(
-                                        width: w / 100 * 15,
-                                        height: h / 100 * 5,
-                                        alignment: Alignment.center,
-                                        margin:
-                                            EdgeInsets.only(top: h / 100 * 2),
-                                        decoration: BoxDecoration(
-                                            color: Themes.red,
-                                            shape: BoxShape.circle),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            await Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EditClubProfile(
-                                                            id: state
-                                                                .club.id)));
-                                          },
-                                          child: Icon(Icons.edit_note_rounded,
-                                              size: w / 100 * 8,
-                                              color: Themes.white),
-                                        ))
-                                  ])
-                            ],
-                          ),
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(top: h / 100 * 3),
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+      drawer: Widgets().AppDrawer(w, h, context),
+      appBar: AppBar(
+        title: Image.asset("assets/images/eventplex_logo.png",
+            width: w * 0.3, height: h * 0.05, fit: BoxFit.fill),
+        centerTitle: true,
+        backgroundColor: Themes.lightred,
+        surfaceTintColor: Themes.lightred,
+      ),
+      body: Container(
+          width: w * 0.95,
+          margin: EdgeInsets.only(left: w * 0.025),
+          alignment: Alignment.center,
+          child: SingleChildScrollView(
+              child: BlocProvider(
+            create: (context) => ClubProfileCubit(),
+            child: BlocBuilder<ClubProfileCubit, ClubProfileState>(
+                builder: (context, state) {
+              if (state is ClubProfileStateLoadedState) {
+                id = state.club.id;
+                return Column(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: h / 100 * 2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            GFImageOverlay(
+                                image: NetworkImage(state.club.dp),
+                                width: w * 0.45,
+                                height: h * 0.2,
+                                borderRadius:
+                                    BorderRadius.circular(w / 100 * 3)),
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Text(
+                                    state.club.name,
+                                    style: Themes.textStyle(
+                                        fontsize: w / 100 * 6,
+                                        fontColor: Themes.black,
+                                        fw: FontWeight.bold),
+                                  ),
                                   Container(
-                                    alignment: Alignment.center,
-                                    width: w * 0.25,
-                                    height: h * 0.07,
-                                    decoration: BoxDecoration(
-                                        color: Themes.grey,
-                                        borderRadius:
-                                            BorderRadius.circular(w / 100 * 4)),
-                                    child: Column(children: [
-                                      TweenAnimationBuilder(
-                                          duration: const Duration(seconds: 1),
-                                          tween: Tween<double>(
-                                              begin: 0,
-                                              end: state.club.followers.length *
-                                                  1.0),
-                                          builder: (context, value, child) {
-                                            return Text(
-                                                value.toInt().toString(),
-                                                style: Themes.textStyle(
-                                                    fontsize: w / 100 * 5,
-                                                    fontColor: Themes.red));
-                                          }),
-                                      Container(
-                                          margin: EdgeInsets.only(
-                                              top: h / 100 * 0.06),
-                                          child: Text("Followers",
+                                      width: w * 0.45,
+                                      margin: EdgeInsets.only(top: h / 100 * 1),
+                                      child: Text(
+                                        state.club.email,
+                                        // softWrap: true,
+                                        overflow: TextOverflow.fade,
+                                        style: Themes.textStyle(
+                                            fontsize: w / 100 * 4,
+                                            fontColor: Themes.red,
+                                            fw: FontWeight.bold),
+                                      )),
+                                  Container(
+                                      width: w / 100 * 15,
+                                      height: h / 100 * 5,
+                                      alignment: Alignment.center,
+                                      margin: EdgeInsets.only(top: h / 100 * 2),
+                                      decoration: BoxDecoration(
+                                          color: Themes.red,
+                                          shape: BoxShape.circle),
+                                      child: InkWell(
+                                        onTap: () async {
+                                          await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditClubProfile(
+                                                          id: state.club.id)));
+                                        },
+                                        child: Icon(Icons.edit_note_rounded,
+                                            size: w / 100 * 8,
+                                            color: Themes.white),
+                                      ))
+                                ])
+                          ],
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(top: h / 100 * 3),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: w * 0.25,
+                                  height: h * 0.07,
+                                  decoration: BoxDecoration(
+                                      color: Themes.grey,
+                                      borderRadius:
+                                          BorderRadius.circular(w / 100 * 4)),
+                                  child: Column(children: [
+                                    TweenAnimationBuilder(
+                                        duration: const Duration(seconds: 1),
+                                        tween: Tween<double>(
+                                            begin: 0,
+                                            end: state.club.followers.length *
+                                                1.0),
+                                        builder: (context, value, child) {
+                                          return Text(value.toInt().toString(),
                                               style: Themes.textStyle(
-                                                  fontsize: w / 100 * 3,
-                                                  fontColor: Themes.black)))
-                                    ]),
-                                  )
-                                ])),
-                        (state.club.currentEvents.isEmpty)
-                            ? Container(
-                                width: w * 0.95,
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.only(
-                                    top: h / 100 * 2, bottom: h / 100 * 2),
-                                child: Text(
-                                    "You haven't participated in current events yet",
-                                    style: Themes.textStyle(
-                                        fontsize: w / 100 * 3,
-                                        fontColor: Themes.black)))
-                            : Container(
-                                width: w * 0.95,
-                                // alignment: Alignment.,
-                                margin: EdgeInsets.only(top: h / 100 * 3),
-                                child: Text("Current Events(Ongoing)",
-                                    style: Themes.textStyle(
-                                        fontsize: w / 100 * 4,
-                                        fontColor: Themes.black,
-                                        fw: FontWeight.bold)),
+                                                  fontsize: w / 100 * 5,
+                                                  fontColor: Themes.red));
+                                        }),
+                                    Container(
+                                        margin: EdgeInsets.only(
+                                            top: h / 100 * 0.06),
+                                        child: Text("Followers",
+                                            style: Themes.textStyle(
+                                                fontsize: w / 100 * 3,
+                                                fontColor: Themes.black)))
+                                  ]),
+                                )
+                              ])),
+                      (state.club.currentEvents.isEmpty)
+                          ? Container(
+                              width: w * 0.95,
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(
+                                  top: h / 100 * 2, bottom: h / 100 * 2),
+                              child: Text(
+                                  "You haven't participated in current events yet",
+                                  style: Themes.textStyle(
+                                      fontsize: w / 100 * 3,
+                                      fontColor: Themes.black)))
+                          : Container(
+                              width: w * 0.95,
+                              // alignment: Alignment.,
+                              margin: EdgeInsets.only(top: h / 100 * 3),
+                              child: Text("Current Events(Ongoing)",
+                                  style: Themes.textStyle(
+                                      fontsize: w / 100 * 4,
+                                      fontColor: Themes.black,
+                                      fw: FontWeight.bold)),
+                            ),
+                      (state.club.currentEvents.isEmpty)
+                          ? Container()
+                          : Container(
+                              width: w * 0.95,
+                              height: h * 0.42 + h / 100 * 3.5,
+                              margin: EdgeInsets.only(top: h / 100 * 2),
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: state.club.currentEvents.length,
+                                //  state.club.currentEvents.length,
+                                itemBuilder: (context, index) {
+                                  print(index);
+                                  return event(
+                                      w, h, state.club.currentEvents[index]);
+                                },
                               ),
-                        (state.club.currentEvents.isEmpty)
-                            ? Container()
-                            : Container(
-                                width: w * 0.95,
-                                height: h * 0.42 + h / 100 * 3.5,
-                                margin: EdgeInsets.only(top: h / 100 * 2),
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: state.club.currentEvents.length,
-                                  //  state.club.currentEvents.length,
-                                  itemBuilder: (context, index) {
-                                    print(index);
-                                    return event(
-                                        w, h, state.club.currentEvents[index]);
-                                  },
-                                ),
+                            ),
+                      (state.club.pastEvents.isEmpty)
+                          ? Container(
+                              width: w * 0.95,
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(
+                                  top: h / 100 * 2, bottom: h / 100 * 2),
+                              child: Text(
+                                  "You haven't any past events participated in",
+                                  style: Themes.textStyle(
+                                      fontsize: w / 100 * 3,
+                                      fontColor: Themes.black)))
+                          : Container(
+                              width: w * 0.95,
+                              // alignment: Alignment.,
+                              margin: EdgeInsets.only(top: h / 100 * 3),
+                              child: Text("Past Events(Conducted)",
+                                  style: Themes.textStyle(
+                                      fontsize: w / 100 * 4,
+                                      fontColor: Themes.black,
+                                      fw: FontWeight.bold)),
+                            ),
+                      (state.club.pastEvents.isEmpty)
+                          ? Container()
+                          : Container(
+                              width: w * 0.95,
+                              height: h * 0.42 + h / 100 * 3.5,
+                              margin: EdgeInsets.only(top: h / 100 * 2),
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: state.club.pastEvents.length,
+                                itemBuilder: (context, index) {
+                                  return event(
+                                      w, h, state.club.pastEvents[index]);
+                                },
                               ),
-                        (state.club.pastEvents.isEmpty)
-                            ? Container(
-                                width: w * 0.95,
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.only(
-                                    top: h / 100 * 2, bottom: h / 100 * 2),
-                                child: Text(
-                                    "You haven't any past events participated in",
-                                    style: Themes.textStyle(
-                                        fontsize: w / 100 * 3,
-                                        fontColor: Themes.black)))
-                            : Container(
-                                width: w * 0.95,
-                                // alignment: Alignment.,
-                                margin: EdgeInsets.only(top: h / 100 * 3),
-                                child: Text("Past Events(Conducted)",
-                                    style: Themes.textStyle(
-                                        fontsize: w / 100 * 4,
-                                        fontColor: Themes.black,
-                                        fw: FontWeight.bold)),
-                              ),
-                        (state.club.pastEvents.isEmpty)
-                            ? Container()
-                            : Container(
-                                width: w * 0.95,
-                                height: h * 0.42 + h / 100 * 3.5,
-                                margin: EdgeInsets.only(top: h / 100 * 2),
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: state.club.pastEvents.length,
-                                  itemBuilder: (context, index) {
-                                    return event(
-                                        w, h, state.club.pastEvents[index]);
-                                  },
-                                ),
-                              ),
-                        Container(
-                          width: w * 0.95,
-                          // alignment: Alignment.,
-                          margin: EdgeInsets.only(top: h / 100 * 2),
-                          child: Text("Club Followers(users):- ",
-                              style: Themes.textStyle(
-                                  fontsize: w / 100 * 4,
-                                  fontColor: Themes.black,
-                                  fw: FontWeight.bold)),
-                        ),
-                        Container(
-                          width: w * 0.95,
-                          // alignment: Alignment.,
-                          margin: EdgeInsets.only(top: h / 100 * 2),
-                          child: Text(
-                              "*Shown the count of the participations by user for this club's events",
-                              style: Themes.textStyle(
-                                fontsize: w / 100 * 2,
+                            ),
+                      Container(
+                        width: w * 0.95,
+                        // alignment: Alignment.,
+                        margin: EdgeInsets.only(top: h / 100 * 2),
+                        child: Text("Club Followers(users):- ",
+                            style: Themes.textStyle(
+                                fontsize: w / 100 * 4,
                                 fontColor: Themes.black,
-                              )),
-                        ),
-                        ...List.generate(
-                            state.club.followers.length,
-                            ((index) => user(w, h, state.club.followers[index],
-                                state.club, context))),
-                      ]);
-                } else {
-                  context.read<ClubProfileCubit>().loadClubDetails();
-                  return Center(
-                    child: Container(
-                      width: w,
-                      height: h,
-                      child: LoadingAnimationWidget.fourRotatingDots(
-                          color: Themes.red, size: w / 100 * 20),
-                    ),
-                  );
-                }
-              }),
-            ))));
+                                fw: FontWeight.bold)),
+                      ),
+                      Container(
+                        width: w * 0.95,
+                        // alignment: Alignment.,
+                        margin: EdgeInsets.only(top: h / 100 * 2),
+                        child: Text(
+                            "*Shown the count of the participations by user for this club's events",
+                            style: Themes.textStyle(
+                              fontsize: w / 100 * 2,
+                              fontColor: Themes.black,
+                            )),
+                      ),
+                      ...List.generate(
+                          state.club.followers.length,
+                          ((index) => user(w, h, state.club.followers[index],
+                              state.club, context))),
+                    ]);
+              } else {
+                context.read<ClubProfileCubit>().loadClubDetails();
+                return Center(
+                  child: Container(
+                    width: w,
+                    height: h,
+                    child: LoadingAnimationWidget.fourRotatingDots(
+                        color: Themes.red, size: w / 100 * 20),
+                  ),
+                );
+              }
+            }),
+          ))),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: InkWell(
+          hoverColor: null,
+          splashColor: null,
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CreateEvent(id: id)));
+          },
+          child: Container(
+            width: w * 0.15,
+            height: h * 0.06,
+            decoration: BoxDecoration(
+                color: Themes.red,
+                borderRadius: BorderRadius.circular(w / 100 * 3)),
+            child: Icon(
+              Icons.add_box_outlined,
+              size: w / 100 * 10,
+              color: Themes.white,
+            ),
+          )),
+    );
   }
 
   Widget user(double w, double h, User user, Club c, BuildContext context) {

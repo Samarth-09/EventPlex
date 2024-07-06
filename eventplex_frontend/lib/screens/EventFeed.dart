@@ -592,7 +592,7 @@ class _EventFeedState extends State<EventFeed>
                           child: Text(rating,
                               textAlign: TextAlign.center,
                               style: Themes.textStyle(
-                                  fontsize: w / 100 * 5,
+                                  fontsize: w / 100 * 4.2,
                                   fontColor: Themes.white,
                                   fw: FontWeight.w700)),
                         )
