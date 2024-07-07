@@ -1,4 +1,5 @@
 import {
+  changeRating,
   findUserById,
   findClubsById,
   findClubById,
@@ -73,6 +74,12 @@ type Mutation{
   unFollowClub(data: followInput): user
   changeLike(data: likeDislikeInput): club
   changeDisLike(data: likeDislikeInput): club
+  changeRating(data: ratingInput): Int
+}
+
+input ratingInput{
+  _id: ID
+  rating: String
 }
 
 input userProfileInput{
@@ -171,6 +178,9 @@ const resolvers = {
     changeDisLike: async (_, args) => {
       return await changeDisLike(args.data);
     },
+    changeRating: async (_, args) => {
+      return await changeRating(args.data);
+    }
   },
 };
 export { typeDefs, resolvers };

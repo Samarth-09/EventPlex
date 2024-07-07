@@ -273,7 +273,21 @@ const findClubByEmail = async (email) => {
   }
   return result[0];
 };
+const changeRating = async (data) => {
+  try {
+    // console.log(data);
+    var res = await EventModel.updateOne(
+      { _id: data["_id"] },
+      { rating: parseFloat(data["rating"]) }
+    );
+    return 1;
+  } catch (error) {
+    console.log(error);
+  }
+  return 0;
+};
 export {
+  changeRating,
   updateEvent,
   updateClub,
   findClubByEmail,
