@@ -85,4 +85,25 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
       print(err);
     }
   }
+
+  void changeRating(Event e, double v) async {
+    double x = double.parse(e.rating);
+    x = (x + v) / 2.0;
+    print(x);
+    e.rating = x.toString();
+    String query = '''mutation(\$data: ratingInput){
+    changeRating(data: \$data)
+    }''';
+    var result = await gqs.performMutation(query, {
+      'data': {"_id": e.id, "rating": double.parse(e.rating).toStringAsFixed(2)}
+    });
+    if (result.data!['changeRating'] == 1) {
+      emit(EventDetailsStateLoaded(e));
+    }
+    return;
+  }
+
+  void updateUi(Event e) {
+    emit(EventDetailsStateLoaded(e));
+  }
 }

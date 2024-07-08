@@ -2,12 +2,13 @@ import 'package:eventplex_frontend/Model/Club.dart';
 import 'package:eventplex_frontend/Services/GraphQLService.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql/client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'ClubDetailsState.dart';
 
 class ClubDetailsCubit extends Cubit<ClubDetailsState> {
   GraphQLService gqs = GraphQLService();
   ClubDetailsCubit() : super(ClubDetailsState()) {}
-  void loadClubDetails(id) async {
+  Future<String> loadClubDetails(id) async {
     String query = '''query getClubInfo(\$id: String){
       clubInfo(id: \$id){
         _id
@@ -36,9 +37,12 @@ class ClubDetailsCubit extends Cubit<ClubDetailsState> {
     QueryResult result = await gqs.performQuery(query, {"id": id});
     Club c = Club.fromJson(result.data!['clubInfo']);
     bool b = false;
-    for (var e in c.followers) {
+    String currentEmail =
+        (await SharedPreferences.getInstance()).getString("email")!;
+
+    for (var u in c.followers) {
       // print(e.id);
-      if (e.id == "665a2845e75985c1d041aae6") {
+      if (u.id == await getCurrentUserId(currentEmail)) {
         b = true;
         break;
       }
@@ -48,9 +52,14 @@ class ClubDetailsCubit extends Cubit<ClubDetailsState> {
     } else {
       emit(ClubDetailsStateLoaded(c, false));
     }
+    String role = (await SharedPreferences.getInstance()).getString("role")!;
+    return role;
   }
 
-  void changeFollowing(Club c, bool p) {
+  void changeFollowing(Club c, bool p) async {
+    String currentEmail =
+        (await SharedPreferences.getInstance()).getString("email")!;
+    String id = await getCurrentUserId(currentEmail);
     if (p == true) {
       String query = '''mutation(\$data: followInput){
     unFollowClub(data: \$data){
@@ -59,7 +68,7 @@ class ClubDetailsCubit extends Cubit<ClubDetailsState> {
     }
 ''';
       gqs.performMutation(query, {
-        "data": {"uid": "665a2845e75985c1d041aae6", "cid": c.id}
+        "data": {"uid": id, "cid": c.id}
       });
       emit(ClubDetailsStateLoaded(c, false));
     } else {
@@ -70,10 +79,24 @@ class ClubDetailsCubit extends Cubit<ClubDetailsState> {
     }
 ''';
       gqs.performMutation(query, {
-        "data": {"uid": "665a2845e75985c1d041aae6", "cid": c.id}
+        "data": {"uid": id, "cid": c.id}
       });
 
       emit(ClubDetailsStateLoaded(c, true));
     }
+  }
+
+  Future<String> getCurrentUserId(String email) async {
+    String query = '''query(\$email: String){
+    userInfo(email: \$email){
+    _id
+    }
+    }
+''';
+    var result = await gqs.performQuery(query, {"email": email});
+    print(result.data);
+    return (result.data!['userInfo'] == null)
+        ? ""
+        : result.data!['userInfo']['_id'];
   }
 }

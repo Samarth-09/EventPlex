@@ -258,6 +258,30 @@ class _EventDetailsState extends State<EventDetails> {
                                                 fw: FontWeight.bold)))),
                               )
                             ]),
+                      ),
+                      Container(
+                        width: w * 0.9,
+                        child: Slider(
+                          label: state.event.rating,
+                          allowedInteraction: SliderInteraction.slideOnly,
+                          inactiveColor: Themes.grey,
+                          activeColor: Themes.red,
+                          min: 0.0,
+                          max: 5.0,
+                          divisions: 5,
+                          value: double.parse(state.event.rating),
+                          //  double.parse(double.parse(state.event.rating)
+                          //     .toStringAsFixed(2)),
+                          onChanged: (value) {
+                            state.event.rating = value.toString();
+                            context
+                                .read<EventDetailsCubit>()
+                                .updateUi(state.event);
+                          },
+                          // onChangeEnd: (value) {
+
+                          // },
+                        ),
                       )
                     ]));
               } else {
@@ -281,7 +305,16 @@ class _EventDetailsState extends State<EventDetails> {
     return Row(
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(Icons.star_outlined, color: Themes.red, size: w / 100 * 8),
+          InkWell(
+              splashColor: Themes.transparent,
+              hoverColor: Themes.white,
+              onDoubleTap: () {
+                context
+                    .read<EventDetailsCubit>()
+                    .changeRating(event, double.parse(event.rating));
+              },
+              child: Icon(Icons.star_outlined,
+                  color: Themes.red, size: w / 100 * 8)),
           Container(
               margin: EdgeInsets.only(left: w / 100 * 2),
               child: Text(event.rating.toString(),

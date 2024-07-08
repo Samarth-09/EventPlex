@@ -3,6 +3,7 @@ import 'package:eventplex_frontend/themes.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -80,6 +81,7 @@ class Widgets {
               ],
             ),
           ),
+
           Container(
               padding: EdgeInsets.symmetric(
                   horizontal: w / 100 * 2, vertical: h / 100 * 2),
@@ -100,46 +102,74 @@ class Widgets {
                           style: Themes.textStyle(
                               fontsize: w / 100 * 3, fontColor: Themes.black)),
                     ),
-                    InkWell(
-                      onTap: () async {
-                        await LaunchApp.openApp(
-                            openStore: true,
-                            androidPackageName: "com.google.android.gm");
-                      },
-                      child: ListTile(
-                          leading: Image.network(
-                              "https://img.icons8.com/color/96/gmail-new.png",
-                              width: w / 100 * 8,
-                              height: h / 100 * 4,
-                              fit: BoxFit.fill),
-                          title: Text("srparekh0909@gmail.com",
-                              style: Themes.textStyle(
-                                  fontsize: w / 100 * 3,
-                                  fontColor: Themes.black))),
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        await launchUrl(Uri.parse(
-                            "https://www.linkedin.com/in/samarth-parekh-8948492a8/"));
-                      },
-                      child: ListTile(
-                          leading: Image.network(
-                              "https://img.icons8.com/fluency/96/linkedin.png",
-                              width: w / 100 * 8,
-                              height: h / 100 * 4,
-                              fit: BoxFit.fill),
-                          title: Text("LinkedIn",
-                              style: Themes.textStyle(
-                                  fontsize: w / 100 * 3,
-                                  fontColor: Themes.black))),
-                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              await LaunchApp.openApp(
+                                  openStore: true,
+                                  androidPackageName: "com.google.android.gm");
+                            },
+                            child: Image.network(
+                                "https://img.icons8.com/color/96/gmail-new.png",
+                                width: w / 100 * 8,
+                                height: h / 100 * 4,
+                                fit: BoxFit.fill),
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              await LaunchApp.openApp(
+                                  openStore: true,
+                                  androidPackageName: "com.google.android.gm");
+                            },
+                            child: Image.network(
+                                "https://img.icons8.com/fluency/96/linkedin.png",
+                                width: w / 100 * 8,
+                                height: h / 100 * 4,
+                                fit: BoxFit.fill),
+                          )
+                        ]),
+                    // InkWell(
+                    //   onTap: () async {
+                    //     await LaunchApp.openApp(
+                    //         openStore: true,
+                    //         androidPackageName: "com.google.android.gm");
+                    //   },
+                    //   child: ListTile(
+                    //       leading: Image.network(
+                    //           "https://img.icons8.com/color/96/gmail-new.png",
+                    //           width: w / 100 * 8,
+                    //           height: h / 100 * 4,
+                    //           fit: BoxFit.fill),
+                    //       title: Text("srparekh0909@gmail.com",
+                    //           style: Themes.textStyle(
+                    //               fontsize: w / 100 * 3,
+                    //               fontColor: Themes.black))),
+                    // ),
+                    // InkWell(
+                    //   onTap: () async {
+                    //     await launchUrl(Uri.parse(
+                    //         "https://www.linkedin.com/in/samarth-parekh-8948492a8/"));
+                    //   },
+                    //   child: ListTile(
+                    //       leading: Image.network(
+                    //           "https://img.icons8.com/fluency/96/linkedin.png",
+                    //           width: w / 100 * 8,
+                    //           height: h / 100 * 4,
+                    //           fit: BoxFit.fill),
+                    //       title: Text("LinkedIn",
+                    //           style: Themes.textStyle(
+                    //               fontsize: w / 100 * 3,
+                    //               fontColor: Themes.black))),
+                    // ),
                     Text("© 2024 EventPlex. All rights reserved.",
                         style: Themes.textStyle(
                             fontsize: w / 100 * 3, fontColor: Themes.black)),
                     Container(
                       margin: EdgeInsets.only(top: h / 100 * 1),
                       child: Image.asset("assets/images/eventplex_logo.png",
-                          width: w * 0.4, height: h * 0.05, fit: BoxFit.fill),
+                          width: w * 0.8, height: h * 0.06, fit: BoxFit.fill),
                     )
                   ]))
         ],

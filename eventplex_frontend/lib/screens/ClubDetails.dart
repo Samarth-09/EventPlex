@@ -24,6 +24,7 @@ class ClubDetails extends StatefulWidget {
 class _ClubDetailsState extends State<ClubDetails> {
   String id;
   _ClubDetailsState(this.id);
+  String role = "";
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width,
@@ -73,22 +74,26 @@ class _ClubDetailsState extends State<ClubDetails> {
                                         fontsize: w / 100 * 6,
                                         fontColor: Themes.black,
                                         fw: FontWeight.bold)),
-                                InkWell(
-                                  onTap: () {
-                                    //add the the logged in user to the following list of this club if not there else remove theme
-                                    context
-                                        .read<ClubDetailsCubit>()
-                                        .changeFollowing(
-                                            state.club, state.following);
-                                  },
-                                  child: Text(
-                                      (state.following) ? "UnFollow" : "Follow",
-                                      style: Themes.textStyle(
-                                        fontsize: w / 100 * 4,
-                                        fontColor: Themes.red,
-                                        // fw: FontWeight.bold
-                                      )),
-                                ),
+                                (role == "club")
+                                    ? Container()
+                                    : InkWell(
+                                        onTap: () {
+                                          //add the the logged in user to the following list of this club if not there else remove theme
+                                          context
+                                              .read<ClubDetailsCubit>()
+                                              .changeFollowing(
+                                                  state.club, state.following);
+                                        },
+                                        child: Text(
+                                            (state.following)
+                                                ? "UnFollow"
+                                                : "Follow",
+                                            style: Themes.textStyle(
+                                              fontsize: w / 100 * 4,
+                                              fontColor: Themes.red,
+                                              // fw: FontWeight.bold
+                                            )),
+                                      ),
                               ],
                             ),
                           ),
@@ -164,7 +169,10 @@ class _ClubDetailsState extends State<ClubDetails> {
                                 )
                         ]));
                   } else {
-                    context.read<ClubDetailsCubit>().loadClubDetails(id);
+                    context
+                        .read<ClubDetailsCubit>()
+                        .loadClubDetails(id)
+                        .then((value) => role = value);
                     return Center(
                       child: Container(
                         width: w,
