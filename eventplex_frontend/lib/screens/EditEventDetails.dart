@@ -50,7 +50,7 @@ class _EditEventDetailsState extends State<EditEventDetails> {
     double w = MediaQuery.of(context).size.width,
         h = MediaQuery.of(context).size.height;
     return Scaffold(
-      drawer: Widgets().AppDrawer(w, h, context),
+      drawer: const Widgets(),
       appBar: AppBar(
         title: Image.asset("assets/images/eventplex_logo.png",
             width: w * 0.3, height: h * 0.05, fit: BoxFit.fill),

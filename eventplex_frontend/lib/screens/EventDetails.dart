@@ -24,13 +24,14 @@ class EventDetails extends StatefulWidget {
 
 class _EventDetailsState extends State<EventDetails> {
   String eventId;
+  double value = 0;
   _EventDetailsState(this.eventId);
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width,
         h = MediaQuery.of(context).size.height;
     return Scaffold(
-        drawer: Widgets().AppDrawer(w, h, context),
+        drawer: const Widgets(),
         appBar: AppBar(
           title: Image.asset("assets/images/eventplex_logo.png",
               width: w * 0.3, height: h * 0.05, fit: BoxFit.fill),
@@ -61,8 +62,8 @@ class _EventDetailsState extends State<EventDetails> {
                               width: w * 0.95,
                               height: h * 0.3,
                               initialPage: 0,
-                              indicatorColor: Themes.lightred,
-                              indicatorBackgroundColor: Themes.red,
+                              indicatorColor: Themes.red,
+                              indicatorBackgroundColor: Themes.lightred,
                               onPageChanged: (value) {
                                 // print('Page changed: $value');
                                 // idx = value;
@@ -260,10 +261,20 @@ class _EventDetailsState extends State<EventDetails> {
                             ]),
                       ),
                       Container(
+                          margin: EdgeInsets.only(top: h / 100 * 3),
+                          child: Text(
+                            "Rate Us !!",
+                            style: Themes.textStyle(
+                                    fontsize: w / 100 * 4,
+                                    fontColor: Themes.black,
+                                    fw: FontWeight.w600)
+                                .copyWith(decoration: TextDecoration.underline),
+                          )),
+                      Container(
                         width: w * 0.9,
                         child: Slider(
-                          label: state.event.rating,
-                          allowedInteraction: SliderInteraction.slideOnly,
+                          label: value.toString(),
+                          allowedInteraction: SliderInteraction.tapAndSlide,
                           inactiveColor: Themes.grey,
                           activeColor: Themes.red,
                           min: 0.0,
@@ -272,15 +283,18 @@ class _EventDetailsState extends State<EventDetails> {
                           value: double.parse(state.event.rating),
                           //  double.parse(double.parse(state.event.rating)
                           //     .toStringAsFixed(2)),
-                          onChanged: (value) {
-                            state.event.rating = value.toString();
+                          onChanged: (val) {
+                            // state.event.rating = value.toString();
+                            value = val;
                             context
                                 .read<EventDetailsCubit>()
                                 .updateUi(state.event);
                           },
-                          // onChangeEnd: (value) {
-
-                          // },
+                          onChangeEnd: (value) {
+                            context
+                                .read<EventDetailsCubit>()
+                                .changeRating(state.event, value);
+                          },
                         ),
                       )
                     ]));
@@ -317,7 +331,7 @@ class _EventDetailsState extends State<EventDetails> {
                   color: Themes.red, size: w / 100 * 8)),
           Container(
               margin: EdgeInsets.only(left: w / 100 * 2),
-              child: Text(event.rating.toString(),
+              child: Text(double.parse(event.rating).toStringAsFixed(2),
                   style: Themes.textStyle(
                       fontsize: w / 100 * 4, fontColor: Themes.black))),
           Container(

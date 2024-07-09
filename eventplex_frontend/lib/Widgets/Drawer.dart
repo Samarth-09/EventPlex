@@ -1,180 +1,218 @@
 import 'package:eventplex_frontend/Routes.dart';
 import 'package:eventplex_frontend/themes.dart';
-import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:getwidget/components/image/gf_image_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Widgets {
-  String? dp;
+class Widgets extends StatefulWidget {
+  const Widgets({super.key});
 
-  Widget AppDrawer(double w, double h, BuildContext context) {
+  @override
+  State<Widgets> createState() => _WidgetsState();
+}
+
+class _WidgetsState extends State<Widgets> {
+  String? name, dp;
+  @override
+  void initState() {
+    super.initState();
+    loadUser().then((value) => setState(() {}));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width,
+        h = MediaQuery.of(context).size.height;
     return Drawer(
       backgroundColor: Themes.white,
       surfaceTintColor: Themes.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Container(
-          //     margin: EdgeInsets.only(top: h / 100 * 3),
-          //     child: GFImageOverlay(
-          //       image: NetworkImage(),
-          //       width: w * 0.3,
-          //       height: h * 0.2,
-          //       shape: BoxShape.circle,
-          //       boxFit: BoxFit.fill,
-          //     )),
-          // Container(
-          //     margin: EdgeInsets.only(top: h / 100 * 1),
-          //     child: Text(
-          //       "Samarth Parekh",
-          //       style: Themes.textStyle(
-          //           fontsize: w / 100 * 6,
-          //           fontColor: Themes.black,
-          //           fw: FontWeight.bold),
-          //     )),
-          // Container(
-          //     margin: EdgeInsets.only(top: h / 100 * 3),
-          //     child: Divider(
-          //       color: Themes.red,
-          //       thickness: 1,
-          //       indent: w / 100 * 2,
-          //       endIndent: w / 100 * 2,
-          //     )),
-          Container(
-            // height: h,
-            margin: EdgeInsets.only(top: h / 100 * 5),
-            child: Column(
-              children: [
-                InkWell(
-                    splashColor: Themes.white,
-                    hoverColor: Themes.white,
-                    onTap: () async {
-                      await Future.delayed(Duration(milliseconds: 500));
-                      await Navigator.pushNamed(context, Routes.eventFeed);
-                    },
-                    child: drawerCard(w, h, "EventFeed")),
-                InkWell(
-                    onTap: () async {
-                      String r = (await SharedPreferences.getInstance())
-                          .getString("role")!;
-                      if (r == "user") {
-                        await Navigator.pushNamed(context, Routes.userProfile);
-                      } else if (r == 'club') {
-                        await Navigator.pushNamed(context, Routes.clubProfile);
-                      }
-                    },
-                    child: drawerCard(w, h, "Dashboard")),
-                InkWell(
-                    onTap: () async {
-                      await Navigator.pushNamed(context, Routes.login);
-                    },
-                    child: drawerCard(w, h, "Login")),
-                InkWell(
-                    onTap: () async {
-                      await FirebaseAuth.instance.signOut();
-                      await Navigator.pushNamed(context, Routes.login);
-                    },
-                    child: drawerCard(w, h, "LogOut"))
-              ],
-            ),
-          ),
-
-          Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: w / 100 * 2, vertical: h / 100 * 2),
-              color: Themes.lightred,
+      child: SingleChildScrollView(
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              // height: h,
+              // margin: EdgeInsets.only(top: h / 100 * 5),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text("Contact Us",
-                        style: Themes.textStyle(
-                                fontsize: w / 100 * 4,
-                                fontColor: Themes.black,
-                                fw: FontWeight.bold)
-                            .copyWith(decoration: TextDecoration.underline)),
-                    Container(
-                      margin: EdgeInsets.only(top: h / 100 * 2),
-                      child: Text("For Any Query or Suggestion, lets connect!!",
-                          style: Themes.textStyle(
-                              fontsize: w / 100 * 3, fontColor: Themes.black)),
+                children: [
+                  Container(
+                    padding:
+                        EdgeInsets.only(top: h / 100 * 4, bottom: h / 100 * 2),
+                    width: w * 0.9,
+                    decoration: BoxDecoration(
+                        color: Themes.lightred,
+                        border: Border(
+                            bottom: BorderSide(color: Themes.red, width: 1.5))),
+                    child: Column(
+                      children: [
+                        Container(
+                            margin: EdgeInsets.only(top: h / 100 * 3),
+                            child: (dp == null)
+                                ? Container()
+                                : GFImageOverlay(
+                                    image: NetworkImage(dp!),
+                                    width: w * 0.3,
+                                    height: h * 0.15,
+                                    shape: BoxShape.circle,
+                                    boxFit: BoxFit.fill,
+                                  )),
+                        Container(
+                            margin: EdgeInsets.only(top: h / 100 * 1),
+                            child: Text(
+                              name.toString(),
+                              style: Themes.textStyle(
+                                  fontsize: w / 100 * 6,
+                                  fontColor: Themes.black,
+                                  fw: FontWeight.bold),
+                            )),
+                      ],
                     ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          InkWell(
-                            onTap: () async {
-                              await LaunchApp.openApp(
-                                  openStore: true,
-                                  androidPackageName: "com.google.android.gm");
-                            },
-                            child: Image.network(
-                                "https://img.icons8.com/color/96/gmail-new.png",
-                                width: w / 100 * 8,
-                                height: h / 100 * 4,
-                                fit: BoxFit.fill),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              await LaunchApp.openApp(
-                                  openStore: true,
-                                  androidPackageName: "com.google.android.gm");
-                            },
-                            child: Image.network(
-                                "https://img.icons8.com/fluency/96/linkedin.png",
-                                width: w / 100 * 8,
-                                height: h / 100 * 4,
-                                fit: BoxFit.fill),
-                          )
-                        ]),
-                    // InkWell(
-                    //   onTap: () async {
-                    //     await LaunchApp.openApp(
-                    //         openStore: true,
-                    //         androidPackageName: "com.google.android.gm");
-                    //   },
-                    //   child: ListTile(
-                    //       leading: Image.network(
-                    //           "https://img.icons8.com/color/96/gmail-new.png",
-                    //           width: w / 100 * 8,
-                    //           height: h / 100 * 4,
-                    //           fit: BoxFit.fill),
-                    //       title: Text("srparekh0909@gmail.com",
-                    //           style: Themes.textStyle(
-                    //               fontsize: w / 100 * 3,
-                    //               fontColor: Themes.black))),
-                    // ),
-                    // InkWell(
-                    //   onTap: () async {
-                    //     await launchUrl(Uri.parse(
-                    //         "https://www.linkedin.com/in/samarth-parekh-8948492a8/"));
-                    //   },
-                    //   child: ListTile(
-                    //       leading: Image.network(
-                    //           "https://img.icons8.com/fluency/96/linkedin.png",
-                    //           width: w / 100 * 8,
-                    //           height: h / 100 * 4,
-                    //           fit: BoxFit.fill),
-                    //       title: Text("LinkedIn",
-                    //           style: Themes.textStyle(
-                    //               fontsize: w / 100 * 3,
-                    //               fontColor: Themes.black))),
-                    // ),
-                    Text("© 2024 EventPlex. All rights reserved.",
-                        style: Themes.textStyle(
-                            fontsize: w / 100 * 3, fontColor: Themes.black)),
-                    Container(
-                      margin: EdgeInsets.only(top: h / 100 * 1),
-                      child: Image.asset("assets/images/eventplex_logo.png",
-                          width: w * 0.8, height: h * 0.06, fit: BoxFit.fill),
-                    )
-                  ]))
-        ],
+                  ),
+                  InkWell(
+                      splashColor: Themes.white,
+                      hoverColor: Themes.white,
+                      onTap: () async {
+                        await Future.delayed(Duration(milliseconds: 500));
+                        await Navigator.pushNamed(context, Routes.eventFeed);
+                        Navigator.pop(context);
+                      },
+                      child: drawerCard(w, h, "EventFeed")),
+                  InkWell(
+                      onTap: () async {
+                        String r = (await SharedPreferences.getInstance())
+                            .getString("role")!;
+                        if (r == "user") {
+                          await Navigator.pushNamed(
+                              context, Routes.userProfile);
+                        } else if (r == 'club') {
+                          await Navigator.pushNamed(
+                              context, Routes.clubProfile);
+                        }
+                        Navigator.pop(context);
+                      },
+                      child: drawerCard(w, h, "Dashboard")),
+                  InkWell(
+                      onTap: () async {
+                        await Navigator.pushNamed(context, Routes.login);
+                        Navigator.pop(context);
+                      },
+                      child: drawerCard(w, h, "Login")),
+                  InkWell(
+                      onTap: () async {
+                        await FirebaseAuth.instance.signOut();
+                        await Navigator.pushNamed(context, Routes.login);
+                      },
+                      child: drawerCard(w, h, "LogOut"))
+                ],
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(top: h / 100 * 4),
+                padding: EdgeInsets.symmetric(
+                    horizontal: w / 100 * 2, vertical: h / 100 * 2),
+                decoration: BoxDecoration(
+                    color: Themes.lightred,
+                    border:
+                        Border(top: BorderSide(color: Themes.red, width: 1.5))),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text("Contact Us",
+                          style: Themes.textStyle(
+                                  fontsize: w / 100 * 4,
+                                  fontColor: Themes.black,
+                                  fw: FontWeight.bold)
+                              .copyWith(decoration: TextDecoration.underline)),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                // await LaunchApp.openApp(
+                                //     openStore: true,
+                                //     androidPackageName:
+                                //         "com.google.android.gm");
+                                String email = Uri.encodeComponent(
+                                    "srparekh0909@gmail.com");
+                                String subject = Uri.encodeComponent(
+                                    "Some Suggestions from $name");
+                                String body =
+                                    Uri.encodeComponent("Hello Samarth!");
+                                print(subject); //output: Hello%20Flutter
+                                Uri mail = Uri.parse(
+                                    "mailto:$email?subject=$subject&body=$body");
+                                await launchUrl(mail);
+                              },
+                              child: Image.network(
+                                  "https://img.icons8.com/color/96/gmail-new.png",
+                                  width: w / 100 * 8,
+                                  height: h / 100 * 4,
+                                  fit: BoxFit.fill),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                launchUrl(Uri.parse(
+                                    "https://www.linkedin.com/in/samarth-parekh-8948492a8/"));
+                              },
+                              child: Image.network(
+                                  "https://img.icons8.com/fluency/96/linkedin.png",
+                                  width: w / 100 * 8,
+                                  height: h / 100 * 4,
+                                  fit: BoxFit.fill),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                await launchUrl(Uri.parse(
+                                    "https://www.instagram.com/samarth_9_9?igsh=MWpwcmN1MXQyZGlzdQ=="));
+                                // await LaunchApp.openApp(
+                                //     openStore: true,
+                                //     androidPackageName: "com.google.android.gm");
+                              },
+                              child: Image.network(
+                                  "https://img.icons8.com/fluency/48/instagram-new.png",
+                                  width: w / 100 * 8,
+                                  height: h / 100 * 4,
+                                  fit: BoxFit.fill),
+                            )
+                          ]),
+                      Container(
+                          // width: w * 0.45,
+                          margin: EdgeInsets.only(top: h / 100 * 1),
+                          child: Text(
+                            "\"Events that Inspire, Connections that lasts!!\"",
+                            style: Themes.textStyle(
+                                    fontsize: w / 100 * 3,
+                                    fontColor: Themes.red)
+                                .copyWith(fontStyle: FontStyle.italic),
+                          )),
+                      Container(
+                        margin: EdgeInsets.only(top: h / 100 * 2),
+                        child: Image.asset("assets/images/eventplex_logo.png",
+                            width: w * 0.35,
+                            height: h * 0.06,
+                            fit: BoxFit.fill),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: h / 100 * 1),
+                        child: Text("© 2024 EventPlex. All rights reserved.",
+                            style: Themes.textStyle(
+                                fontsize: w / 100 * 3,
+                                fontColor: Themes.black)),
+                      ),
+                    ]))
+          ],
+        ),
       ),
     );
+  }
+
+  Future<void> loadUser() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    name = sf.getString("name");
+    dp = sf.getString("dp");
   }
 
   Widget drawerCard(double w, double h, String s) {

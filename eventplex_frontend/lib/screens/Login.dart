@@ -1,6 +1,7 @@
 import 'package:eventplex_frontend/Cubits/Login/LoginCubit.dart';
 import 'package:eventplex_frontend/Cubits/Login/LoginState.dart';
 import 'package:eventplex_frontend/Routes.dart';
+import 'package:eventplex_frontend/screens/EventFeed.dart';
 import 'package:eventplex_frontend/themes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,20 +18,11 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   User? u;
-
+  BuildContext? c;
+  Future<String>? email;
   @override
   void initState() {
     super.initState();
-    auth.authStateChanges().listen((event) async {
-      // if(event!.emailVerified){
-      SharedPreferences sf = await SharedPreferences.getInstance();
-      sf.setString("email", event!.email.toString());
-      print(event.email);
-      u = event;
-      setState(() {});
-      Navigator.pushNamed(context, Routes.eventFeed);
-      // }
-    });
   }
 
   @override
@@ -47,6 +39,7 @@ class _LoginState extends State<Login> {
         create: (context) => LoginCubit(),
         child: BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
           if (state is LoginInitialState) {
+            c = context;
             return SizedBox(
               width: w * 0.9,
               child: Column(
@@ -140,7 +133,26 @@ class _LoginState extends State<Login> {
 
   Widget googleSignInButton(double w, double h, BuildContext context) {
     return InkWell(
-      onTap: () => context.read<LoginCubit>().loginUsingGoogle(auth),
+      onTap: () {
+        context.read<LoginCubit>().loginUsingGoogle(auth);
+        auth.authStateChanges().listen((event) async {
+          if (event!.emailVerified) {
+            SharedPreferences sf = await SharedPreferences.getInstance();
+            sf.setString("email", event!.email.toString());
+            print(event.email);
+            u = event;
+            setState(() {});
+            if (event.emailVerified) {
+              context.read<LoginCubit>().loadCurrentUser(event.email!);
+            }
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return EventFeed(email: event.email!);
+              },
+            ));
+          }
+        });
+      },
       child: Container(
         padding: EdgeInsets.symmetric(
             vertical: h / 100 * 2, horizontal: w / 100 * 3),

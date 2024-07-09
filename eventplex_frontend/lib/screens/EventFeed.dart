@@ -11,15 +11,17 @@ import 'package:getwidget/getwidget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class EventFeed extends StatefulWidget {
-  const EventFeed({super.key});
-
+  String email;
+  EventFeed({super.key, required this.email});
   @override
-  State<EventFeed> createState() => _EventFeedState();
+  State<EventFeed> createState() => _EventFeedState(email);
 }
 
 class _EventFeedState extends State<EventFeed>
     with SingleTickerProviderStateMixin {
   // bool isScrolled = false;
+  String email;
+  _EventFeedState(this.email);
   TextEditingController t = TextEditingController();
   late AnimationController ac;
   late Animation typingAnimation;
@@ -46,7 +48,7 @@ class _EventFeedState extends State<EventFeed>
     double h = MediaQuery.of(context).size.height;
     ScrollController scrollController = ScrollController();
     return Scaffold(
-        drawer: Widgets().AppDrawer(w, h, context),
+        drawer: const Widgets(),
         body: CustomScrollView(
           controller: scrollController,
           slivers: [
@@ -85,42 +87,12 @@ class _EventFeedState extends State<EventFeed>
                               state.isScrolled,
                               context);
                         });
-                    // } else if (state is EventFeedScrolledState) {
-                    //   scrollController.addListener(() {
-                    //     if (scrollController.position.pixels < (h * 0.15)) {
-                    //       context
-                    //           .read<EventFeedCubit>()
-                    //           .makeAppbarTextInVisible();
-                    //     }
-                    //   });
-                    //   return AppBar(w, h, "Samarth", state.isScrolled, context);
                   } else {
                     return SliverAppBar();
                   }
                 },
               ),
             ),
-            // SliverAppBar(
-            //   surfaceTintColor: Themes.grey,
-            //   backgroundColor: Themes.lightred,
-            //   pinned: true,
-            //   snap: false,
-            //   floating: false,
-            //   title: Text("Welcome Samarth to EventPlex",
-            //       style: Themes.textStyle(
-            //           fontsize: (w / 100) * 4,
-            //           fontColor:
-            //               (isScrolled) ? Themes.black : Themes.transparent,
-            //           fw: FontWeight.bold)),
-            //   expandedHeight: h * 0.3,
-            //   flexibleSpace: FlexibleSpaceBar(
-            //       background: Image.asset(
-            //     "assets/images/eventplex_logo.png",
-            //     width: w,
-            //     height: h * 0.3,
-            //     fit: BoxFit.fill,
-            //   )),
-            // ),
             SliverList(
                 delegate: SliverChildListDelegate([
               Container(
@@ -305,14 +277,16 @@ class _EventFeedState extends State<EventFeed>
       // primary: false,
       leadingWidth: (w / 100) * 15,
       leading: (isScrolled)
-          ? Container(
-              margin: EdgeInsets.only(left: (w / 100) * 5),
-              child: const GFAvatar(
-                // foregroundColor: ,
-                backgroundImage: NetworkImage("assets/images/photo.jpg"),
-                // size: GFSize.LARGE,
-              ),
-            )
+          ?
+          // Container(
+          //     margin: EdgeInsets.only(left: (w / 100) * 5),
+          //     child: const GFAvatar(
+          //       // foregroundColor: ,
+          //       backgroundImage: NetworkImage("assets/images/photo.jpg"),
+          //       // size: GFSize.LARGE,
+          //     ),
+          //   )
+          Container()
           : null,
       title: Text("Welcome $s!!",
           style: Themes.textStyle(
@@ -335,13 +309,12 @@ class _EventFeedState extends State<EventFeed>
               // height: h * 0.2,
               fit: BoxFit.fill,
             ),
-            
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AnimatedBuilder(
                   animation: typingAnimation,
-                  builder: (context, child) { 
+                  builder: (context, child) {
                     return Text(
                       s,
                       style: Themes.textStyle(
@@ -381,7 +354,7 @@ class _EventFeedState extends State<EventFeed>
               w,
               h,
               // state.eventList[index].images[0]??
-              ["", ""],
+              eventList[index].images,
               eventList[index].name,
               eventList[index].club,
               eventList[index].category,
@@ -525,8 +498,8 @@ class _EventFeedState extends State<EventFeed>
                         width: w * 0.8,
                         height: h * 0.2,
                         initialPage: 0,
-                        indicatorColor: Themes.lightred,
-                        indicatorBackgroundColor: Themes.red,
+                        indicatorColor: Themes.red,
+                        indicatorBackgroundColor: Themes.lightred,
                         onPageChanged: (value) {
                           // print('Page changed: $value');
                           // idx = value;
@@ -602,8 +575,6 @@ class _EventFeedState extends State<EventFeed>
     );
   }
 
- 
-
 // ImageSlideshow(
 //                     width: double.infinity,
 //                     height: h * 0.7,
@@ -618,4 +589,4 @@ class _EventFeedState extends State<EventFeed>
 //                     isLoop: true,
 //                     children: imageWidgets,
 //                   )
-    }
+}

@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const Login(),
       routes: {
-        Routes.eventFeed: (context) => const EventFeed(),
+        Routes.eventFeed: (context) => EventFeed(email: ""),
         Routes.eventDetailFeed: (context) => EventDetails(id: ""),
         Routes.clubDetailFeed: (context) => ClubDetails(id: ""),
         Routes.userProfile: (context) => const UserProfile(),
@@ -43,3 +43,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+//in image slider images is always loading again and again- - have to do some caching, feed good data, fetching different categories-schema making, stripe variable amount, appbar photo

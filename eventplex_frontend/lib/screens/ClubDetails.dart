@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-
 import '../Model/Event.dart';
 
 // ignore: must_be_immutable
@@ -30,7 +29,7 @@ class _ClubDetailsState extends State<ClubDetails> {
     double w = MediaQuery.of(context).size.width,
         h = MediaQuery.of(context).size.height;
     return Scaffold(
-        drawer: Widgets().AppDrawer(w, h, context),
+        drawer: const Widgets(),
         appBar: AppBar(
           title: Image.asset("assets/images/eventplex_logo.png",
               width: w * 0.3, height: h * 0.05, fit: BoxFit.fill),

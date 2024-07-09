@@ -58,7 +58,7 @@ class _CreateEventState extends State<CreateEvent> {
         backgroundColor: Themes.lightred,
         surfaceTintColor: Themes.lightred,
       ),
-      drawer: Widgets().AppDrawer(w, h, context),
+      drawer: const Widgets(),
       body: Container(
           width: w * 0.95,
           height: h,
