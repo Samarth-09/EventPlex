@@ -97,6 +97,11 @@ class Api {
     return Event.fromJson(res.data);
   }
 
+  Future<User> createUser(Map<String, dynamic> mp) async {
+    var res = await dio.post("$baseUrl/user/new", data: mp);
+    return User.fromJson(res.data);
+  }
+
   // void uploadImage(File f) async {
   //   print(f.path);
   //   var m = await MultipartFile.fromFile(f.path, filename: 'e1.jpg');

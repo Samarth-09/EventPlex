@@ -10,6 +10,7 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+// ignore: must_be_immutable
 class EventFeed extends StatefulWidget {
   String email;
   EventFeed({super.key, required this.email});

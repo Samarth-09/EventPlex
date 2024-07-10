@@ -7,4 +7,5 @@ class Routes {
   static String login = "/Login.dart";
   static String clubProfile = "/ClubProfile.dart";
   static String editClubProfile = "/EditClubProfile.dart";
+  static String signin = "/SignIn.dart";
 }

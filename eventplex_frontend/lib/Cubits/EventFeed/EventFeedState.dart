@@ -8,24 +8,26 @@ class EventFeedStateLoaded extends EventFeedState {
   int currentIndex = -1;
   List<Category> categories = [
     Category(
-        image:
-            "https://img.icons8.com/external-others-pike-picture/100/000000/external-Hackathon-fintech-others-pike-picture-2.png",
-        name: "Category 1"),
+        image: "https://img.icons8.com/dotty/80/people-working-together.png",
+        name: "Community"),
     Category(
-        image:
-            "https://img.icons8.com/external-outline-juicy-fish/60/000000/external-seminar-human-figures-outline-outline-juicy-fish.png",
-        name: "Category 2"),
+        image: "https://img.icons8.com/material/24/crown-of-thorns.png",
+        name: "Cultural"),
     Category(
-        image:
-            "https://img.icons8.com/external-others-pike-picture/100/000000/external-Hackathon-fintech-others-pike-picture-2.png",
-        name: "Hackathon"),
+        image: "https://img.icons8.com/material/24/olympic-rings.png",
+        name: "Sports"),
     Category(
-        image:
-            "https://img.icons8.com/external-outline-juicy-fish/60/000000/external-seminar-human-figures-outline-outline-juicy-fish.png",
-        name: "Seminar")
+        image: "https://img.icons8.com/ios/50/education.png",
+        name: "Educational"),
+    Category(
+        image: "https://img.icons8.com/material/24/virtual-reality.png",
+        name: "Entertainment"),
+    Category(
+        image: "https://img.icons8.com/material/24/video-conference--v1.png",
+        name: "Virtual")
   ];
   Event featuredEvent = Event(
-    id: "",
+      id: "",
       images: ["assets/images/e2.jpg"],
       name: "DotSlash 7.0",
       club: "Svnit",
@@ -43,21 +45,23 @@ class EventFeedInitialState extends EventFeedState {
 class EventFeedFilteredStateLoaded extends EventFeedState {
   List<Category> categories = [
     Category(
-        image:
-            "https://img.icons8.com/external-others-pike-picture/100/000000/external-Hackathon-fintech-others-pike-picture-2.png",
-        name: "Category 1"),
+        image: "https://img.icons8.com/dotty/80/people-working-together.png",
+        name: "Community"),
     Category(
-        image:
-            "https://img.icons8.com/external-outline-juicy-fish/60/000000/external-seminar-human-figures-outline-outline-juicy-fish.png",
-        name: "Category 2"),
+        image: "https://img.icons8.com/material/24/crown-of-thorns.png",
+        name: "Cultural"),
     Category(
-        image:
-            "https://img.icons8.com/external-others-pike-picture/100/000000/external-Hackathon-fintech-others-pike-picture-2.png",
-        name: "Hackathon"),
+        image: "https://img.icons8.com/material/24/olympic-rings.png",
+        name: "Sports"),
     Category(
-        image:
-            "https://img.icons8.com/external-outline-juicy-fish/60/000000/external-seminar-human-figures-outline-outline-juicy-fish.png",
-        name: "Seminar")
+        image: "https://img.icons8.com/ios/50/education.png",
+        name: "Educational"),
+    Category(
+        image: "https://img.icons8.com/material/24/virtual-reality.png",
+        name: "Entertainment"),
+    Category(
+        image: "https://img.icons8.com/material/24/video-conference--v1.png",
+        name: "Virtual")
   ];
 
   int currentIndex = -1;
