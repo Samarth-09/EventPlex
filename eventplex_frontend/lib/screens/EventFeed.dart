@@ -485,17 +485,19 @@ class _EventFeedState extends State<EventFeed>
             children: [
               Container(
                 margin: EdgeInsets.only(top: h / 100 * 2),
-                child: Hero(
-                    flightShuttleBuilder: (flightContext, animation,
-                        flightDirection, fromHeroContext, toHeroContext) {
-                      Widget hero = fromHeroContext.widget;
-                      return ScaleTransition(
-                          scale: animation.drive(Tween<double>(begin: 2, end: 1)
-                              .chain(CurveTween(curve: Curves.bounceOut))),
-                          child: hero);
-                    },
-                    tag: id,
-                    child: ImageSlideshow(
+                child: 
+                // Hero(
+                //     flightShuttleBuilder: (flightContext, animation,
+                //         flightDirection, fromHeroContext, toHeroContext) {
+                //       Widget hero = fromHeroContext.widget;
+                //       return ScaleTransition(
+                //           scale: animation.drive(Tween<double>(begin: 2, end: 1)
+                //               .chain(CurveTween(curve: Curves.bounceOut))),
+                //           child: hero);
+                //     },
+                //     tag: id,
+                //     child: 
+                    ImageSlideshow(
                         width: w * 0.8,
                         height: h * 0.2,
                         initialPage: 0,
@@ -517,7 +519,8 @@ class _EventFeedState extends State<EventFeed>
                                 borderRadius:
                                     BorderRadius.circular(w / 100) * 6),
                           )
-                        ])),
+                        ])
+                        // ),
               )
               // GFImageOverlay(
               //     image: AssetImage(image),

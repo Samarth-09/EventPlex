@@ -74,7 +74,7 @@ class _WidgetsState extends State<Widgets> {
                       splashColor: Themes.white,
                       hoverColor: Themes.white,
                       onTap: () async {
-                        await Future.delayed(Duration(milliseconds: 500));
+                        // await Future.delayed(Duration(milliseconds: 500));
                         await Navigator.pushNamed(context, Routes.eventFeed);
                         Navigator.pop(context);
                       },
@@ -83,10 +83,13 @@ class _WidgetsState extends State<Widgets> {
                       onTap: () async {
                         String r = (await SharedPreferences.getInstance())
                             .getString("role")!;
+                            print(r);
                         if (r == "user") {
+                          // await Future.delayed(Duration(milliseconds: 500));
                           await Navigator.pushNamed(
                               context, Routes.userProfile);
                         } else if (r == 'club') {
+                          // await Future.delayed(Duration(milliseconds: 500));
                           await Navigator.pushNamed(
                               context, Routes.clubProfile);
                         }

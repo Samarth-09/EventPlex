@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:eventplex_frontend/Cubits/SignIn/SignInState.dart';
-import 'package:eventplex_frontend/Model/User.dart';
+import 'package:eventplex_frontend/Model/User.dart' as user;
 import 'package:eventplex_frontend/Services/Api.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +10,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SignInCubit extends Cubit<SignInState> {
   SignInCubit() : super(SignInState());
   Api api = Api();
+  void loadCurrentUserInMemory(user.User u) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    sf.setString("name", u.name);
+    sf.setString("dp", u.dp);
+  }
 
   void submit(Map<String, dynamic> mp) async {
     emit(SignInStateLoading());
@@ -17,11 +23,13 @@ class SignInCubit extends Cubit<SignInState> {
         : mp['keywords'].split(",");
     mp['keywords'] = l;
     String email = (await SharedPreferences.getInstance()).getString("email")!;
+    String s = "";
     if (mp['dp'] != null) {
-      mp['dp'] = await uploadImageAndGetUrl(email, File(mp['dp']));
+      s = await uploadImageAndGetUrl(email, mp['dp']);
     }
+    mp['dp'] = s;
     mp['email'] = email;
-    User u = await api.createUser(mp);
+    user.User u = await api.createUser(mp);
     emit(SignInStateSubmitted(u));
   }
 
@@ -38,6 +46,16 @@ class SignInCubit extends Cubit<SignInState> {
     } catch (e) {
       print(e);
       return "";
+    }
+  }
+
+  void loginUsingGoogle(FirebaseAuth auth) {
+    try {
+      //sha-1 key is required to tell that the request for sign in is comming from legimit source
+      GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
+      auth.signInWithProvider(googleAuthProvider);
+    } catch (e) {
+      print(e);
     }
   }
 }

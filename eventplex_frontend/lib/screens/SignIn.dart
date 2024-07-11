@@ -5,11 +5,13 @@ import 'package:eventplex_frontend/Cubits/SignIn/SignInState.dart';
 import 'package:eventplex_frontend/Widgets/Drawer.dart';
 import 'package:eventplex_frontend/screens/EventFeed.dart';
 import 'package:eventplex_frontend/themes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -22,7 +24,8 @@ class _SignInState extends State<SignIn> {
   File? img;
   TextEditingController name = TextEditingController();
   TextEditingController keywords = TextEditingController();
-
+  User? u;
+  final FirebaseAuth auth = FirebaseAuth.instance;
   void takephoto() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -59,12 +62,14 @@ class _SignInState extends State<SignIn> {
                 // print(img==null);
                 // String keywordsLabel = "";
                 // state.club.keywords.forEach((e) => keywordsLabel += ("$e,"));
-                Navigator.pushReplacement(
+                context.read<SignInCubit>().loadCurrentUserInMemory(state.user);
+                Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
                             EventFeed(email: state.user.email)));
-                return Container();
+                // Navigator.pop(context);
+                return Container(child: Text(u!.email.toString()));
               } else if (state is SignInStateLoading) {
                 return Container(
                   width: w,
@@ -108,13 +113,23 @@ class _SignInState extends State<SignIn> {
                   textFeild(w, h, "name", name),
                   textFeild(w, h, "keywords", keywords),
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       // s="hello";
                       // print(1);
-                      context.read<SignInCubit>().submit({
-                        'dp': img,
-                        'name': name.text,
-                        'keywords': keywords.text
+                      context.read<SignInCubit>().loginUsingGoogle(auth);
+                      auth.authStateChanges().listen((event) async {
+                        if (event!.emailVerified) {
+                          SharedPreferences sf =
+                              await SharedPreferences.getInstance();
+                          sf.setString("email", event.email.toString());
+                          print(event.email);
+                          u = event;
+                          context.read<SignInCubit>().submit({
+                            'dp': img,
+                            'name': name.text,
+                            'keywords': keywords.text
+                          });
+                        }
                       });
                     },
                     child: Container(

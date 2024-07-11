@@ -84,29 +84,29 @@ class _LoginState extends State<Login> {
                                 fontSize: w / 100 * 3.5,
                                 fontWeight: FontWeight.w600))),
                   ),
-                  InkWell(
-                    splashColor: Themes.transparent,
-                    hoverColor: Themes.transparent,
-                    onTap: () {
-                      Navigator.pushReplacementNamed(context, Routes.signin);
-                    },
-                    child: Container(
-                        margin: EdgeInsets.only(top: h / 100 * 2),
-                        child: Text.rich(TextSpan(
-                            text: "Don't have an account? ",
-                            style: TextStyle(
-                                color: Themes.black,
-                                fontSize: w / 100 * 3,
-                                fontWeight: FontWeight.w600),
-                            children: [
-                              TextSpan(
-                                  text: "Sign In",
-                                  style: TextStyle(
-                                      color: Themes.red,
-                                      fontSize: w / 100 * 3,
-                                      fontWeight: FontWeight.w600))
-                            ]))),
-                  ),
+                  // InkWell(
+                  //   splashColor: Themes.transparent,
+                  //   hoverColor: Themes.transparent,
+                  //   onTap: () {
+                  //     Navigator.pushReplacementNamed(context, Routes.signin);
+                  //   },
+                  //   child: Container(
+                  //       margin: EdgeInsets.only(top: h / 100 * 2),
+                  //       child: Text.rich(TextSpan(
+                  //           text: "Don't have an account? ",
+                  //           style: TextStyle(
+                  //               color: Themes.black,
+                  //               fontSize: w / 100 * 3,
+                  //               fontWeight: FontWeight.w600),
+                  //           children: [
+                  //             TextSpan(
+                  //                 text: "Sign In",
+                  //                 style: TextStyle(
+                  //                     color: Themes.red,
+                  //                     fontSize: w / 100 * 3,
+                  //                     fontWeight: FontWeight.w600))
+                  //           ]))),
+                  // ),
                 ],
               ),
             );
@@ -132,7 +132,8 @@ class _LoginState extends State<Login> {
             if (event.emailVerified) {
               context.read<LoginCubit>().loadCurrentUser(event.email!);
             }
-            Navigator.push(context, MaterialPageRoute(
+            Navigator.pop(context);
+            await Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return EventFeed(email: event.email!);
               },
@@ -292,7 +293,31 @@ class _LoginState extends State<Login> {
             child: (u == null)
                 ? googleSignInButton(w, h, c)
                 : Container(child: Text(u!.email.toString())),
-          )
+          ),
+          InkWell(
+            splashColor: Themes.transparent,
+            hoverColor: Themes.transparent,
+            onTap: () async {
+              Navigator.pop(context);
+              await Navigator.pushReplacementNamed(context, Routes.signin);
+            },
+            child: Container(
+                margin: EdgeInsets.only(top: h / 100 * 2),
+                child: Text.rich(TextSpan(
+                    text: "Don't have an account? ",
+                    style: TextStyle(
+                        color: Themes.black,
+                        fontSize: w / 100 * 3,
+                        fontWeight: FontWeight.w600),
+                    children: [
+                      TextSpan(
+                          text: "Sign In",
+                          style: TextStyle(
+                              color: Themes.red,
+                              fontSize: w / 100 * 3,
+                              fontWeight: FontWeight.w600))
+                    ]))),
+          ),
         ]),
       ),
     );
