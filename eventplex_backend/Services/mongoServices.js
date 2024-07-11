@@ -1,6 +1,7 @@
 import EventModel from "../model/event.js";
 import ClubModel from "../model/club.js";
 import UserModel from "../model/user.js";
+import mongoose from "mongoose";
 const getAllEvents = async () => {
   let result = [];
   try {
@@ -286,7 +287,25 @@ const changeRating = async (data) => {
   }
   return 0;
 };
+
+const participate = async (data) => {
+  try {
+    // var x = new
+    // console.log(data);
+    var result = await UserModel.updateOne(
+      { _id: data.uid },
+      { $push: { currentEvents: data.eid } }
+    );
+    // console.log(result);
+    return 1;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};
+
 export {
+  participate,
   changeRating,
   updateEvent,
   updateClub,

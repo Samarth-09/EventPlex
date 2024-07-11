@@ -1,4 +1,5 @@
 import {
+  participate,
   changeRating,
   findUserById,
   findClubsById,
@@ -75,6 +76,12 @@ type Mutation{
   changeLike(data: likeDislikeInput): club
   changeDisLike(data: likeDislikeInput): club
   changeRating(data: ratingInput): Int
+  participate(data: participateInput): Int
+}
+
+input participateInput{
+  uid: ID,
+  eid: ID
 }
 
 input ratingInput{
@@ -131,7 +138,7 @@ const resolvers = {
     },
     clubProfile: async (_, args) => {
       return await findClubByEmail(args.email);
-    }
+    },
   },
   event: {
     Club: async (parent) => {
@@ -180,7 +187,10 @@ const resolvers = {
     },
     changeRating: async (_, args) => {
       return await changeRating(args.data);
-    }
+    },
+    participate: async (_, args) => {
+      return await participate(args.data);
+    },
   },
 };
 export { typeDefs, resolvers };
