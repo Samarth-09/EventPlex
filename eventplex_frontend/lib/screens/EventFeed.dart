@@ -451,7 +451,7 @@ class _EventFeedState extends State<EventFeed>
                             Image.network(categories[index].image,
                                 width: w * 0.18,
                                 height: h * 0.05,
-                                fit: BoxFit.fill),
+                                fit: BoxFit.contain),
                             Text(categories[index].name,
                                 style: Themes.textStyle(
                                     fontsize: w / 100 * 3,
@@ -484,44 +484,43 @@ class _EventFeedState extends State<EventFeed>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                margin: EdgeInsets.only(top: h / 100 * 2),
-                child: 
-                // Hero(
-                //     flightShuttleBuilder: (flightContext, animation,
-                //         flightDirection, fromHeroContext, toHeroContext) {
-                //       Widget hero = fromHeroContext.widget;
-                //       return ScaleTransition(
-                //           scale: animation.drive(Tween<double>(begin: 2, end: 1)
-                //               .chain(CurveTween(curve: Curves.bounceOut))),
-                //           child: hero);
-                //     },
-                //     tag: id,
-                //     child: 
-                    ImageSlideshow(
-                        width: w * 0.8,
-                        height: h * 0.2,
-                        initialPage: 0,
-                        indicatorColor: Themes.red,
-                        indicatorBackgroundColor: Themes.lightred,
-                        onPageChanged: (value) {
-                          // print('Page changed: $value');
-                          // idx = value;
-                        },
-                        autoPlayInterval: 5000,
-                        isLoop: true,
-                        children: [
-                          ...List.generate(
-                            images.length,
-                            (index) => GFImageOverlay(
-                                image: NetworkImage(images[index]),
-                                width: w * 0.8,
-                                height: h * 0.2,
-                                borderRadius:
-                                    BorderRadius.circular(w / 100) * 6),
-                          )
-                        ])
-                        // ),
-              )
+                  margin: EdgeInsets.only(top: h / 100 * 2),
+                  child:
+                      // Hero(
+                      //     flightShuttleBuilder: (flightContext, animation,
+                      //         flightDirection, fromHeroContext, toHeroContext) {
+                      //       Widget hero = fromHeroContext.widget;
+                      //       return ScaleTransition(
+                      //           scale: animation.drive(Tween<double>(begin: 2, end: 1)
+                      //               .chain(CurveTween(curve: Curves.bounceOut))),
+                      //           child: hero);
+                      //     },
+                      //     tag: id,
+                      //     child:
+                      ImageSlideshow(
+                          width: w * 0.8,
+                          height: h * 0.2,
+                          initialPage: 0,
+                          indicatorColor: Themes.red,
+                          indicatorBackgroundColor: Themes.lightred,
+                          onPageChanged: (value) {
+                            // print('Page changed: $value');
+                            // idx = value;
+                          },
+                          autoPlayInterval: 5000,
+                          isLoop: true,
+                          children: [
+                        ...List.generate(
+                          images.length,
+                          (index) => GFImageOverlay(
+                              image: NetworkImage(images[index]),
+                              width: w * 0.8,
+                              height: h * 0.2,
+                              borderRadius: BorderRadius.circular(w / 100) * 6),
+                        )
+                      ])
+                  // ),
+                  )
               // GFImageOverlay(
               //     image: AssetImage(image),
               //     width: w * 0.8,

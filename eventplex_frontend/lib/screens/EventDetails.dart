@@ -236,7 +236,7 @@ class _EventDetailsState extends State<EventDetails> {
                                   // final int i = state.event.fees.toInt();
                                   await context
                                       .read<EventDetailsCubit>()
-                                      .makePayment(100);
+                                      .makePayment(100, state.event.id);
                                 },
                                 child: Container(
                                     margin: EdgeInsets.only(
@@ -319,8 +319,7 @@ class _EventDetailsState extends State<EventDetails> {
     return Row(
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(Icons.star_outlined,
-              color: Themes.red, size: w / 100 * 8),
+          Icon(Icons.star_outlined, color: Themes.red, size: w / 100 * 8),
           Container(
               margin: EdgeInsets.only(left: w / 100 * 2),
               child: Text(double.parse(event.rating).toStringAsFixed(2),

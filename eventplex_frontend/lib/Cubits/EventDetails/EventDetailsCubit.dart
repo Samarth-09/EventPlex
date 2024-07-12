@@ -6,6 +6,7 @@ import 'package:eventplex_frontend/Services/GraphQLService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EventDetailsCubit extends Cubit<EventDetailsState> {
   GraphQLService gqs = GraphQLService();
@@ -23,8 +24,9 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
     loadEventDetails(id);
   }
 
-  Future<void> makePayment(int amount) async {
+  Future<void> makePayment(int amount, String eventId) async {
     try {
+      addToCurrentEvents(eventId);
       // print(amount);
       String amt = "${(amount * 100).toInt()}";
       //  int amountInPaise = (double.parse(amount.toString()) * 100).toInt();
@@ -47,16 +49,17 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
           .then((value) {});
       // print(4);
       //STEP 3: Display Payment sheet
-      displayPaymentSheet();
+      displayPaymentSheet(eventId);
     } catch (err) {
       print(err);
     }
   }
 
-  displayPaymentSheet() async {
+  displayPaymentSheet(String eventId) async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) {
         print("Payment Successfully");
+        addToCurrentEvents(eventId);
       });
     } catch (e) {
       print('$e');
@@ -105,5 +108,27 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
 
   void updateUi(Event e) {
     emit(EventDetailsStateLoaded(e));
+  }
+
+  void addToCurrentEvents(String eventId) async {
+    String email = (await SharedPreferences.getInstance()).getString("email")!;
+    String query = '''query(\$email: String){
+    userInfo(email: \$email){
+    _id
+    }
+    }''';
+
+    var result = await gqs.performQuery(query, {"email": email});
+
+    query = '''mutation(\$data: participateInput){
+    participate(data: \$data)
+    }''';
+    print({
+      "data": {"uid": result.data!['userInfo']['_id'], "eid": eventId}
+    });
+    result = await gqs.performMutation(query, {
+      "data": {"uid": result.data!['userInfo']['_id'], "eid": eventId}
+    });
+    print(result.data);
   }
 }

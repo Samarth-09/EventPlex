@@ -42,72 +42,101 @@ class _LoginState extends State<Login> {
             c = con;
             return SizedBox(
               width: w * 0.85,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: h / 100 * 2),
-                    // height: h * 0.88,
-                    child: Image.asset("assets/images/login.png",
-                        height: h * 0.7, width: w * 0.85, fit: BoxFit.fill),
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(top: h / 100 * 1),
-                      child: Text(
-                        "EventPlex is a platform that facilitates networking and collaboration between event enthusiasts and event organizers.",
-                        textAlign: TextAlign.center,
-                        style: Themes.textStyle(
-                            fontsize: w / 100 * 4,
-                            fontColor: Themes.black,
-                            fw: FontWeight.w600),
-                      )),
-                  InkWell(
-                    onTap: () {
-                      showModalBottomSheet<dynamic>(
-                        // isScrollControlled: true,
-                        context: con,
-                        builder: (context) => bottomSheet(w, h, con),
-                      );
-                    },
-                    child: Container(
-                        width: w * 0.85,
-                        margin: EdgeInsets.only(top: h / 100 * 2),
-                        alignment: Alignment.center,
-                        height: h * 0.065,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(w / 100 * 3),
-                            color: Themes.red),
-                        child: Text("Login",
-                            style: TextStyle(
-                                color: Themes.white,
-                                fontSize: w / 100 * 3.5,
-                                fontWeight: FontWeight.w600))),
-                  ),
-                  // InkWell(
-                  //   splashColor: Themes.transparent,
-                  //   hoverColor: Themes.transparent,
-                  //   onTap: () {
-                  //     Navigator.pushReplacementNamed(context, Routes.signin);
-                  //   },
-                  //   child: Container(
-                  //       margin: EdgeInsets.only(top: h / 100 * 2),
-                  //       child: Text.rich(TextSpan(
-                  //           text: "Don't have an account? ",
-                  //           style: TextStyle(
-                  //               color: Themes.black,
-                  //               fontSize: w / 100 * 3,
-                  //               fontWeight: FontWeight.w600),
-                  //           children: [
-                  //             TextSpan(
-                  //                 text: "Sign In",
-                  //                 style: TextStyle(
-                  //                     color: Themes.red,
-                  //                     fontSize: w / 100 * 3,
-                  //                     fontWeight: FontWeight.w600))
-                  //           ]))),
-                  // ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: w * 0.85,
+                      padding: EdgeInsets.only(
+                          top: h / 100 * 5, bottom: h / 100 * 5),
+                      decoration: BoxDecoration(
+                          color: Themes.lightred,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(w / 100 * 5),
+                              bottomRight: Radius.circular(w / 100 * 5))),
+                      child: Image.asset("assets/images/eventplex_logo.png",
+                          height: h * 0.09, fit: BoxFit.contain),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: h / 100 * 2),
+                      // height: h * 0.88,
+                      child: Image.asset("assets/images/login.png",
+                          height: h * 0.38,
+                          // width: w * 0.85,
+                          fit: BoxFit.contain),
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                            margin: EdgeInsets.only(top: h / 100 * 0),
+                            child: Text.rich(TextSpan(
+                                text: "What is ",
+                                style: Themes.textStyle(
+                                    fontsize: w / 100 * 4,
+                                    fontColor: Themes.black,
+                                    fw: FontWeight.w400),
+                                children: [
+                                  TextSpan(
+                                      text: "EventPlex ",
+                                      style: Themes.textStyle(
+                                          fontsize: w / 100 * 5,
+                                          fontColor: Themes.red,
+                                          fw: FontWeight.bold)),
+                                  TextSpan(
+                                      text: "?",
+                                      style: Themes.textStyle(
+                                          fontsize: w / 100 * 4,
+                                          fontColor: Themes.black,
+                                          fw: FontWeight.w400))
+                                ]))),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: w / 100 * 5),
+                          child: Divider(
+                            color: Themes.red,
+                            thickness: 1,
+                          ),
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(top: h / 100 * 1),
+                            child: Text(
+                              "EventPlex is a platform that facilitates networking and collaboration between event enthusiasts and event organizers.",
+                              textAlign: TextAlign.center,
+                              style: Themes.textStyle(
+                                      fontsize: w / 100 * 4,
+                                      fontColor: Themes.black,
+                                      fw: FontWeight.w600)
+                                  .copyWith(height: 2),
+                            )),
+                        InkWell(
+                          onTap: () {
+                            showModalBottomSheet<dynamic>(
+                              // isScrollControlled: true,
+                              context: con,
+                              builder: (context) => bottomSheet(w, h, con),
+                            );
+                          },
+                          child: Container(
+                              width: w * 0.85,
+                              margin: EdgeInsets.only(top: h / 100 * 5),
+                              alignment: Alignment.center,
+                              height: h * 0.065,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(w / 100 * 3),
+                                  color: Themes.red),
+                              child: Text("Login",
+                                  style: TextStyle(
+                                      color: Themes.white,
+                                      fontSize: w / 100 * 3.5,
+                                      fontWeight: FontWeight.w600))),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
           } else {
@@ -146,7 +175,7 @@ class _LoginState extends State<Login> {
             vertical: h / 100 * 2, horizontal: w / 100 * 3),
         child: Column(
           children: [
-            Image.network("https://img.icons8.com/fluency/96/google-logo.png",
+            Image.network("https://img.icons8.com/ios-filled/50/fa2528/google-logo.png",
                 width: w / 100 * 10, height: h / 100 * 5, fit: BoxFit.fill),
             Text("Google",
                 style: Themes.textStyle(
@@ -160,6 +189,7 @@ class _LoginState extends State<Login> {
   Widget selectRoleWidget(double w, double h, int i, BuildContext c) {
     return Container(
         margin: EdgeInsets.only(top: h / 100 * 2),
+        width: w * 0.9,
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,7 +245,9 @@ class _LoginState extends State<Login> {
 
   Widget bottomSheet(double w, double h, BuildContext c) {
     return Container(
+      color: Themes.lightred.withAlpha(50),
       width: w,
+      padding: EdgeInsets.symmetric(horizontal: w / 100 * 4),
       child: SingleChildScrollView(
         child: Column(children: [
           Container(
@@ -227,29 +259,32 @@ class _LoginState extends State<Login> {
                 borderRadius: BorderRadius.circular(w / 100 * 10)),
           ),
           Container(
-            width: w * 0.8,
-            height: h * 0.1,
-            alignment: Alignment.center,
             margin: EdgeInsets.only(top: h / 100 * 2),
-            child: Image.asset("assets/images/eventplex_logo.png",
-                width: w * 0.7, fit: BoxFit.contain),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    margin: EdgeInsets.only(top: h / 100 * 0),
+                    child: Text("Login",
+                        style: Themes.textStyle(
+                            fontsize: w / 100 * 6,
+                            fontColor: Themes.black,
+                            fw: FontWeight.bold))),
+                InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Text("X   ",
+                        style: Themes.textStyle(
+                            fontsize: w / 100 * 5,
+                            fontColor: Themes.red,
+                            fw: FontWeight.bold)))
+              ],
+            ),
           ),
-
           Container(
-              margin: EdgeInsets.only(top: h / 100 * 3),
-              child: Text("Login",
-                  style: Themes.textStyle(
-                      fontsize: w / 100 * 4,
-                      fontColor: Themes.black,
-                      fw: FontWeight.bold))),
-          Container(
-              margin: EdgeInsets.only(top: h / 100 * 1),
-              padding: EdgeInsets.symmetric(horizontal: w * 0.38),
-              child: Divider(color: Themes.red, thickness: 1.5)),
-          // Container(
-          // margin: EdgeInsets.only(top: 0),
-          // padding: EdgeInsets.symmetric(horizontal: w * 0.3),
-          // child: Divider(color: Themes.black, thickness: 1)),
+              margin: EdgeInsets.only(top: h / 100 * 0),
+              // padding: EdgeInsets.symmetric(horizontal: w ),
+              child:
+                  const Divider(color: Color.fromARGB(50, 0, 0, 0), thickness: 1.5)),
           Container(
               margin: EdgeInsets.only(top: h / 100 * 1),
               child: Text("Select your Role",
@@ -272,7 +307,7 @@ class _LoginState extends State<Login> {
             }),
           ),
           Container(
-              margin: EdgeInsets.only(top: h / 100 * 3),
+              margin: EdgeInsets.only(top: h / 100 * 2),
               child: Row(children: [
                 Expanded(
                     child: Divider(
@@ -289,7 +324,7 @@ class _LoginState extends State<Login> {
                         endIndent: w / 100 * 10)),
               ])),
           Container(
-            margin: EdgeInsets.only(top: h / 100 * 1),
+            margin: EdgeInsets.only(top: h / 100 * 0),
             child: (u == null)
                 ? googleSignInButton(w, h, c)
                 : Container(child: Text(u!.email.toString())),
@@ -299,10 +334,10 @@ class _LoginState extends State<Login> {
             hoverColor: Themes.transparent,
             onTap: () async {
               Navigator.pop(context);
-              await Navigator.pushReplacementNamed(context, Routes.signin);
+              await Navigator.pushNamed(context, Routes.signin);
             },
             child: Container(
-                margin: EdgeInsets.only(top: h / 100 * 2),
+                margin: EdgeInsets.only(top: h / 100 * 1),
                 child: Text.rich(TextSpan(
                     text: "Don't have an account? ",
                     style: TextStyle(
