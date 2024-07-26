@@ -38,11 +38,12 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
     try {
       // addToCurrentEvents(eventId);
       // print(amount);
-      String amt = "${(amount * 100).toInt()}";
+      // String amt = "${(amount * 100).toInt()}";
+      String amt = (amount * 100).toString();
       //  int amountInPaise = (double.parse(amount.toString()) * 100).toInt();
       // print(amt);
       Map<String, dynamic> paymentIntent =
-          await createPaymentIntent(amt, 'INR');
+          await createPaymentIntent(amt, 'USD');
       // print(2);
       var gpay = const PaymentSheetGooglePay(
           merchantCountryCode: "IN", currencyCode: "INR", testEnv: true);
@@ -81,10 +82,13 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
 
   createPaymentIntent(String amount, String currency) async {
     try {
-      Map<String, dynamic> body = {
-        'amount': amount,
+      // String s = ((int.parse(amount) / 83).ceil()).toString();
+      Map<String, String> body = {
+        // 'amount': s,
+        "amount": amount,
         'currency': currency,
       };
+      print(body);
       print(6);
       var response = await Dio().post(
         'https://api.stripe.com/v1/payment_intents',
@@ -100,8 +104,8 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
     } catch (err) {
       print(err);
     }
+    return {"msg": "ergnwo"};
   }
-
   void changeRating(Event e, double v) async {
     double x = double.parse(e.rating);
     x = (x + v) / 2.0;
@@ -147,6 +151,21 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
       List<String> l = sf.getStringList("ids")!..add(eventId);
       sf.setStringList("ids", l);
     }
-    // print(result.data);
+    print(result.data);
+    decreaseTickets(eventId);
+  }
+
+  void decreaseTickets(String eventId) async {
+    String query = '''mutation(\$eid: String){
+    decreaseTickets(eid: \$eid)
+}
+''';
+    var result = await gqs.performMutation(query, {"eid": eventId});
+    print(result);
+    // if (result == 1) {
+    //   print("Done");
+    // } else {
+    //   print("Not Done");
+    // }
   }
 }

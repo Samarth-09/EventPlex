@@ -40,7 +40,7 @@ class EventFeedCubit extends Cubit<EventFeedState> {
   void loadEventList(
       String query, Map<String, dynamic> variables, bool b) async {
     QueryResult result = await gqls.performQuery(query, variables);
-    List<Event> el = [];
+    List<Event> el = [], ul = [];
     try {
       el = List.generate(result.data!['allEvents'].length, (index) {
         var d = result.data!['allEvents'][index];
@@ -59,6 +59,13 @@ class EventFeedCubit extends Cubit<EventFeedState> {
         // print(2);
         return e;
       });
+
+      for (Event e in el) {
+        if (DateTime.parse("2024-07-25").isBefore(DateTime.now())) {
+          ul.add(e);
+        }
+      }
+      print(ul);
     } catch (e) {
       print(e.toString());
     }
@@ -82,13 +89,14 @@ class EventFeedCubit extends Cubit<EventFeedState> {
         //     club: d['Club']['name'],
         //     category: d['category'],
         //     rating: d['rating'].toString());
-        
-            Event e = Event.fromJson(d);
+
+        Event e = Event.fromJson(d);
         return e;
       });
     } catch (e) {
       print(e);
     }
-    emit(EventFeedFilteredStateLoaded(filteredEventList: fel, isScrolled: b, currentIndex: i));
+    emit(EventFeedFilteredStateLoaded(
+        filteredEventList: fel, isScrolled: b, currentIndex: i));
   }
 }

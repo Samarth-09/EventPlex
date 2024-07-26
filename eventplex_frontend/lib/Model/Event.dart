@@ -53,7 +53,6 @@ class Event {
       // print(json['Club']);
     }
     // print(json['name'] ?? 1);
-    
 
     // if (json['_doc'] != null) {
     //   json = json['_doc'];
@@ -84,14 +83,14 @@ class Event {
                 (index) => json['keywords'][index]
                     .toString()), //List<String>.from(json['keywords']),
         club: clubName,
-        clubId: json['club']??"",
+        clubId: json['club'] ?? "",
         images:
             // json['images'],
             List.generate(
                 (json['images'] == null) ? 0 : json['images'].length,
                 (index) => json['images'][index]
-                    .toString()), //List<String>.from(json['images']),
-        rating: json['rating'].toString(),
+                    .toString()), //List<String>.from(json['images']),F
+        rating: (json['rating'] == null)? '0': json['rating'].toString(),
         desciption: json['desciption'] ??
             "This is an Event Full of enjoyment, exploration, networking and learning. Must participte!!");
   }

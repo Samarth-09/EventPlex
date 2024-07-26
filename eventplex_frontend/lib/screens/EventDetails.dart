@@ -232,16 +232,25 @@ class _EventDetailsState extends State<EventDetails> {
                                 );
                               }),
                               InkWell(
-                                onTap: () async {
-                                  // print(state.event.fees.runtimeType);
-                                  // final int i = state.event.fees.toInt();
-                                  disable = await context
-                                      .read<EventDetailsCubit>()
-                                      .makePayment(100, state.event.id);
-                                  context
-                                      .read<EventDetailsCubit>()
-                                      .updateUi(state.event);
-                                },
+                                onTap: (disable)
+                                    ? () {}
+                                    : () async {
+                                        // print(state.event.fees.runtimeType);
+                                        // final int i = state.event.fees.toInt();
+                                        // int x = state.event.fees;
+                                        disable = await context
+                                            .read<EventDetailsCubit>()
+                                            .makePayment(
+                                              // 900,\
+                                            // 100,
+                                              // (100000/83).toInt(),
+                                              state.event.fees,
+                                                state.event.id);
+                                        state.event.ticketsRemaining--;
+                                        context
+                                            .read<EventDetailsCubit>()
+                                            .updateUi(state.event);
+                                      },
                                 child: Container(
                                     margin: EdgeInsets.only(
                                         top: h / 100 * 2, bottom: h / 100 * 2),
@@ -291,7 +300,7 @@ class _EventDetailsState extends State<EventDetails> {
                           min: 0.0,
                           max: 5.0,
                           divisions: 5,
-                          value: double.parse(state.event.rating),
+                          value: double.parse((state.event.rating)),
                           //  double.parse(double.parse(state.event.rating)
                           //     .toStringAsFixed(2)),
                           onChanged: (val) {
