@@ -11,6 +11,7 @@ class ClubDetailsCubit extends Cubit<ClubDetailsState> {
   Future<String> loadClubDetails(id) async {
     String query = '''query getClubInfo(\$id: String){
       clubInfo(id: \$id){
+      dp
         _id
         name
         pastEvents{

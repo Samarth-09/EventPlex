@@ -25,6 +25,7 @@ class EventDetails extends StatefulWidget {
 class _EventDetailsState extends State<EventDetails> {
   String eventId;
   double value = 0;
+  bool disable = true;
   _EventDetailsState(this.eventId);
   @override
   Widget build(BuildContext context) {
@@ -234,9 +235,12 @@ class _EventDetailsState extends State<EventDetails> {
                                 onTap: () async {
                                   // print(state.event.fees.runtimeType);
                                   // final int i = state.event.fees.toInt();
-                                  await context
+                                  disable = await context
                                       .read<EventDetailsCubit>()
                                       .makePayment(100, state.event.id);
+                                  context
+                                      .read<EventDetailsCubit>()
+                                      .updateUi(state.event);
                                 },
                                 child: Container(
                                     margin: EdgeInsets.only(
@@ -250,12 +254,19 @@ class _EventDetailsState extends State<EventDetails> {
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(
                                                 w / 100 * 10),
-                                            color: Themes.red),
-                                        child: Text("Participate",
+                                            color: (disable)
+                                                ? Themes.lightred
+                                                : Themes.red),
+                                        child: Text(
+                                            (disable)
+                                                ? "Applied"
+                                                : "Participate",
                                             textAlign: TextAlign.center,
                                             style: Themes.textStyle(
                                                 fontsize: w / 100 * 6,
-                                                fontColor: Themes.white,
+                                                fontColor: (disable)
+                                                    ? Themes.red
+                                                    : Themes.white,
                                                 fw: FontWeight.bold)))),
                               )
                             ]),
@@ -299,7 +310,10 @@ class _EventDetailsState extends State<EventDetails> {
                       )
                     ]));
               } else {
-                context.read<EventDetailsCubit>().loadEventDetails(eventId);
+                context
+                    .read<EventDetailsCubit>()
+                    .loadEventDetails(eventId)
+                    .then((value) => disable = value);
                 return Center(
                   child: Container(
                     width: w,

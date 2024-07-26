@@ -14,9 +14,19 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
   EventDetailsCubit() : super(EventDetailsState()) {
     // loadEventDetails(id);
   }
-  void loadEventDetails(id) async {
+  Future<bool> loadEventDetails(id) async {
     Event e = await api.getEventById(id);
+    List<String> uid =
+        (await SharedPreferences.getInstance()).getStringList("ids")!;
     emit(EventDetailsStateLoaded(e));
+    // for (var element in uid) {
+    //   if (jsonDecode(element)['_id'] == e.id) {
+    //     b = true;
+    //     break;
+    //   }
+    // }
+    print(uid);
+    return uid.contains(e.id);
   }
 
   void callLoadEventDetailsFunction(id) {
@@ -24,9 +34,9 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
     loadEventDetails(id);
   }
 
-  Future<void> makePayment(int amount, String eventId) async {
+  Future<bool> makePayment(int amount, String eventId) async {
     try {
-      addToCurrentEvents(eventId);
+      // addToCurrentEvents(eventId);
       // print(amount);
       String amt = "${(amount * 100).toInt()}";
       //  int amountInPaise = (double.parse(amount.toString()) * 100).toInt();
@@ -49,21 +59,24 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
           .then((value) {});
       // print(4);
       //STEP 3: Display Payment sheet
-      displayPaymentSheet(eventId);
+      return await displayPaymentSheet(eventId);
     } catch (err) {
       print(err);
     }
+    return false;
   }
 
-  displayPaymentSheet(String eventId) async {
+  Future<bool> displayPaymentSheet(String eventId) async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) {
         print("Payment Successfully");
         addToCurrentEvents(eventId);
+        return true;
       });
     } catch (e) {
       print('$e');
     }
+    return false;
   }
 
   createPaymentIntent(String amount, String currency) async {
@@ -123,12 +136,17 @@ class EventDetailsCubit extends Cubit<EventDetailsState> {
     query = '''mutation(\$data: participateInput){
     participate(data: \$data)
     }''';
-    print({
-      "data": {"uid": result.data!['userInfo']['_id'], "eid": eventId}
-    });
+    // print({
+    //   "data": {"uid": result.data!['userInfo']['_id'], "eid": eventId}
+    // });
     result = await gqs.performMutation(query, {
       "data": {"uid": result.data!['userInfo']['_id'], "eid": eventId}
     });
-    print(result.data);
+    if (result.data!['participate'] == 1) {
+      SharedPreferences sf = await SharedPreferences.getInstance();
+      List<String> l = sf.getStringList("ids")!..add(eventId);
+      sf.setStringList("ids", l);
+    }
+    // print(result.data);
   }
 }

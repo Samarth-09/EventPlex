@@ -449,13 +449,14 @@ class _EventFeedState extends State<EventFeed>
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Image.network(categories[index].image,
-                                width: w * 0.18,
-                                height: h * 0.05,
-                                fit: BoxFit.contain),
-                            Text(categories[index].name,
-                                style: Themes.textStyle(
-                                    fontsize: w / 100 * 3,
-                                    fontColor: Themes.black))
+                                height: h * 0.05, fit: BoxFit.contain),
+                            Container(
+                              child: Text(categories[index].name,
+                                  textAlign: TextAlign.center,
+                                  style: Themes.textStyle(
+                                      fontsize: w / 100 * 3,
+                                      fontColor: Themes.black)),
+                            )
                           ])),
                 );
               }))

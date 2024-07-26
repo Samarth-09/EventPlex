@@ -37,6 +37,9 @@ class LoginCubit extends Cubit<LoginState> {
     _id
     name
     dp
+    currentEvents{
+    _id
+    }
     }
     }''';
 
@@ -49,6 +52,9 @@ class LoginCubit extends Cubit<LoginState> {
     email
     _id
     dp
+    currentEvents{
+    _id
+    }
     }
     }''';
 
@@ -57,11 +63,18 @@ class LoginCubit extends Cubit<LoginState> {
       SharedPreferences sf = await SharedPreferences.getInstance();
       sf.setString("name", result.data!['clubProfile']['name']);
       sf.setString("dp", result.data!['clubProfile']['dp']);
+      sf.setStringList("ids", result.data!['clubProfile']['currentEvents']);
       return;
     }
 
     SharedPreferences sf = await SharedPreferences.getInstance();
     sf.setString("name", result.data!['userInfo']['name']);
     sf.setString("dp", result.data!['userInfo']['dp']);
+    List<String> l = List.generate(
+        result.data!['userInfo']['currentEvents'].length,
+        (index) =>
+            result.data!['userInfo']['currentEvents'][index]['_id']!.toString());
+    sf.setStringList("ids", l);
+    // print(l);
   }
 }
