@@ -1,4 +1,5 @@
 import {
+  decreaseTickets,
   participate,
   changeRating,
   findUserById,
@@ -77,6 +78,7 @@ type Mutation{
   changeDisLike(data: likeDislikeInput): club
   changeRating(data: ratingInput): Int
   participate(data: participateInput): Int
+  decreaseTickets(eid: String): Int
 }
 
 input participateInput{
@@ -190,6 +192,9 @@ const resolvers = {
     },
     participate: async (_, args) => {
       return await participate(args.data);
+    },
+    decreaseTickets: async (_, args) => {
+      return decreaseTickets(args.eid);
     },
   },
 };

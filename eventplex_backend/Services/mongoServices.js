@@ -303,8 +303,21 @@ const participate = async (data) => {
     return 0;
   }
 };
-
+const decreaseTickets = async (eid) => {
+  try {
+    const r = await EventModel.updateOne(
+      { _id: eid },
+      { $inc: { ticketsRemaining: -1 } }
+    );
+    console.log(r);
+    return 1;
+  } catch (error) {
+    console.log(error);
+  }
+  return 1;
+};
 export {
+  decreaseTickets,
   participate,
   changeRating,
   updateEvent,
